@@ -61,7 +61,7 @@ export default function Login() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               className="bg-black/40 border-white/10 focus:border-primary text-white h-12 rounded-xl"
-              placeholder="admin@fmciii.org"
+              placeholder="admin@fmciii.com"
             />
           </div>
           
@@ -87,7 +87,7 @@ export default function Login() {
         </form>
         
         <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-muted-foreground">
-          <p>Demo Credentials: admin@demo.com / password</p>
+          <p>Demo Credentials: admin@fmciii.com / password</p>
         </div>
       </Card>
     </div>
