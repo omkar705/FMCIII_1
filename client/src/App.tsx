@@ -5,12 +5,26 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Startups from "./pages/Startups";
+import Applications from "./pages/Applications";
+import Scorecards from "./pages/Scorecards";
+import Mentorship from "./pages/Mentorship";
+import Funding from "./pages/Funding";
+import KnowledgeBase from "./pages/KnowledgeBase";
+
 function Router() {
   return (
     <Switch>
-      {/* Add pages below */}
-      {/* <Route path="/" component={Home}/> */}
-      {/* Fallback to 404 */}
+      <Route path="/login" component={Login} />
+      <Route path="/" component={Dashboard} />
+      <Route path="/startups" component={Startups} />
+      <Route path="/applications" component={Applications} />
+      <Route path="/scorecards" component={Scorecards} />
+      <Route path="/mentorship" component={Mentorship} />
+      <Route path="/funding" component={Funding} />
+      <Route path="/knowledge-base" component={KnowledgeBase} />
       <Route component={NotFound} />
     </Switch>
   );
