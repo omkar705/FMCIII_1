@@ -25,6 +25,13 @@ export const startups = pgTable("startups", {
   description: text("description"),
 });
 
+export const events = pgTable("events", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at")
+});
+
 export const startupProfiles = pgTable("startup_profiles", {
   id: serial("id").primaryKey(),
   startupId: integer("startup_id").references(() => startups.id).notNull(),
