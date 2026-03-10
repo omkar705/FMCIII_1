@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Target, Plus, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Applications() {
   const { data: applications, isLoading: aLoading } = useApplications();
@@ -18,6 +19,7 @@ export default function Applications() {
   const { mutateAsync: createApplication, isPending } = useCreateApplication();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,13 +85,16 @@ export default function Applications() {
         </Dialog>
       </div>
 
-      <div className="bg-black/20 rounded-3xl p-6 border border-white/5">
-        <KanbanBoard 
-          applications={applications || []} 
-          startups={startups || []} 
-          onStatusChange={(id, status) => updateStatus({ id, status })}
-        />
-      </div>
+      {user?.roleId === 1 && (
+    <div className="bg-black/20 rounded-3xl p-6 border border-white/5">
+      <KanbanBoard
+        applications={applications || []}
+        startups={startups || []}
+        onStatusChange={(id, status) => updateStatus({ id, status })}
+      />
+    </div>
+  )}
+
     </Shell>
   );
 }

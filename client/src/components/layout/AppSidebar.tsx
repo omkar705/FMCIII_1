@@ -23,16 +23,48 @@ import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 
 const getNavigationItems = (roleId?: number | null) => {
-  const baseItems = [
-    { title: "Dashboard", url: "/", icon: LayoutDashboard },
-    { title: "Startups", url: "/startups", icon: Building2 },
-    { title: "Applications", url: "/applications", icon: Target },
-    { title: "Mentorship", url: "/mentorship", icon: Users },
-    { title: "Funding", url: "/funding", icon: IndianRupee },
-    { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
-    { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
-  ];
-  return baseItems;
+
+  if (roleId === 1) { // ADMIN
+    return [
+      { title: "Dashboard", url: "/", icon: LayoutDashboard },
+      { title: "Startups", url: "/startups", icon: Building2 },
+      { title: "Applications", url: "/applications", icon: Target },
+      { title: "Mentorship", url: "/mentorship", icon: Users },
+      { title: "Funding", url: "/funding", icon: IndianRupee },
+      { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
+      { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+    ];
+  }
+
+  if (roleId === 2) { // INCUBATEE
+    return [
+      { title: "Dashboard", url: "/", icon: LayoutDashboard },
+      { title: "Mentorship", url: "/mentorship", icon: Users },
+      { title: "Applications", url: "/applications", icon: Target },
+      { title: "Startups", url: "/startups", icon: Building2 },
+      { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+    ];
+  }
+
+  if (roleId === 3) { // MENTOR
+    return [
+      { title: "Dashboard", url: "/", icon: LayoutDashboard },
+      { title: "Mentorship", url: "/mentorship", icon: Users },
+      { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
+      { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+    ];
+  }
+
+  if (roleId === 4) { // INVESTOR
+    return [
+      { title: "Dashboard", url: "/", icon: LayoutDashboard },
+      { title: "Startups", url: "/startups", icon: Building2 },
+      { title: "Funding", url: "/funding", icon: IndianRupee },
+      { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+    ];
+  }
+
+  return [];
 };
 
 export function AppSidebar() {
