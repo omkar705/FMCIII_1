@@ -5,8 +5,8 @@ import {
   Users, 
   LogOut, 
   Library,
-  DollarSign,
-  ClipboardCheck
+  ClipboardCheck,
+  IndianRupee
 } from "lucide-react";
 import {
   Sidebar,
@@ -28,7 +28,7 @@ const getNavigationItems = (roleId?: number | null) => {
     { title: "Startups", url: "/startups", icon: Building2 },
     { title: "Applications", url: "/applications", icon: Target },
     { title: "Mentorship", url: "/mentorship", icon: Users },
-    { title: "Funding", url: "/funding", icon: DollarSign },
+    { title: "Funding", url: "/funding", icon: IndianRupee },
     { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
     { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
   ];
@@ -48,7 +48,9 @@ export function AppSidebar() {
           <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/50">
             <Building2 className="h-5 w-5 text-primary" />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight text-white">FMCIII Portal</span>
+         <span className="text-primary font-semibold">
+FMCIII Portal
+</span>
         </div>
         <SidebarGroup>
           <SidebarGroupLabel className="text-muted-foreground/70 font-medium">Menu</SidebarGroupLabel>
