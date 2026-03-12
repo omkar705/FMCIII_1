@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { useStartups } from "@/hooks/use-startups";
 import { useApplications } from "@/hooks/use-applications";
 import { useFunding } from "@/hooks/use-funding";
-import { Building2, Target, DollarSign, TrendingUp, Loader2 } from "lucide-react";
+import { Building2, Target, IndianRupee, TrendingUp, Loader2 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line } from "recharts";
 
 export default function Dashboard() {
@@ -74,11 +74,11 @@ export default function Dashboard() {
               <div>
                 <p className="text-sm font-medium text-muted-foreground mb-1">Total Funding</p>
                 <h3 className="text-3xl font-display font-bold text-white">
-                  ${(totalFunding / 1000000).toFixed(1)}M
+                  ₹{(totalFunding / 1000000).toFixed(1)}M
                 </h3>
               </div>
               <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-primary" />
+                <IndianRupee className="h-6 w-6 text-primary" />
               </div>
             </div>
           </Card>

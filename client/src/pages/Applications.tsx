@@ -83,7 +83,7 @@ export default function Applications() {
         </Dialog>
       </div>
 
-      <div className="bg-black/20 rounded-3xl p-6 border border-white/5">
+      <div className="bg-white/80 rounded-3xl p-6 border border-white/5">
         <KanbanBoard 
           applications={applications || []} 
           startups={startups || []} 

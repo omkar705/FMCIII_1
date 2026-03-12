@@ -4,84 +4,228 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------- */
+/* BASE THEME */
+/* ---------------- */
+
 @layer base {
-  :root {
-    --font-sans: 'Manrope', sans-serif;
-    --font-display: 'Lexend', sans-serif;
 
-    /* Dark Mode First Premium Theme */
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+:root {
 
-    --card: 222 47% 7%;
-    --card-foreground: 213 31% 91%;
-    --card-border: 216 34% 17%;
+--font-sans: 'Manrope', sans-serif;
+--font-display: 'Lexend', sans-serif;
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
-    --popover-border: 216 34% 17%;
+/* Minimal clean palette */
 
-    --primary: 160 84% 39%;
-    --primary-foreground: 160 100% 10%;
-    
-    --secondary: 222 47% 11%;
-    --secondary-foreground: 210 40% 98%;
+--background: 210 40% 98%;
+--foreground: 215 25% 28%;
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215 20.2% 65.1%;
+--card: 0 0% 100%;
+--card-foreground: 215 25% 28%;
+--card-border: 210 20% 88%;
 
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+--popover: 0 0% 100%;
+--popover-foreground: 215 25% 28%;
+--popover-border: 210 20% 88%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+/* Primary theme color */
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 160 84% 39%;
+--primary: 207 100% 24%; /* #015185 */
+--primary-foreground: 0 0% 100%;
 
-    --radius: 0.75rem;
+--secondary: 210 30% 96%;
+--secondary-foreground: 215 25% 28%;
 
-    --sidebar-background: 224 71% 4%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 160 84% 39%;
-    --sidebar-primary-foreground: 160 100% 10%;
-    --sidebar-accent: 222 47% 11%;
-    --sidebar-accent-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 216 34% 17%;
-    --sidebar-ring: 160 84% 39%;
+--muted: 210 30% 96%;
+--muted-foreground: 215 15% 45%;
 
-    --chart-1: 160 84% 39%;
-    --chart-2: 217 91% 60%;
-    --chart-3: 280 85% 60%;
-    --chart-4: 340 75% 55%;
-    --chart-5: 45 93% 47%;
-  }
+--accent: 210 30% 96%;
+--accent-foreground: 215 25% 28%;
 
-  /* Force dark mode appearance everywhere */
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary-foreground;
-    font-family: var(--font-sans);
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    @apply tracking-tight;
-  }
+--destructive: 0 65% 45%;
+--destructive-foreground: 0 0% 100%;
+
+--border: 210 20% 88%;
+--input: 210 20% 95%;
+--ring: 207 100% 24%;
+
+--radius: 0.65rem;
 }
 
+*{
+@apply border-border;
+}
+
+body{
+@apply bg-background text-foreground antialiased;
+font-family: var(--font-sans);
+}
+
+/* Global heading style */
+
+h1,h2,h3,h4,h5,h6{
+font-family: var(--font-display);
+@apply tracking-tight;
+color:#015185;
+}
+
+}
+
+
+/* ---------------- */
+/* COMPONENT FIXES */
+/* ---------------- */
+
+@layer components {
+
+/* Fix headings accidentally using text-white */
+
+h1.text-white,
+h2.text-white,
+h3.text-white,
+h4.text-white,
+h5.text-white,
+h6.text-white{
+color:#015185 !important;
+}
+
+/* Fix sidebar brand title (FMCIII Portal) */
+
+aside span,
+aside .font-semibold{
+color:#015185;
+}
+
+/* Dashboard cards */
+
+.dashboard-card{
+background:white;
+border:1px solid rgba(0,0,0,0.06);
+border-radius:14px;
+box-shadow:0 4px 14px rgba(0,0,0,0.05);
+}
+
+/* Dashboard stat cards */
+
+.stat-card{
+background:white;
+border-radius:14px;
+border:1px solid rgba(0,0,0,0.06);
+box-shadow:0 6px 20px rgba(0,0,0,0.06);
+padding:18px;
+}
+
+}
+
+
+/* ---------------- */
+/* UI UTILITIES */
+/* ---------------- */
+
 @layer utilities {
-  .glass-panel {
-    @apply bg-card/80 backdrop-blur-xl border border-white/5 shadow-2xl;
-  }
-  
-  .hover-elevate {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30;
-  }
-  
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400;
-  }
+
+/* page background glow */
+
+.page-bg{
+background:
+radial-gradient(
+circle at top,
+rgba(0,0,0,0.03),
+transparent 65%);
+}
+
+/* hero section */
+
+.hero-gradient{
+background:
+linear-gradient(
+180deg,
+rgba(255,255,255,0.9),
+rgba(245,247,250,0.9)
+);
+}
+
+/* glass card */
+
+.glass-card{
+background: rgba(255,255,255,0.85);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(0,0,0,0.06);
+border-radius: 14px;
+box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+/* soft card */
+
+.soft-card{
+background:#ffffff;
+border-radius:14px;
+border:1px solid rgba(0,0,0,0.06);
+box-shadow:0 4px 14px rgba(0,0,0,0.05);
+}
+
+/* hover lift */
+
+.hover-float{
+transition:all .2s ease;
+}
+
+.hover-float:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 24px rgba(0,0,0,0.08);
+}
+
+/* primary button */
+
+.btn-primary{
+background:#015185;
+color:#ffffff;
+padding:10px 18px;
+border-radius:8px;
+font-weight:500;
+transition:all .2s ease;
+}
+
+.btn-primary:hover{
+transform:translateY(-1px);
+opacity:.9;
+}
+
+/* glow button */
+
+.btn-glow{
+background:#015185;
+color:#ffffff;
+border-radius:8px;
+padding:12px 22px;
+font-weight:600;
+transition:all .2s ease;
+}
+
+.btn-glow:hover{
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* text accent */
+
+.text-gradient{
+color:#015185;
+}
+
+/* input fields */
+
+.modern-input{
+border-radius:8px;
+border:1px solid rgba(0,0,0,0.08);
+background:#ffffff;
+padding:10px 14px;
+transition:all .2s ease;
+}
+
+.modern-input:focus{
+outline:none;
+border-color:#015185;
+box-shadow:0 0 0 3px rgba(1,81,133,0.15);
+}
+
 }

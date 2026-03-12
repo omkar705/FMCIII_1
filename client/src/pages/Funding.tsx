@@ -8,9 +8,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DollarSign, Plus, Loader2, TrendingUp } from "lucide-react";
+import { Plus, Loader2, TrendingUp,IndianRupee } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 
 export default function Funding() {
   const { data: funding, isLoading: fLoading } = useFunding();
@@ -125,7 +126,7 @@ export default function Funding() {
                     {record.fundingType}
                   </Badge>
                   <h3 className="text-3xl font-display font-bold text-white mb-1">
-                    ${(record.amount).toLocaleString()}
+                    ₹{(record.amount).toLocaleString()}
                   </h3>
                   <p className="text-lg text-white/90 mb-4">{startup?.name || `Startup #${record.startupId}`}</p>
                   
@@ -139,7 +140,7 @@ export default function Funding() {
           })}
           {funding?.length === 0 && (
             <div className="col-span-full py-12 text-center border-2 border-dashed border-white/10 rounded-2xl">
-              <DollarSign className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+              <IndianRupee className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
               <h3 className="text-lg font-medium text-white">No funding records</h3>
               <p className="text-muted-foreground mt-1">Log the first investment.</p>
             </div>

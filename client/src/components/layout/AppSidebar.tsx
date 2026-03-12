@@ -5,7 +5,7 @@ import {
   Users, 
   LogOut, 
   Library,
-  DollarSign,
+  IndianRupee,
   ClipboardCheck
 } from "lucide-react";
 import {
@@ -28,7 +28,7 @@ const getNavigationItems = (roleId?: number | null) => {
     { title: "Startups", url: "/startups", icon: Building2 },
     { title: "Applications", url: "/applications", icon: Target },
     { title: "Mentorship", url: "/mentorship", icon: Users },
-    { title: "Funding", url: "/funding", icon: DollarSign },
+    { title: "Funding", url: "/funding", icon: IndianRupee },
     { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
     { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
   ];
