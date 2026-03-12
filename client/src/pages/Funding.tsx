@@ -8,10 +8,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Loader2, TrendingUp,IndianRupee } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Loader2, TrendingUp, IndianRupee } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Badge } from "@/components/ui/badge";
+
 
 export default function Funding() {
   const { data: funding, isLoading: fLoading } = useFunding();
@@ -84,7 +85,7 @@ export default function Funding() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Amount (USD)</Label>
+                <Label>Amount (INR)</Label>
                 <Input type="number" name="amount" required className="bg-black/50 border-white/10" placeholder="500000" />
               </div>
               <div className="space-y-2">
