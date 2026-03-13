@@ -11,6 +11,7 @@ import { Target, Plus, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { Link } from "wouter";
 
 export default function Applications() {
   const { data: applications, isLoading: aLoading } = useApplications();
@@ -50,11 +51,11 @@ export default function Applications() {
         </div>
 
         {user?.roleId === 2 ? (
-          <a href="/applications/new" target="_blank" rel="noopener noreferrer">
+          <Link href="/applications/new">
             <Button className="rounded-xl h-11 px-6">
               <Plus className="mr-2 h-4 w-4" /> New Application
             </Button>
-          </a>
+          </Link>
         ) : (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
