@@ -63,10 +63,10 @@ export default function Applications() {
               <div className="space-y-2">
                 <Label>Select Startup</Label>
                 <Select name="startupId" required>
-                  <SelectTrigger className="bg-black/50 border-white/10">
+                  <SelectTrigger className="bg-white/50 border-black/70">
                     <SelectValue placeholder="Choose a startup..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10">
+                  <SelectContent className="bg-card border-black/70">
                     {startups?.map(s => (
                       <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
                     ))}
@@ -75,7 +75,7 @@ export default function Applications() {
               </div>
               <div className="space-y-2">
                 <Label>Pitch Deck URL</Label>
-                <Input name="pitchDeckUrl" type="url" className="bg-black/50 border-white/10" placeholder="https://..." />
+                <Input name="pitchDeckUrl" type="url" className="bg-white/50 border-black/70" placeholder="https://..." />
               </div>
               <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
                 {isPending ? <Loader2 className="animate-spin" /> : "Submit Application"}
@@ -87,7 +87,7 @@ export default function Applications() {
 
 
       {user?.roleId === 1 && (
-    <div className="bg-black/20 rounded-3xl p-6 border border-white/5">
+    <div className="bg-white /20 rounded-3xl p-6 border border-black/50">
       <KanbanBoard
         applications={applications || []}
         startups={startups || []}

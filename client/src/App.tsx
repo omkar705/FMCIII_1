@@ -13,6 +13,7 @@ import Scorecards from "./pages/Scorecards";
 import Mentorship from "./pages/Mentorship";
 import Funding from "./pages/Funding";
 import KnowledgeBase from "./pages/KnowledgeBase";
+import Profile from "./pages/Profile";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/mentorship" component={Mentorship} />
       <Route path="/funding" component={Funding} />
       <Route path="/knowledge-base" component={KnowledgeBase} />
+      <Route path="/profile" component={Profile} />
       <Route component={NotFound} />
     </Switch>
   );

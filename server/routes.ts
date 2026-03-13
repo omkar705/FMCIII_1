@@ -70,6 +70,27 @@ export async function registerRoutes(
     res.json(item);
   });
 
+  app.patch("/api/applications/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { status } = req.body;
+
+      if (!status) {
+        return res.status(400).json({ message: "Status is required" });
+      }
+
+      const updated = await storage.updateApplicationStatus(id, status);
+      if (!updated) {
+        return res.status(404).json({ message: "Application not found" });
+      }
+
+      res.json(updated);
+    } catch (err) {
+      console.error("Update status error:", err);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+
 
   /* ================= SCORECARDS ================= */
 

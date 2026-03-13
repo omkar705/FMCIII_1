@@ -6,7 +6,8 @@ import {
   LogOut, 
   Library,
   IndianRupee,
-  ClipboardCheck
+  ClipboardCheck,
+  Building
 } from "lucide-react";
 import {
   Sidebar,
@@ -34,6 +35,7 @@ const getNavigationItems = (roleId?: number | null) => {
       { title: "Funding", url: "/funding", icon: IndianRupee },
       { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
       { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+      { title: "Profile", url: "/profile", icon: Building },
     ];
   }
 
@@ -44,6 +46,7 @@ const getNavigationItems = (roleId?: number | null) => {
       { title: "Applications", url: "/applications", icon: Target },
       { title: "Startups", url: "/startups", icon: Building2 },
       { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+      { title: "Profile", url: "/profile", icon: Building },
     ];
   }
 
@@ -81,7 +84,7 @@ export function AppSidebar() {
           <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/50">
             <Building2 className="h-5 w-5 text-primary" />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight text-white">FMCIII Portal</span>
+          <span className="font-display font-bold text-xl tracking-tight text-[#015185]">FMCIII Portal</span>
         </div>
         <SidebarGroup>
           <SidebarGroupLabel className="text-muted-foreground/70 font-medium">Menu</SidebarGroupLabel>
@@ -110,7 +113,7 @@ export function AppSidebar() {
             {user?.name?.[0]?.toUpperCase() || 'U'}
           </div>
           <div className="flex flex-col flex-1 overflow-hidden">
-            <span className="text-sm font-semibold truncate text-white">{user?.name}</span>
+            <span className="text-sm font-semibold truncate text-[#015185]">{user?.name}</span>
             <span className="text-xs text-muted-foreground truncate">{user?.email}</span>
           </div>
         </div>
