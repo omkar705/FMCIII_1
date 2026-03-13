@@ -70,6 +70,68 @@ export async function registerRoutes(
     res.json(item);
   });
 
+  app.patch("/api/applications/:id/status", async (req, res) => {
+    const id = Number(req.params.id);
+    const { status } = req.body;
+    const item = await storage.updateApplicationStatus(id, status);
+    if (!item) return res.status(404).json({ message: "Application not found" });
+    res.json(item);
+  });
+
+  /* ================= APPLICATION FORM (Incubatee) ================= */
+
+  app.post("/api/application-form", async (req, res) => {
+    try {
+      const body = req.body as Record<string, string>;
+      const {
+        startupName,
+        startupCategory,
+        ideaDescription,
+        applicantName,
+        email,
+        phone,
+        problemStatement,
+        problemSolution,
+        businessPlanFile,
+        financialProjectionsFile,
+      } = body;
+
+      const missingFields: string[] = [];
+      if (!applicantName) missingFields.push("applicantName");
+      if (!email) missingFields.push("email");
+      if (!phone) missingFields.push("phone");
+      if (!startupName) missingFields.push("startupName");
+      if (!startupCategory) missingFields.push("startupCategory");
+      if (!problemStatement) missingFields.push("problemStatement");
+      if (!ideaDescription) missingFields.push("ideaDescription");
+      if (!problemSolution) missingFields.push("problemSolution");
+
+      if (missingFields.length > 0) {
+        return res.status(400).json({
+          message: `Missing required fields: ${missingFields.join(", ")}`,
+        });
+      }
+
+      const startup = await storage.createStartup({
+        name: startupName,
+        domain: startupCategory ?? null,
+        description: ideaDescription ?? null,
+      });
+
+      const application = await storage.createApplication({
+        startupId: startup.id,
+        pitchDeckUrl: businessPlanFile ?? null,
+        financialsUrl: financialProjectionsFile ?? null,
+        status: "Applied",
+      });
+
+      return res.status(201).json({ application, startup });
+    } catch (err) {
+      console.error("Application form error:", err);
+      return res.status(500).json({ message: "Failed to submit application" });
+    }
+  });
+
 
   /* ================= SCORECARDS ================= */
 
