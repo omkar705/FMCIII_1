@@ -11,6 +11,7 @@ import { Target, Plus, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { Link } from "wouter";
 
 export default function Applications() {
   const { data: applications, isLoading: aLoading } = useApplications();
@@ -49,40 +50,49 @@ export default function Applications() {
           <p className="text-muted-foreground text-lg">Manage application lifecycle.</p>
         </div>
 
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
+        {user?.roleId === 2 ? (
+          <Link href="/applications/new">
             <Button className="rounded-xl h-11 px-6">
               <Plus className="mr-2 h-4 w-4" /> New Application
             </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-card border-white/10 text-white">
-            <DialogHeader>
-              <DialogTitle className="font-display text-2xl">Start Application</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreate} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label>Select Startup</Label>
-                <Select name="startupId" required>
-                  <SelectTrigger className="bg-white/50 border-black/70">
-                    <SelectValue placeholder="Choose a startup..." />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-black/70">
-                    {startups?.map(s => (
-                      <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Pitch Deck URL</Label>
-                <Input name="pitchDeckUrl" type="url" className="bg-white/50 border-black/70" placeholder="https://..." />
-              </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
-                {isPending ? <Loader2 className="animate-spin" /> : "Submit Application"}
+
+          </Link>
+        ) : (
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button className="rounded-xl h-11 px-6">
+                <Plus className="mr-2 h-4 w-4" /> New Application
               </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="bg-card border-white/10 text-white">
+              <DialogHeader>
+                <DialogTitle className="font-display text-2xl">Start Application</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleCreate} className="space-y-4 mt-4">
+                <div className="space-y-2">
+                  <Label>Select Startup</Label>
+                  <Select name="startupId" required>
+                    <SelectTrigger className="bg-black/50 border-white/10">
+                      <SelectValue placeholder="Choose a startup..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border-white/10">
+                      {startups?.map(s => (
+                        <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Pitch Deck URL</Label>
+                  <Input name="pitchDeckUrl" type="url" className="bg-black/50 border-white/10" placeholder="https://..." />
+                </div>
+                <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
+                  {isPending ? <Loader2 className="animate-spin" /> : "Submit Application"}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
 
@@ -98,3 +108,5 @@ export default function Applications() {
     </Shell>
   );
 }
+
+

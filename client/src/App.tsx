@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Startups from "./pages/Startups";
 import Applications from "./pages/Applications";
+import ApplicationForm from "./pages/ApplicationForm";
 import Scorecards from "./pages/Scorecards";
 import Mentorship from "./pages/Mentorship";
 import Funding from "./pages/Funding";
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/" component={Dashboard} />
       <Route path="/startups" component={Startups} />
       <Route path="/applications" component={Applications} />
+      <Route path="/applications/new" component={ApplicationForm} />
       <Route path="/scorecards" component={Scorecards} />
       <Route path="/mentorship" component={Mentorship} />
       <Route path="/funding" component={Funding} />
