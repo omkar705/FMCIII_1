@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Target, Plus, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Applications() {
   const { data: applications, isLoading: aLoading } = useApplications();
@@ -18,6 +19,7 @@ export default function Applications() {
   const { mutateAsync: createApplication, isPending } = useCreateApplication();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,49 +49,60 @@ export default function Applications() {
           <p className="text-muted-foreground text-lg">Manage application lifecycle.</p>
         </div>
 
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
+        {user?.roleId === 2 ? (
+          <a href="/applications/new" target="_blank" rel="noopener noreferrer">
             <Button className="rounded-xl h-11 px-6">
               <Plus className="mr-2 h-4 w-4" /> New Application
             </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-card border-white/10 text-white">
-            <DialogHeader>
-              <DialogTitle className="font-display text-2xl">Start Application</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreate} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label>Select Startup</Label>
-                <Select name="startupId" required>
-                  <SelectTrigger className="bg-black/50 border-white/10">
-                    <SelectValue placeholder="Choose a startup..." />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10">
-                    {startups?.map(s => (
-                      <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Pitch Deck URL</Label>
-                <Input name="pitchDeckUrl" type="url" className="bg-black/50 border-white/10" placeholder="https://..." />
-              </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
-                {isPending ? <Loader2 className="animate-spin" /> : "Submit Application"}
+          </a>
+        ) : (
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button className="rounded-xl h-11 px-6">
+                <Plus className="mr-2 h-4 w-4" /> New Application
               </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="bg-card border-white/10 text-white">
+              <DialogHeader>
+                <DialogTitle className="font-display text-2xl">Start Application</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleCreate} className="space-y-4 mt-4">
+                <div className="space-y-2">
+                  <Label>Select Startup</Label>
+                  <Select name="startupId" required>
+                    <SelectTrigger className="bg-black/50 border-white/10">
+                      <SelectValue placeholder="Choose a startup..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border-white/10">
+                      {startups?.map(s => (
+                        <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Pitch Deck URL</Label>
+                  <Input name="pitchDeckUrl" type="url" className="bg-black/50 border-white/10" placeholder="https://..." />
+                </div>
+                <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
+                  {isPending ? <Loader2 className="animate-spin" /> : "Submit Application"}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
-      <div className="bg-black/20 rounded-3xl p-6 border border-white/5">
-        <KanbanBoard 
-          applications={applications || []} 
-          startups={startups || []} 
-          onStatusChange={(id, status) => updateStatus({ id, status })}
-        />
-      </div>
+      {user?.roleId === 1 && (
+    <div className="bg-black/20 rounded-3xl p-6 border border-white/5">
+      <KanbanBoard
+        applications={applications || []}
+        startups={startups || []}
+        onStatusChange={(id, status) => updateStatus({ id, status })}
+      />
+    </div>
+  )}
+
     </Shell>
   );
 }
