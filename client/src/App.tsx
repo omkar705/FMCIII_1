@@ -12,6 +12,7 @@ import StartupProfile from "./pages/StartupProfile";
 import Applications from "./pages/Applications";
 import ApplicationForm from "./pages/ApplicationForm";
 import Scorecards from "./pages/Scorecards";
+import ScorecardDetail from "./pages/ScorecardDetail";
 import Mentorship from "./pages/Mentorship";
 import Funding from "./pages/Funding";
 import KnowledgeBase from "./pages/KnowledgeBase";
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/startups/:id" component={StartupProfile} />
       <Route path="/applications" component={Applications} />
       <Route path="/applications/new" component={ApplicationForm} />
+      <Route path="/scorecards/:scorecardId" component={ScorecardDetail} />
       <Route path="/scorecards" component={Scorecards} />
       <Route path="/mentorship" component={Mentorship} />
       <Route path="/funding" component={Funding} />

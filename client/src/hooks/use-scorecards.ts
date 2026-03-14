@@ -14,6 +14,19 @@ export function useScorecards() {
   });
 }
 
+export function useScorecard(id: number | undefined) {
+  return useQuery({
+    queryKey: ["/api/scorecards", id],
+    enabled: id !== undefined,
+    queryFn: async () => {
+      const res = await fetch(`/api/scorecards/${id}`, { credentials: "include" });
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error("Failed to fetch scorecard");
+      return api.scorecards.get.responses[200].parse(await res.json());
+    },
+  });
+}
+
 export function useCreateScorecard() {
   const queryClient = useQueryClient();
   return useMutation({

@@ -153,6 +153,14 @@ export async function registerRoutes(
     res.json(items);
   });
 
+  app.get("/api/scorecards/:id", async (req, res) => {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid scorecard id" });
+    const item = await storage.getScorecard(id);
+    if (!item) return res.status(404).json({ message: "Scorecard not found" });
+    res.json(item);
+  });
+
   app.post("/api/scorecards", async (req, res) => {
     const item = await storage.createScorecard(req.body);
     res.json(item);
