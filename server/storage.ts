@@ -2,10 +2,10 @@ import { db } from "./db";
 import {
   users, startups, startupProfiles, applications,
   evaluationCriteria, scorecards, mentorAssignments,
-  fundings, knowledgeBase, roles,
+  fundings, knowledgeBase, roles, physicalAssets, assetBookings,
   type User, type Startup, type Application, type Scorecard,
   type MentorAssignment, type Funding, type KnowledgeBaseArticle, type Role,
-  type EvaluationCriteria
+  type EvaluationCriteria, type PhysicalAsset, type AssetBooking,
 } from "@shared/schema";
 import { eq } from "drizzle-orm";
 
@@ -45,6 +45,15 @@ export interface IStorage {
   // Knowledge Base
   getKnowledgeBaseArticles(): Promise<KnowledgeBaseArticle[]>;
   createKnowledgeBaseArticle(article: any): Promise<KnowledgeBaseArticle>;
+
+  // Physical Assets
+  getPhysicalAssets(): Promise<PhysicalAsset[]>;
+  createPhysicalAsset(asset: any): Promise<PhysicalAsset>;
+
+  // Asset Bookings
+  getAssetBookings(): Promise<AssetBooking[]>;
+  createAssetBooking(booking: any): Promise<AssetBooking>;
+  cancelAssetBooking(id: number): Promise<AssetBooking | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -126,6 +135,26 @@ export class DatabaseStorage implements IStorage {
   async createKnowledgeBaseArticle(article: any): Promise<KnowledgeBaseArticle> {
     const [newArticle] = await db.insert(knowledgeBase).values(article).returning();
     return newArticle;
+  }
+
+  async getPhysicalAssets(): Promise<PhysicalAsset[]> {
+    return await db.select().from(physicalAssets);
+  }
+  async createPhysicalAsset(asset: any): Promise<PhysicalAsset> {
+    const [newAsset] = await db.insert(physicalAssets).values(asset).returning();
+    return newAsset;
+  }
+
+  async getAssetBookings(): Promise<AssetBooking[]> {
+    return await db.select().from(assetBookings);
+  }
+  async createAssetBooking(booking: any): Promise<AssetBooking> {
+    const [newBooking] = await db.insert(assetBookings).values(booking).returning();
+    return newBooking;
+  }
+  async cancelAssetBooking(id: number): Promise<AssetBooking | undefined> {
+    const [updated] = await db.update(assetBookings).set({ status: "cancelled" }).where(eq(assetBookings.id, id)).returning();
+    return updated;
   }
 }
 
