@@ -2,12 +2,12 @@ import type { Scorecard } from "@shared/schema";
 
 /** Returns the effective startup name from a scorecard record (new field first, legacy fallback). */
 export function getScorecardStartupName(score: Scorecard): string {
-  return score.startupName ?? (score.applicationId ? `App #${score.applicationId}` : "—");
+  return score.startupName ?? "—";
 }
 
 /** Returns the effective judge name from a scorecard record (new field first, legacy fallback). */
 export function getScorecardJudgeName(score: Scorecard): string {
-  return score.judgeName ?? (score.judgeId ? `Judge #${score.judgeId}` : "—");
+  return score.judgeName ?? "—";
 }
 
 /** Returns the effective numeric score from a scorecard record (new field first, legacy fallback). */

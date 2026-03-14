@@ -64,6 +64,7 @@ export const scorecards = pgTable("scorecards", {
   totalScore: integer("total_score"), // superseded by `score`
   remarks: text("remarks"),           // superseded by `feedback`
   // New fields
+  startupId: integer("startup_id").references(() => startups.id),
   startupName: text("startup_name"),
   judgeName: text("judge_name"),
   score: integer("score"),
