@@ -1,118 +1,105 @@
-export interface StartupMockProfile {
-  founder: string;
-  email: string;
-  phone: string;
-  fundingStage: string;
-  mentors: string[];
-  applicationStatus: string;
-  createdDate: string;
+export interface Startup {
+  id: string;
+  name: string;
+  logoInitial: string;
+  domain: string;
+  tagline: string;
+  description: string;
+  stage: string;
+  foundedYear: number;
   teamSize: number;
   location: string;
-  website?: string;
-  scorecard: {
-    innovation: number;
-    marketPotential: number;
-    teamStrength: number;
-    execution: number;
-    overall: number;
-  };
+  website: string;
+  email: string;
+  phone: string;
+  about: string;
 }
 
-/** Keyed by startup name (case-sensitive). Used to enrich API data with mock profile details. */
-export const startupMockProfiles: Record<string, StartupMockProfile> = {
-  TechNova: {
-    founder: "Arjun Sharma",
-    email: "arjun@technova.in",
-    phone: "+91 98765 43210",
-    fundingStage: "Seed",
-    mentors: ["Dr. Ravi Kumar", "Priya Nair"],
-    applicationStatus: "Selected",
-    createdDate: "2023-04-15",
-    teamSize: 8,
-    location: "Pune, Maharashtra",
-    website: "https://technova.in",
-    scorecard: {
-      innovation: 85,
-      marketPotential: 78,
-      teamStrength: 82,
-      execution: 79,
-      overall: 81,
-    },
+/** Static sample startup profiles. Replace with API calls when backend is ready. */
+export const startups: Startup[] = [
+  {
+    id: "technova",
+    name: "TechNova",
+    logoInitial: "T",
+    domain: "AI / ML",
+    tagline: "AI-driven analytics platform",
+    description: "AI-driven analytics platform for enterprises",
+    stage: "Seed",
+    foundedYear: 2024,
+    teamSize: 6,
+    location: "Pune, India",
+    website: "https://technova.ai",
+    email: "contact@technova.ai",
+    phone: "+91 9876543210",
+    about:
+      "TechNova builds intelligent analytics tools using machine learning to help enterprises make data-driven decisions.",
   },
-  EcoGrow: {
-    founder: "Meera Patil",
-    email: "meera@ecogrow.org",
-    phone: "+91 87654 32109",
-    fundingStage: "Pre-Seed",
-    mentors: ["Suresh Joshi"],
-    applicationStatus: "Interview",
-    createdDate: "2023-07-20",
+  {
+    id: "ecogrow",
+    name: "EcoGrow",
+    logoInitial: "E",
+    domain: "AgriTech / Sustainability",
+    tagline: "Sustainable farming solutions",
+    description: "Innovative sustainable agriculture platform",
+    stage: "Pre-Seed",
+    foundedYear: 2023,
     teamSize: 5,
-    location: "Nashik, Maharashtra",
+    location: "Nashik, India",
     website: "https://ecogrow.org",
-    scorecard: {
-      innovation: 90,
-      marketPotential: 88,
-      teamStrength: 75,
-      execution: 72,
-      overall: 81,
-    },
+    email: "contact@ecogrow.org",
+    phone: "+91 8765432109",
+    about:
+      "EcoGrow develops sustainable farming solutions that help farmers reduce waste and increase yield using eco-friendly techniques.",
   },
-  MY_Company: {
-    founder: "Rahul Deshmukh",
-    email: "rahul@mycompany.io",
-    phone: "+91 76543 21098",
-    fundingStage: "Bootstrapped",
-    mentors: ["Anita Kulkarni", "Vijay More"],
-    applicationStatus: "Applied",
-    createdDate: "2024-01-10",
+  {
+    id: "my_company",
+    name: "MY_Company",
+    logoInitial: "M",
+    domain: "SaaS / Productivity",
+    tagline: "Streamlining business workflows",
+    description: "Business workflow automation platform",
+    stage: "Bootstrapped",
+    foundedYear: 2024,
     teamSize: 3,
-    location: "Aurangabad, Maharashtra",
+    location: "Aurangabad, India",
     website: "https://mycompany.io",
-    scorecard: {
-      innovation: 70,
-      marketPotential: 65,
-      teamStrength: 68,
-      execution: 60,
-      overall: 66,
-    },
+    email: "hello@mycompany.io",
+    phone: "+91 7654321098",
+    about:
+      "MY_Company provides intuitive SaaS tools that streamline day-to-day business operations and increase team productivity.",
   },
-  Boat: {
-    founder: "Sameer Mehta",
-    email: "sameer@boatstartup.com",
-    phone: "+91 65432 10987",
-    fundingStage: "Series A",
-    mentors: ["Dr. Pradeep Singh", "Kavita Reddy", "Rohit Verma"],
-    applicationStatus: "Selected",
-    createdDate: "2022-11-05",
+  {
+    id: "boat",
+    name: "Boat",
+    logoInitial: "B",
+    domain: "Consumer Electronics",
+    tagline: "Lifestyle electronics for the modern consumer",
+    description: "Premium consumer electronics startup",
+    stage: "Series A",
+    foundedYear: 2022,
     teamSize: 20,
-    location: "Mumbai, Maharashtra",
+    location: "Mumbai, India",
     website: "https://boatstartup.com",
-    scorecard: {
-      innovation: 92,
-      marketPotential: 95,
-      teamStrength: 90,
-      execution: 88,
-      overall: 91,
-    },
+    email: "contact@boatstartup.com",
+    phone: "+91 6543210987",
+    about:
+      "Boat is a lifestyle electronics brand delivering affordable, premium-quality audio products, wearables, and accessories to Indian consumers.",
   },
-  "MMCOE EXAM CENTRE": {
-    founder: "Dr. Sunil Babar",
-    email: "sunil@mmcoe.edu.in",
-    phone: "+91 54321 09876",
-    fundingStage: "Grant",
-    mentors: ["Prof. Arun Wagh"],
-    applicationStatus: "Interview",
-    createdDate: "2024-03-01",
+  {
+    id: "mmcoe_exam_centre",
+    name: "MMCOE EXAM CENTRE",
+    logoInitial: "M",
+    domain: "EdTech / Examination",
+    tagline: "Digital examination infrastructure for institutions",
+    description: "Digital exam management platform",
+    stage: "Grant",
+    foundedYear: 2024,
     teamSize: 12,
-    location: "Pune, Maharashtra",
+    location: "Pune, India",
     website: "https://mmcoe.edu.in",
-    scorecard: {
-      innovation: 75,
-      marketPotential: 72,
-      teamStrength: 80,
-      execution: 77,
-      overall: 76,
-    },
+    email: "exams@mmcoe.edu.in",
+    phone: "+91 5432109876",
+    about:
+      "MMCOE Exam Centre provides a comprehensive digital examination infrastructure that supports institutions in conducting secure, efficient online assessments.",
   },
-};
+];
