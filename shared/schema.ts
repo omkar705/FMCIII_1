@@ -89,6 +89,26 @@ export const knowledgeBase = pgTable("knowledge_base", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const physicalAssets = pgTable("physical_assets", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  type: text("type").notNull(), // meeting_room | lab_equipment | hot_desk
+  description: text("description"),
+  capacity: integer("capacity"),
+});
+
+export const assetBookings = pgTable("asset_bookings", {
+  id: serial("id").primaryKey(),
+  assetId: integer("asset_id").references(() => physicalAssets.id).notNull(),
+  bookedBy: integer("booked_by").references(() => users.id).notNull(),
+  bookingDate: text("booking_date").notNull(), // ISO date string YYYY-MM-DD
+  startTime: text("start_time").notNull(), // e.g. "09:00"
+  endTime: text("end_time").notNull(), // e.g. "11:00"
+  purpose: text("purpose"),
+  status: text("status").default("confirmed"), // confirmed | cancelled
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({ id: true });
 export const insertStartupSchema = createInsertSchema(startups).omit({ id: true });
 export const insertStartupProfileSchema = createInsertSchema(startupProfiles).omit({ id: true });
@@ -99,6 +119,8 @@ export const insertFundingSchema = createInsertSchema(fundings).omit({ id: true,
 export const insertKnowledgeBaseSchema = createInsertSchema(knowledgeBase).omit({ id: true, createdAt: true });
 export const insertRoleSchema = createInsertSchema(roles).omit({ id: true });
 export const insertEvaluationCriteriaSchema = createInsertSchema(evaluationCriteria).omit({ id: true });
+export const insertPhysicalAssetSchema = createInsertSchema(physicalAssets).omit({ id: true });
+export const insertAssetBookingSchema = createInsertSchema(assetBookings).omit({ id: true, createdAt: true });
 
 export type User = typeof users.$inferSelect;
 export type Startup = typeof startups.$inferSelect;
@@ -110,3 +132,5 @@ export type Funding = typeof fundings.$inferSelect;
 export type KnowledgeBaseArticle = typeof knowledgeBase.$inferSelect;
 export type Role = typeof roles.$inferSelect;
 export type EvaluationCriteria = typeof evaluationCriteria.$inferSelect;
+export type PhysicalAsset = typeof physicalAssets.$inferSelect;
+export type AssetBooking = typeof assetBookings.$inferSelect;

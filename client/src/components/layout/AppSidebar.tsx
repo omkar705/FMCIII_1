@@ -7,7 +7,8 @@ import {
   Library,
   IndianRupee,
   ClipboardCheck,
-  Building
+  Building,
+  CalendarDays,
 } from "lucide-react";
 import {
   Sidebar,
@@ -35,6 +36,7 @@ const getNavigationItems = (roleId?: number | null) => {
       { title: "Funding", url: "/funding", icon: IndianRupee },
       { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
       { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+      { title: "Bookings", url: "/bookings", icon: CalendarDays },
       { title: "Profile", url: "/profile", icon: Building },
     ];
   }
@@ -46,6 +48,7 @@ const getNavigationItems = (roleId?: number | null) => {
       { title: "Applications", url: "/applications", icon: Target },
       { title: "Startups", url: "/startups", icon: Building2 },
       { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
+      { title: "Bookings", url: "/bookings", icon: CalendarDays },
       { title: "Profile", url: "/profile", icon: Building },
     ];
   }
