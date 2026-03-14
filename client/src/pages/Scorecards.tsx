@@ -26,6 +26,8 @@ import {
   getScorecardFeedback,
 } from "@/lib/scorecard-utils";
 
+const getTodayDate = () => new Date().toISOString().split("T")[0];
+
 export default function Scorecards() {
   const { data: scorecards, isLoading: sLoading } = useScorecards();
   const { mutateAsync: createScorecard, isPending } = useCreateScorecard();
@@ -42,7 +44,7 @@ export default function Scorecards() {
   const [selectedJudgeName, setSelectedJudgeName] = useState<string>("");
   const [score, setScore] = useState<string>("");
   const [feedback, setFeedback] = useState<string>("");
-  const [evaluationDate, setEvaluationDate] = useState<string>("");
+  const [evaluationDate, setEvaluationDate] = useState<string>(getTodayDate);
   const [submitted, setSubmitted] = useState(false);
 
   const isSaveDisabled = !selectedStartupId || !selectedJudgeId || !score || isPending;
@@ -54,7 +56,7 @@ export default function Scorecards() {
     setSelectedJudgeName("");
     setScore("");
     setFeedback("");
-    setEvaluationDate("");
+    setEvaluationDate(getTodayDate());
     setSubmitted(false);
   };
 
@@ -67,16 +69,18 @@ export default function Scorecards() {
     e.preventDefault();
     setSubmitted(true);
     if (isSaveDisabled) return;
+    const payload = {
+      startupId: Number(selectedStartupId),
+      startupName: selectedStartupName,
+      judgeId: Number(selectedJudgeId),
+      judgeName: selectedJudgeName,
+      score: Number(score),
+      feedback,
+      evaluationDate: evaluationDate || getTodayDate(),
+    };
+    console.log("[Scorecards] Submitting scorecard payload:", payload);
     try {
-      await createScorecard({
-        startupId: Number(selectedStartupId),
-        startupName: selectedStartupName,
-        judgeId: Number(selectedJudgeId),
-        judgeName: selectedJudgeName,
-        score: Number(score),
-        feedback,
-        evaluationDate,
-      });
+      await createScorecard(payload);
       handleOpenChange(false);
       toast({ title: "Scorecard submitted" });
     } catch (err: any) {

@@ -31,13 +31,23 @@ export function useCreateScorecard() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: z.infer<typeof insertScorecardSchema>) => {
+      console.log("[useCreateScorecard] Sending payload to", api.scorecards.create.path, data);
       const res = await fetch(api.scorecards.create.path, {
         method: api.scorecards.create.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to create scorecard");
+      if (!res.ok) {
+        let errorMessage = "Failed to create scorecard";
+        try {
+          const errorBody = await res.json();
+          if (errorBody?.message) errorMessage = errorBody.message;
+        } catch {
+          // ignore JSON parse errors
+        }
+        throw new Error(errorMessage);
+      }
       return api.scorecards.create.responses[201].parse(await res.json());
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.scorecards.list.path] }),
