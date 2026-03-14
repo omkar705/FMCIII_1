@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Startups from "./pages/Startups";
+import StartupProfile from "./pages/StartupProfile";
 import Applications from "./pages/Applications";
 import ApplicationForm from "./pages/ApplicationForm";
 import Scorecards from "./pages/Scorecards";
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/" component={Dashboard} />
       <Route path="/startups" component={Startups} />
+      <Route path="/startups/:id" component={StartupProfile} />
       <Route path="/applications" component={Applications} />
       <Route path="/applications/new" component={ApplicationForm} />
       <Route path="/scorecards" component={Scorecards} />

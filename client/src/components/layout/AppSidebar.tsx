@@ -23,11 +23,12 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
+import { ROLE_IDS } from "@/lib/roles";
 
 const getNavigationItems = (roleId?: number | null) => {
 
 
-  if (roleId === 1) { // ADMIN
+  if (roleId === ROLE_IDS.ADMIN) { // ADMIN
     return [
       { title: "Dashboard", url: "/", icon: LayoutDashboard },
       { title: "Startups", url: "/startups", icon: Building2 },
@@ -41,19 +42,18 @@ const getNavigationItems = (roleId?: number | null) => {
     ];
   }
 
-  if (roleId === 2) { // INCUBATEE
+  if (roleId === ROLE_IDS.INCUBATEE) { // INCUBATEE
     return [
       { title: "Dashboard", url: "/", icon: LayoutDashboard },
       { title: "Mentorship", url: "/mentorship", icon: Users },
       { title: "Applications", url: "/applications", icon: Target },
-      { title: "Startups", url: "/startups", icon: Building2 },
       { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
       { title: "Bookings", url: "/bookings", icon: CalendarDays },
       { title: "Profile", url: "/profile", icon: Building },
     ];
   }
 
-  if (roleId === 3) { // MENTOR
+  if (roleId === ROLE_IDS.MENTOR) { // MENTOR
     return [
       { title: "Dashboard", url: "/", icon: LayoutDashboard },
       { title: "Mentorship", url: "/mentorship", icon: Users },
@@ -62,10 +62,9 @@ const getNavigationItems = (roleId?: number | null) => {
     ];
   }
 
-  if (roleId === 4) { // INVESTOR
+  if (roleId === ROLE_IDS.INVESTOR) { // INVESTOR
     return [
       { title: "Dashboard", url: "/", icon: LayoutDashboard },
-      { title: "Startups", url: "/startups", icon: Building2 },
       { title: "Funding", url: "/funding", icon: IndianRupee },
       { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
     ];
@@ -79,6 +78,9 @@ export function AppSidebar() {
   const { user, logout } = useAuth();
   
   const items = getNavigationItems(user?.roleId);
+
+  // When viewing a startup profile (/startups/:id), highlight the Profile nav item.
+  const isStartupProfile = /^\/startups\/\d+/.test(location);
 
   return (
     <Sidebar className="border-r border-white/5 bg-card/50 backdrop-blur-xl">
@@ -94,7 +96,9 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {
-                const isActive = location === item.url;
+                const isActive = isStartupProfile
+                  ? item.url === "/profile"
+                  : location === item.url;
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={isActive} tooltip={item.title}>
