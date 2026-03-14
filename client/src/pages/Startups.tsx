@@ -36,7 +36,7 @@ export default function Startups() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">Startups</h1>
+          <h1 className="text-4xl font-display font-bold mb-2">Startups</h1>
           <p className="text-muted-foreground text-lg">Directory of all portfolio companies.</p>
         </div>
 
@@ -46,22 +46,22 @@ export default function Startups() {
               <Plus className="mr-2 h-4 w-4" /> Add Startup
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px] bg-card border-white/10 text-white">
+          <DialogContent className="sm:max-w-[500px] bg-white border-gray-200 shadow-xl">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl">New Startup</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label>Company Name</Label>
-                <Input name="name" required className="bg-black/50 border-white/10" placeholder="e.g. Acme Corp" />
+                <Label className="text-foreground">Company Name</Label>
+                <Input name="name" required className="bg-white border-gray-200" placeholder="e.g. Acme Corp" />
               </div>
               <div className="space-y-2">
-                <Label>Industry / Domain</Label>
-                <Input name="domain" className="bg-black/50 border-white/10" placeholder="e.g. FinTech, AI, SaaS" />
+                <Label className="text-foreground">Industry / Domain</Label>
+                <Input name="domain" className="bg-white border-gray-200" placeholder="e.g. FinTech, AI, SaaS" />
               </div>
               <div className="space-y-2">
-                <Label>Description</Label>
-                <Textarea name="description" className="bg-black/50 border-white/10 min-h-[100px]" placeholder="Brief pitch..." />
+                <Label className="text-foreground">Description</Label>
+                <Textarea name="description" className="bg-white border-gray-200 min-h-[100px]" placeholder="Brief pitch..." />
               </div>
               <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Company"}
@@ -76,7 +76,7 @@ export default function Startups() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {startups?.map(startup => (
-            <Card key={startup.id} className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate overflow-hidden group">
+            <Card key={startup.id} className="p-6 border-gray-200 bg-white shadow-lg hover-elevate overflow-hidden group">
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Building2 className="h-24 w-24" />
               </div>
@@ -84,7 +84,7 @@ export default function Startups() {
                 <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 border border-white/10 flex items-center justify-center mb-4">
                   <span className="font-display font-bold text-xl text-primary">{startup.name.charAt(0)}</span>
                 </div>
-                <h3 className="text-xl font-display font-bold text-white mb-1">{startup.name}</h3>
+                <h3 className="text-xl font-display font-bold mb-1">{startup.name}</h3>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                   <Globe className="h-4 w-4" /> {startup.domain || "No Domain"}
                 </div>
@@ -95,9 +95,9 @@ export default function Startups() {
             </Card>
           ))}
           {startups?.length === 0 && (
-            <div className="col-span-full py-12 text-center border-2 border-dashed border-white/10 rounded-2xl">
+            <div className="col-span-full py-12 text-center border-2 border-dashed border-gray-200 rounded-2xl">
               <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <h3 className="text-lg font-medium text-white">No startups yet</h3>
+              <h3 className="text-lg font-medium">No startups yet</h3>
               <p className="text-muted-foreground mt-1">Get started by adding a new company.</p>
             </div>
           )}
