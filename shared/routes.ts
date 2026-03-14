@@ -7,7 +7,9 @@ import {
   insertMentorAssignmentSchema, mentorAssignments,
   insertFundingSchema, fundings,
   insertKnowledgeBaseSchema, knowledgeBase,
-  roles, evaluationCriteria
+  roles, evaluationCriteria,
+  insertPhysicalAssetSchema, physicalAssets,
+  insertAssetBookingSchema, assetBookings,
 } from './schema';
 
 export const errorSchemas = {
@@ -205,7 +207,51 @@ export const api = {
         200: z.array(z.custom<typeof users.$inferSelect>()),
       }
     }
-  }
+  },
+  physicalAssets: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/assets' as const,
+      responses: {
+        200: z.array(z.custom<typeof physicalAssets.$inferSelect>()),
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/assets' as const,
+      input: insertPhysicalAssetSchema,
+      responses: {
+        201: z.custom<typeof physicalAssets.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    }
+  },
+  assetBookings: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/bookings' as const,
+      responses: {
+        200: z.array(z.custom<typeof assetBookings.$inferSelect>()),
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/bookings' as const,
+      input: insertAssetBookingSchema,
+      responses: {
+        201: z.custom<typeof assetBookings.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    },
+    delete: {
+      method: 'DELETE' as const,
+      path: '/api/bookings/:id' as const,
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        404: errorSchemas.notFound,
+      }
+    }
+  },
 };
 
 export function buildUrl(path: string, params?: Record<string, string | number>): string {

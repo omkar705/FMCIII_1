@@ -205,5 +205,77 @@ app.get("/api/users", async (req, res) => {
 });
 
 
+  /* ================= PHYSICAL ASSETS ================= */
+
+  app.get("/api/assets", async (req, res) => {
+    const items = await storage.getPhysicalAssets();
+    res.json(items);
+  });
+
+  app.post("/api/assets", async (req, res) => {
+    try {
+      const input = api.physicalAssets.create.input.parse(req.body);
+      const item = await storage.createPhysicalAsset(input);
+      res.status(201).json(item);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message, field: err.errors[0].path.join(".") });
+      }
+      console.error("Create asset error:", err);
+      res.status(500).json({ message: "Failed to create asset" });
+    }
+  });
+
+
+  /* ================= ASSET BOOKINGS ================= */
+
+  app.get("/api/bookings", async (req, res) => {
+    const items = await storage.getAssetBookings();
+    res.json(items);
+  });
+
+  app.post("/api/bookings", async (req, res) => {
+    try {
+      const input = api.assetBookings.create.input.parse(req.body);
+
+      // Server-side conflict detection
+      const existing = await storage.getAssetBookings();
+      const conflict = existing.find(
+        (b) =>
+          b.assetId === input.assetId &&
+          b.bookingDate === input.bookingDate &&
+          b.status === "confirmed" &&
+          !(input.endTime <= b.startTime || input.startTime >= b.endTime)
+      );
+      if (conflict) {
+        return res.status(400).json({ message: "This asset is already booked for the selected time slot." });
+      }
+
+      const item = await storage.createAssetBooking(input);
+      res.status(201).json(item);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message, field: err.errors[0].path.join(".") });
+      }
+      console.error("Create booking error:", err);
+      res.status(500).json({ message: "Failed to create booking" });
+    }
+  });
+
+  app.delete("/api/bookings/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const updated = await storage.cancelAssetBooking(id);
+      if (!updated) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Cancel booking error:", err);
+      res.status(500).json({ message: "Failed to cancel booking" });
+    }
+  });
+
+
   return httpServer;
 }
