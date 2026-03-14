@@ -149,21 +149,67 @@ export async function registerRoutes(
   /* ================= SCORECARDS ================= */
 
   app.get("/api/scorecards", async (req, res) => {
-    const items = await storage.getScorecards();
-    res.json(items);
+    try {
+      const items = await storage.getScorecards();
+      res.json(items);
+    } catch (err) {
+      console.error("Get scorecards error:", err);
+      res.status(500).json({ message: "Failed to fetch scorecards" });
+    }
   });
 
   app.get("/api/scorecards/:id", async (req, res) => {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) return res.status(400).json({ message: "Invalid scorecard id" });
-    const item = await storage.getScorecard(id);
-    if (!item) return res.status(404).json({ message: "Scorecard not found" });
-    res.json(item);
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid scorecard id" });
+      const item = await storage.getScorecard(id);
+      if (!item) return res.status(404).json({ message: "Scorecard not found" });
+      res.json(item);
+    } catch (err) {
+      console.error("Get scorecard error:", err);
+      res.status(500).json({ message: "Failed to fetch scorecard" });
+    }
   });
 
   app.post("/api/scorecards", async (req, res) => {
-    const item = await storage.createScorecard(req.body);
-    res.json(item);
+    try {
+      const { startupId, startupName, judgeId, judgeName, score, feedback, evaluationDate } = req.body;
+
+      // Validate required fields
+      const missingFields: string[] = [];
+      if (!startupId) missingFields.push("startupId");
+      if (!judgeId) missingFields.push("judgeId");
+      if (score === undefined || score === null || score === "") missingFields.push("score");
+
+      if (missingFields.length > 0) {
+        return res.status(400).json({
+          message: `Missing required fields: ${missingFields.join(", ")}`,
+        });
+      }
+
+      const parsedScore = Number(score);
+      if (isNaN(parsedScore) || parsedScore < 0 || parsedScore > 100) {
+        return res.status(400).json({ message: "Score must be a number between 0 and 100" });
+      }
+
+      const data: Record<string, unknown> = {
+        startupId: Number(startupId),
+        startupName: startupName ?? null,
+        judgeId: Number(judgeId),
+        judgeName: judgeName ?? null,
+        score: parsedScore,
+        feedback: feedback ?? null,
+        evaluationDate: evaluationDate ?? null,
+      };
+
+      console.log("[POST /api/scorecards] Creating scorecard with data:", data);
+
+      const item = await storage.createScorecard(data);
+      return res.status(201).json(item);
+    } catch (err) {
+      console.error("Create scorecard error:", err);
+      return res.status(500).json({ message: "Failed to create scorecard" });
+    }
   });
 
 
