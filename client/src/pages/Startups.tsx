@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { useStartups, useCreateStartup } from "@/hooks/use-startups";
+import { startups as sampleStartups } from "@/data/startups";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Building2, Plus, Globe, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+
+/** Derive a URL-safe slug from a startup name to match sample data IDs. */
+function nameToSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, "_");
+}
 
 export default function Startups() {
   const { data: startups, isLoading } = useStartups();
@@ -33,6 +39,14 @@ export default function Startups() {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     }
   };
+
+  /** Navigate to the startup profile page using its slug ID. */
+  function handleStartupClick(name: string) {
+    const slug = nameToSlug(name);
+    // Check if a sample profile exists for this slug; fall back to slug anyway
+    const matchedSample = sampleStartups.find((s) => s.id === slug);
+    navigate(`/startups/${matchedSample ? matchedSample.id : slug}`);
+  }
 
   return (
     <Shell adminOnly>
@@ -81,7 +95,7 @@ export default function Startups() {
             <Card
               key={startup.id}
               className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate overflow-hidden group cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200"
-              onClick={() => navigate(`/startups/${startup.id}`)}
+              onClick={() => handleStartupClick(startup.name)}
             >
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Building2 className="h-24 w-24" />
