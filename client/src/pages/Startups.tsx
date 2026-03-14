@@ -9,12 +9,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Building2, Plus, Globe, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 
 export default function Startups() {
   const { data: startups, isLoading } = useStartups();
   const { mutateAsync: createStartup, isPending } = useCreateStartup();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const [, navigate] = useLocation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ export default function Startups() {
   };
 
   return (
-    <Shell>
+    <Shell adminOnly>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
           <h1 className="text-4xl font-display font-bold text-white mb-2">Startups</h1>
@@ -76,7 +78,11 @@ export default function Startups() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {startups?.map(startup => (
-            <Card key={startup.id} className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate overflow-hidden group">
+            <Card
+              key={startup.id}
+              className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate overflow-hidden group cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200"
+              onClick={() => navigate(`/startups/${startup.id}`)}
+            >
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Building2 className="h-24 w-24" />
               </div>
