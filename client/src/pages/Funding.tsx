@@ -13,6 +13,7 @@ import { Plus, Loader2, TrendingUp, IndianRupee } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+
 export default function Funding() {
   const { data: funding, isLoading: fLoading } = useFunding();
   const { data: startups } = useStartups();

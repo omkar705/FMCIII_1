@@ -3,7 +3,8 @@ import { Card } from "@/components/ui/card";
 import { useStartups } from "@/hooks/use-startups";
 import { useApplications } from "@/hooks/use-applications";
 import { useFunding } from "@/hooks/use-funding";
-import { Building2, Target, TrendingUp, Loader2, IndianRupee } from "lucide-react";
+import { Building2, Target, IndianRupee, TrendingUp, Loader2 } from "lucide-react";
+
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line } from "recharts";
 
 export default function Dashboard() {

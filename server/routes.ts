@@ -71,11 +71,24 @@ export async function registerRoutes(
   });
 
   app.patch("/api/applications/:id/status", async (req, res) => {
-    const id = Number(req.params.id);
-    const { status } = req.body;
-    const item = await storage.updateApplicationStatus(id, status);
-    if (!item) return res.status(404).json({ message: "Application not found" });
-    res.json(item);
+    try {
+      const id = parseInt(req.params.id, 10);
+      const { status } = req.body;
+
+      if (!status) {
+        return res.status(400).json({ message: "Status is required" });
+      }
+
+      const updated = await storage.updateApplicationStatus(id, status);
+      if (!updated) {
+        return res.status(404).json({ message: "Application not found" });
+      }
+
+      res.json(updated);
+    } catch (err) {
+      console.error("Update status error:", err);
+      res.status(500).json({ message: "Server error" });
+    }
   });
 
   /* ================= APPLICATION FORM (Incubatee) ================= */

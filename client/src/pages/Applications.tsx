@@ -55,6 +55,7 @@ export default function Applications() {
             <Button className="rounded-xl h-11 px-6">
               <Plus className="mr-2 h-4 w-4" /> New Application
             </Button>
+
           </Link>
         ) : (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -94,8 +95,9 @@ export default function Applications() {
         )}
       </div>
 
+
       {user?.roleId === 1 && (
-    <div className="bg-black/20 rounded-3xl p-6 border border-white/5">
+    <div className="bg-white /20 rounded-3xl p-6 border border-black/50">
       <KanbanBoard
         applications={applications || []}
         startups={startups || []}
@@ -103,7 +105,8 @@ export default function Applications() {
       />
     </div>
   )}
-
     </Shell>
   );
 }
+
+

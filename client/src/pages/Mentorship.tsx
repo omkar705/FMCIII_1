@@ -58,10 +58,10 @@ export default function Mentorship() {
               <div className="space-y-2">
                 <Label>Startup</Label>
                 <Select name="startupId" required>
-                  <SelectTrigger className="bg-black/50 border-white/10">
+                  <SelectTrigger className="bg-white/50 border-black/70">
                     <SelectValue placeholder="Select Startup" />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10">
+                  <SelectContent className="bg-card border-black/70">
                     {startups?.map(s => (
                       <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
                     ))}
@@ -71,10 +71,10 @@ export default function Mentorship() {
               <div className="space-y-2">
                 <Label>Mentor (User)</Label>
                 <Select name="mentorId" required>
-                  <SelectTrigger className="bg-black/50 border-white/10">
+                  <SelectTrigger className="bg-white/50 border-black/50">
                     <SelectValue placeholder="Select Mentor" />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10">
+                  <SelectContent className="bg-card border-black/70">
                     {users?.map(u => (
                       <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>
                     ))}
