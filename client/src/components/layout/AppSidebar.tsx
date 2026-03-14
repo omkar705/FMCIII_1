@@ -38,7 +38,6 @@ const getNavigationItems = (roleId?: number | null) => {
       { title: "Scorecards", url: "/scorecards", icon: ClipboardCheck },
       { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
       { title: "Bookings", url: "/bookings", icon: CalendarDays },
-      { title: "Profile", url: "/profile", icon: Building },
     ];
   }
 
