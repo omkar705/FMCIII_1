@@ -46,7 +46,7 @@ export default function Applications() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold mb-2">Pipeline</h1>
+          <h1 className="text-4xl font-display font-bold text-white mb-2">Pipeline</h1>
           <p className="text-muted-foreground text-lg">Manage application lifecycle.</p>
         </div>
 
@@ -64,18 +64,18 @@ export default function Applications() {
                 <Plus className="mr-2 h-4 w-4" /> New Application
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-white border-gray-200 shadow-xl">
+            <DialogContent className="bg-card border-white/10 text-white">
               <DialogHeader>
                 <DialogTitle className="font-display text-2xl">Start Application</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleCreate} className="space-y-4 mt-4">
                 <div className="space-y-2">
-                  <Label className="text-foreground">Select Startup</Label>
+                  <Label>Select Startup</Label>
                   <Select name="startupId" required>
-                    <SelectTrigger className="bg-white border-gray-200">
+                    <SelectTrigger className="bg-black/50 border-white/10">
                       <SelectValue placeholder="Choose a startup..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-gray-200">
+                    <SelectContent className="bg-card border-white/10">
                       {startups?.map(s => (
                         <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
                       ))}
@@ -83,8 +83,8 @@ export default function Applications() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-foreground">Pitch Deck URL</Label>
-                  <Input name="pitchDeckUrl" type="url" className="bg-white border-gray-200" placeholder="https://..." />
+                  <Label>Pitch Deck URL</Label>
+                  <Input name="pitchDeckUrl" type="url" className="bg-black/50 border-white/10" placeholder="https://..." />
                 </div>
                 <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
                   {isPending ? <Loader2 className="animate-spin" /> : "Submit Application"}
@@ -97,7 +97,7 @@ export default function Applications() {
 
 
       {user?.roleId === 1 && (
-    <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm">
+    <div className="bg-white /20 rounded-3xl p-6 border border-black/50">
       <KanbanBoard
         applications={applications || []}
         startups={startups || []}

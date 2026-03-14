@@ -15,39 +15,39 @@
 --font-sans: 'Manrope', sans-serif;
 --font-display: 'Lexend', sans-serif;
 
-/* Clean professional palette */
+/* Minimal clean palette */
 
 --background: 210 40% 98%;
---foreground: 215 25% 20%;
+--foreground: 215 25% 28%;
 
 --card: 0 0% 100%;
---card-foreground: 215 25% 20%;
+--card-foreground: 215 25% 28%;
 --card-border: 210 20% 88%;
 
 --popover: 0 0% 100%;
---popover-foreground: 215 25% 20%;
+--popover-foreground: 215 25% 28%;
 --popover-border: 210 20% 88%;
 
 /* Primary theme color */
 
---primary: 207 100% 26%; /* #015185 */
+--primary: 207 100% 24%; /* #015185 */
 --primary-foreground: 0 0% 100%;
 
 --secondary: 210 30% 96%;
---secondary-foreground: 215 25% 20%;
+--secondary-foreground: 215 25% 28%;
 
---muted: 210 20% 94%;
---muted-foreground: 215 15% 40%;
+--muted: 210 30% 96%;
+--muted-foreground: 215 15% 45%;
 
 --accent: 210 30% 96%;
---accent-foreground: 215 25% 20%;
+--accent-foreground: 215 25% 28%;
 
 --destructive: 0 65% 45%;
 --destructive-foreground: 0 0% 100%;
 
---border: 210 20% 85%;
+--border: 210 20% 88%;
 --input: 210 20% 95%;
---ring: 207 100% 26%;
+--ring: 207 100% 24%;
 
 --radius: 0.65rem;
 }
@@ -78,8 +78,16 @@ color:#015185;
 
 @layer components {
 
-/* Fix headings using text-white on light background - remove override */
-/* With the new theme, headings will always use the primary color */
+/* Fix headings accidentally using text-white */
+
+h1.text-white,
+h2.text-white,
+h3.text-white,
+h4.text-white,
+h5.text-white,
+h6.text-white{
+color:#015185 !important;
+}
 
 /* Fix sidebar brand title (FMCIII Portal) */
 
@@ -107,79 +115,6 @@ box-shadow:0 6px 20px rgba(0,0,0,0.06);
 padding:18px;
 }
 
-/* Dialog styling for light theme */
-.dialog-content {
-background: white;
-color: hsl(215 25% 20%);
-}
-
-.dialog-content label,
-.dialog-content .text-muted-foreground {
-color: hsl(215 15% 40%);
-}
-
-/* 3D Card animations */
-.card-3d {
-transform-style: preserve-3d;
-transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card-3d:hover {
-transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
-box-shadow: 
-  0 20px 40px rgba(0, 0, 0, 0.1),
-  0 10px 20px rgba(1, 81, 133, 0.1);
-}
-
-/* Floating animation */
-@keyframes float {
-0%, 100% {
-  transform: translateY(0px);
-}
-50% {
-  transform: translateY(-6px);
-}
-}
-
-.float-animation {
-animation: float 3s ease-in-out infinite;
-}
-
-/* Pulse glow animation */
-@keyframes pulse-glow {
-0%, 100% {
-  box-shadow: 0 0 5px rgba(1, 81, 133, 0.2);
-}
-50% {
-  box-shadow: 0 0 20px rgba(1, 81, 133, 0.4);
-}
-}
-
-.pulse-glow {
-animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Gradient shimmer animation */
-@keyframes shimmer {
-0% {
-  background-position: -200% 0;
-}
-100% {
-  background-position: 200% 0;
-}
-}
-
-.shimmer {
-background: linear-gradient(
-  90deg,
-  rgba(255,255,255,0) 0%,
-  rgba(255,255,255,0.4) 50%,
-  rgba(255,255,255,0) 100%
-);
-background-size: 200% 100%;
-animation: shimmer 2s infinite;
-}
-
 }
 
 
@@ -195,7 +130,7 @@ animation: shimmer 2s infinite;
 background:
 radial-gradient(
 circle at top,
-rgba(1,81,133,0.03),
+rgba(0,0,0,0.03),
 transparent 65%);
 }
 
@@ -240,19 +175,6 @@ transform:translateY(-3px);
 box-shadow:0 10px 24px rgba(0,0,0,0.08);
 }
 
-/* hover elevate with 3D effect */
-
-.hover-elevate{
-transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hover-elevate:hover{
-transform:perspective(1000px) translateY(-4px) rotateX(1deg);
-box-shadow:
-  0 20px 40px rgba(0,0,0,0.08),
-  0 10px 20px rgba(1,81,133,0.06);
-}
-
 /* primary button */
 
 .btn-primary{
@@ -281,7 +203,7 @@ transition:all .2s ease;
 }
 
 .btn-glow:hover{
-box-shadow:0 6px 18px rgba(1,81,133,0.3);
+box-shadow:0 6px 18px rgba(0,0,0,0.15);
 }
 
 /* text accent */
@@ -304,36 +226,6 @@ transition:all .2s ease;
 outline:none;
 border-color:#015185;
 box-shadow:0 0 0 3px rgba(1,81,133,0.15);
-}
-
-/* Smooth scale transition */
-.scale-hover {
-transition: transform 0.2s ease;
-}
-
-.scale-hover:hover {
-transform: scale(1.02);
-}
-
-/* Gradient border effect */
-.gradient-border {
-position: relative;
-border-radius: 14px;
-}
-
-.gradient-border::before {
-content: '';
-position: absolute;
-inset: 0;
-padding: 1px;
-border-radius: inherit;
-background: linear-gradient(135deg, rgba(1,81,133,0.3), rgba(1,81,133,0.1));
--webkit-mask: 
-  linear-gradient(#fff 0 0) content-box, 
-  linear-gradient(#fff 0 0);
--webkit-mask-composite: xor;
-mask-composite: exclude;
-pointer-events: none;
 }
 
 }

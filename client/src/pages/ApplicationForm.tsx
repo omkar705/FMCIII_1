@@ -79,7 +79,7 @@ export default function ApplicationForm() {
           <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6">
             <CheckCircle2 className="h-10 w-10 text-primary" />
           </div>
-          <h2 className="text-3xl font-display font-bold mb-4">
+          <h2 className="text-3xl font-display font-bold text-white mb-4">
             Application Submitted!
           </h2>
           <p className="text-muted-foreground text-lg max-w-md">
@@ -122,7 +122,7 @@ export default function ApplicationForm() {
     <Shell>
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-display font-bold mb-2">
+          <h1 className="text-4xl font-display font-bold text-white mb-2">
             New Application
           </h1>
           <p className="text-muted-foreground text-lg">
@@ -132,42 +132,42 @@ export default function ApplicationForm() {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Applicant Information */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-display font-semibold">
+          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+            <h2 className="text-xl font-display font-semibold text-white">
               Applicant Information
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="applicantName">Applicant Name *</Label>
+                <Label htmlFor="applicantName">Applicant Name *</Label>
                 <Input
                   id="applicantName"
                   name="applicantName"
                   defaultValue={user.name}
                   required
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="Full name"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="email">Email *</Label>
+                <Label htmlFor="email">Email *</Label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   defaultValue={user.email}
                   required
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="email@example.com"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="phone">Phone Number *</Label>
+                <Label htmlFor="phone">Phone Number *</Label>
                 <Input
                   id="phone"
                   name="phone"
                   type="tel"
                   required
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="+91 XXXXX XXXXX"
                 />
               </div>
@@ -175,33 +175,33 @@ export default function ApplicationForm() {
           </div>
 
           {/* Startup Details */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-display font-semibold">
+          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+            <h2 className="text-xl font-display font-semibold text-white">
               Startup Details
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="startupName">Startup Name *</Label>
+                <Label htmlFor="startupName">Startup Name *</Label>
                 <Input
                   id="startupName"
                   name="startupName"
                   required
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="Your startup name"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground">Startup Category *</Label>
+                <Label>Startup Category *</Label>
                 <Select
                   name="startupCategory"
                   value={category}
                   onValueChange={setCategory}
                   required
                 >
-                  <SelectTrigger className="bg-white border-gray-200">
+                  <SelectTrigger className="bg-black/50 border-white/10">
                     <SelectValue placeholder="Select a category..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
+                  <SelectContent className="bg-card border-white/10">
                     {STARTUP_CATEGORIES.map((cat) => (
                       <SelectItem key={cat} value={cat}>
                         {cat}
@@ -211,69 +211,69 @@ export default function ApplicationForm() {
                 </Select>
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label className="text-foreground" htmlFor="problemStatement">Problem Statement *</Label>
+                <Label htmlFor="problemStatement">Problem Statement *</Label>
                 <Textarea
                   id="problemStatement"
                   name="problemStatement"
                   required
-                  className="bg-white border-gray-200 min-h-[100px]"
+                  className="bg-black/50 border-white/10 min-h-[100px]"
                   placeholder="What problem does your startup solve?"
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label className="text-foreground" htmlFor="ideaDescription">
+                <Label htmlFor="ideaDescription">
                   Startup Idea Description *
                 </Label>
                 <Textarea
                   id="ideaDescription"
                   name="ideaDescription"
                   required
-                  className="bg-white border-gray-200 min-h-[100px]"
+                  className="bg-black/50 border-white/10 min-h-[100px]"
                   placeholder="Describe your startup idea in detail..."
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="targetMarket">Target Market *</Label>
+                <Label htmlFor="targetMarket">Target Market *</Label>
                 <Input
                   id="targetMarket"
                   name="targetMarket"
                   required
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="Who are your target customers?"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="estimatedBudget">Estimated Budget (₹) *</Label>
+                <Label htmlFor="estimatedBudget">Estimated Budget (₹) *</Label>
                 <Input
                   id="estimatedBudget"
                   name="estimatedBudget"
                   type="number"
                   min="0"
                   required
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="e.g. 500000"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="teamStrength">Team Strength *</Label>
+                <Label htmlFor="teamStrength">Team Strength *</Label>
                 <Input
                   id="teamStrength"
                   name="teamStrength"
                   type="number"
                   min="1"
                   required
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="Number of team members"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="currentRevenue">Current Revenue (₹)</Label>
+                <Label htmlFor="currentRevenue">Current Revenue (₹)</Label>
                 <Input
                   id="currentRevenue"
                   name="currentRevenue"
                   type="number"
                   min="0"
-                  className="bg-white border-gray-200"
+                  className="bg-black/50 border-white/10"
                   placeholder="0 if pre-revenue"
                 />
               </div>
@@ -281,41 +281,41 @@ export default function ApplicationForm() {
           </div>
 
           {/* Business Plan */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-display font-semibold">
+          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+            <h2 className="text-xl font-display font-semibold text-white">
               Business Plan
             </h2>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="problemSolution">Problem &amp; Solution *</Label>
+                <Label htmlFor="problemSolution">Problem &amp; Solution *</Label>
                 <Textarea
                   id="problemSolution"
                   name="problemSolution"
                   required
-                  className="bg-white border-gray-200 min-h-[100px]"
+                  className="bg-black/50 border-white/10 min-h-[100px]"
                   placeholder="Explain your solution to the problem..."
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="scalability">Scalability</Label>
+                <Label htmlFor="scalability">Scalability</Label>
                 <Textarea
                   id="scalability"
                   name="scalability"
-                  className="bg-white border-gray-200 min-h-[80px]"
+                  className="bg-black/50 border-white/10 min-h-[80px]"
                   placeholder="How do you plan to scale your startup?"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="marketOpportunity">Market Opportunity</Label>
+                <Label htmlFor="marketOpportunity">Market Opportunity</Label>
                 <Textarea
                   id="marketOpportunity"
                   name="marketOpportunity"
-                  className="bg-white border-gray-200 min-h-[80px]"
+                  className="bg-black/50 border-white/10 min-h-[80px]"
                   placeholder="Describe the market opportunity..."
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="businessPlan">
+                <Label htmlFor="businessPlan">
                   Business Plan Upload (PDF/DOC) *
                 </Label>
                 <Input
@@ -326,7 +326,7 @@ export default function ApplicationForm() {
                   onChange={(e) =>
                     setBusinessPlanFile(e.target.files?.[0] ?? null)
                   }
-                  className="bg-white border-gray-200 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
+                  className="bg-black/50 border-white/10 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
                 />
                 {businessPlanFile && (
                   <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
@@ -338,24 +338,24 @@ export default function ApplicationForm() {
           </div>
 
           {/* Financial Information */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-4">
-            <h2 className="text-xl font-display font-semibold">
+          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+            <h2 className="text-xl font-display font-semibold text-white">
               Financial Information
             </h2>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="financialProjections">
+                <Label htmlFor="financialProjections">
                   Future Financial Projections
                 </Label>
                 <Textarea
                   id="financialProjections"
                   name="financialProjections"
-                  className="bg-white border-gray-200 min-h-[80px]"
+                  className="bg-black/50 border-white/10 min-h-[80px]"
                   placeholder="Describe your financial projections for the next 3–5 years..."
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground" htmlFor="financialProjectionsFile">
+                <Label htmlFor="financialProjectionsFile">
                   Financial Projections Upload (Excel/PDF)
                 </Label>
                 <Input
@@ -365,7 +365,7 @@ export default function ApplicationForm() {
                   onChange={(e) =>
                     setFinancialFile(e.target.files?.[0] ?? null)
                   }
-                  className="bg-white border-gray-200 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
+                  className="bg-black/50 border-white/10 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
                 />
                 {financialFile && (
                   <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">

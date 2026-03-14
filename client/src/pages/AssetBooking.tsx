@@ -147,7 +147,7 @@ export default function AssetBooking() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold mb-2">Asset Booking</h1>
+          <h1 className="text-4xl font-display font-bold text-white mb-2">Asset Booking</h1>
           <p className="text-muted-foreground text-lg">
             {isAdmin ? "View and manage bookings for physical assets." : "Book meeting rooms, lab equipment, and hot desks."}
           </p>
@@ -156,26 +156,26 @@ export default function AssetBooking() {
           {isAdmin && (
             <Dialog open={isAssetOpen} onOpenChange={setIsAssetOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="rounded-xl h-11 px-6 border-primary/20 hover:bg-primary/5 hover:border-primary/30">
+                <Button variant="outline" className="rounded-xl h-11 px-6 border-white/10 text-white hover:bg-white/5">
                   <Plus className="mr-2 h-4 w-4" /> Add Asset
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-white border border-gray-200 shadow-xl">
+              <DialogContent className="bg-card border-white/10 text-white">
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl">Add Physical Asset</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleAssetSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label className="text-foreground">Asset Name</Label>
-                    <Input name="name" required className="bg-white border-gray-200 focus:border-primary" placeholder="e.g. Conference Room A" />
+                    <Label>Asset Name</Label>
+                    <Input name="name" required className="bg-black/50 border-white/10" placeholder="e.g. Conference Room A" />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-foreground">Type</Label>
+                    <Label>Type</Label>
                     <Select name="type" required>
-                      <SelectTrigger className="bg-white border-gray-200">
+                      <SelectTrigger className="bg-black/50 border-white/10">
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white border-gray-200">
+                      <SelectContent className="bg-card border-white/10">
                         <SelectItem value="meeting_room">Meeting Room</SelectItem>
                         <SelectItem value="lab_equipment">Lab Equipment</SelectItem>
                         <SelectItem value="hot_desk">Hot Desk</SelectItem>
@@ -183,14 +183,14 @@ export default function AssetBooking() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-foreground">Description</Label>
-                    <Textarea name="description" className="bg-white border-gray-200" placeholder="Optional description..." />
+                    <Label>Description</Label>
+                    <Textarea name="description" className="bg-black/50 border-white/10" placeholder="Optional description..." />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-foreground">Capacity</Label>
-                    <Input name="capacity" type="number" min="1" className="bg-white border-gray-200" placeholder="e.g. 10" />
+                    <Label>Capacity</Label>
+                    <Input name="capacity" type="number" min="1" className="bg-black/50 border-white/10" placeholder="e.g. 10" />
                   </div>
-                  <Button type="submit" disabled={assetPending} className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90">
+                  <Button type="submit" disabled={assetPending} className="w-full h-11 rounded-xl">
                     {assetPending ? <Loader2 className="animate-spin" /> : "Add Asset"}
                   </Button>
                 </form>
@@ -201,24 +201,24 @@ export default function AssetBooking() {
           {isIncubatee && (
             <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
               <DialogTrigger asChild>
-                <Button className="rounded-xl h-11 px-6 bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20">
+                <Button className="rounded-xl h-11 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-900/20">
                   <Plus className="mr-2 h-4 w-4" /> Book Asset
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-white border border-gray-200 shadow-xl">
+              <DialogContent className="bg-card border-white/10 text-white">
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl">Book an Asset</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleBookingSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label className="text-foreground">Asset</Label>
+                    <Label>Asset</Label>
                     <Select name="assetId" required value={selectedAssetId} onValueChange={setSelectedAssetId}>
-                      <SelectTrigger className="bg-white border-gray-200">
+                      <SelectTrigger className="bg-black/50 border-white/10">
                         <SelectValue placeholder="Select asset" />
                       </SelectTrigger>
-                      <SelectContent className="bg-white border-gray-200 shadow-lg">
+                      <SelectContent className="bg-card border-white/10">
                         {assets?.map((a) => (
-                          <SelectItem key={a.id} value={a.id.toString()} className="text-foreground hover:bg-gray-100">
+                          <SelectItem key={a.id} value={a.id.toString()}>
                             {a.name} — {ASSET_TYPE_LABELS[a.type] ?? a.type}
                           </SelectItem>
                         ))}
@@ -226,39 +226,39 @@ export default function AssetBooking() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-foreground">Date</Label>
+                    <Label>Date</Label>
                     <div className="text-sm text-muted-foreground px-1">
-                      Booking for: <span className="text-primary font-medium">{format(selectedDate, "MMMM d, yyyy")}</span>
+                      Booking for: <span className="text-white font-medium">{format(selectedDate, "MMMM d, yyyy")}</span>
                       <span className="text-xs text-muted-foreground ml-2">(change via calendar below)</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-foreground">Start Time</Label>
+                      <Label>Start Time</Label>
                       <Input
                         type="time"
                         required
-                        className="bg-white border-gray-200"
+                        className="bg-black/50 border-white/10"
                         value={bookingStartTime}
                         onChange={(e) => setBookingStartTime(e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-foreground">End Time</Label>
+                      <Label>End Time</Label>
                       <Input
                         type="time"
                         required
-                        className="bg-white border-gray-200"
+                        className="bg-black/50 border-white/10"
                         value={bookingEndTime}
                         onChange={(e) => setBookingEndTime(e.target.value)}
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-foreground">Purpose</Label>
-                    <Textarea name="purpose" className="bg-white border-gray-200" placeholder="What will you use it for?" />
+                    <Label>Purpose</Label>
+                    <Textarea name="purpose" className="bg-black/50 border-white/10" placeholder="What will you use it for?" />
                   </div>
-                  <Button type="submit" disabled={bookingPending} className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90">
+                  <Button type="submit" disabled={bookingPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
                     {bookingPending ? <Loader2 className="animate-spin" /> : "Confirm Booking"}
                   </Button>
                 </form>
@@ -272,12 +272,12 @@ export default function AssetBooking() {
         <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-8 w-8" /></div>
       ) : (
         <Tabs defaultValue="calendar">
-          <TabsList className="mb-6 bg-white border border-gray-200 shadow-sm">
-            <TabsTrigger value="calendar" className="data-[state=active]:bg-primary data-[state=active]:text-white">
+          <TabsList className="mb-6 bg-white/5 border border-white/10">
+            <TabsTrigger value="calendar" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
               <CalendarDays className="h-4 w-4 mr-2" /> Calendar View
             </TabsTrigger>
             {isAdmin && (
-              <TabsTrigger value="all" className="data-[state=active]:bg-primary data-[state=active]:text-white">
+              <TabsTrigger value="all" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
                 <User className="h-4 w-4 mr-2" /> All Bookings
               </TabsTrigger>
             )}
@@ -287,7 +287,7 @@ export default function AssetBooking() {
           <TabsContent value="calendar">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Calendar picker */}
-              <Card className="p-4 border-gray-200 bg-white shadow-sm card-3d lg:col-span-1">
+              <Card className="p-4 border-white/5 bg-card/60 backdrop-blur-xl lg:col-span-1">
                 <h3 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4" /> Select Date
                 </h3>
@@ -301,7 +301,7 @@ export default function AssetBooking() {
 
               {/* Assets for selected date */}
               <div className="lg:col-span-2 space-y-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                   <CalendarDays className="h-5 w-5 text-primary" />
                   {format(selectedDate, "MMMM d, yyyy")}
                   <span className="text-sm text-muted-foreground font-normal ml-1">
@@ -310,7 +310,7 @@ export default function AssetBooking() {
                 </h3>
 
                 {assets?.length === 0 && (
-                  <div className="py-12 text-center border-2 border-dashed border-gray-200 rounded-2xl bg-white">
+                  <div className="py-12 text-center border-2 border-dashed border-white/10 rounded-2xl">
                     <Building2 className="h-10 w-10 text-muted-foreground mx-auto mb-3 opacity-50" />
                     <p className="text-muted-foreground">No assets available yet.{isAdmin ? " Add an asset to get started." : ""}</p>
                   </div>
@@ -322,14 +322,14 @@ export default function AssetBooking() {
                   const assetBookingsForDate = bookingsForDate.filter((b) => b.assetId === asset.id);
 
                   return (
-                    <Card key={asset.id} className="p-5 border-gray-200 bg-white shadow-sm hover-elevate">
+                    <Card key={asset.id} className="p-5 border-white/5 bg-card/60 backdrop-blur-xl">
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-3">
                           <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${colorClass}`}>
                             <Icon className="h-5 w-5" />
                           </div>
                           <div>
-                            <h4 className="font-semibold">{asset.name}</h4>
+                            <h4 className="font-semibold text-white">{asset.name}</h4>
                             <p className="text-xs text-muted-foreground">
                               {ASSET_TYPE_LABELS[asset.type] ?? asset.type}
                               {asset.capacity ? ` · Capacity: ${asset.capacity}` : ""}
@@ -338,7 +338,7 @@ export default function AssetBooking() {
                         </div>
                         <Badge
                           variant="outline"
-                          className={assetBookingsForDate.length > 0 ? "border-amber-500/50 text-amber-600 bg-amber-50" : "border-green-500/50 text-green-600 bg-green-50"}
+                          className={assetBookingsForDate.length > 0 ? "border-yellow-500/50 text-yellow-400" : "border-green-500/50 text-green-400"}
                         >
                           {assetBookingsForDate.length > 0 ? `${assetBookingsForDate.length} booked` : "Available"}
                         </Badge>
@@ -356,10 +356,10 @@ export default function AssetBooking() {
                           {assetBookingsForDate.map((b) => {
                             const canCancel = isAdmin || (isIncubatee && b.bookedBy === user?.id);
                             return (
-                              <div key={b.id} className="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5">
+                              <div key={b.id} className="flex items-center justify-between bg-white/5 rounded-xl px-4 py-2.5">
                                 <div className="flex items-center gap-3 text-sm">
                                   <Clock className="h-4 w-4 text-muted-foreground" />
-                                  <span className="text-foreground font-medium">{b.startTime} – {b.endTime}</span>
+                                  <span className="text-white font-medium">{b.startTime} – {b.endTime}</span>
                                   {isAdmin && (
                                     <span className="text-muted-foreground">· {getUserName(b.bookedBy)}</span>
                                   )}
@@ -396,9 +396,9 @@ export default function AssetBooking() {
             <TabsContent value="all">
               <div className="space-y-4">
                 {bookings?.filter((b) => b.status === "confirmed").length === 0 && (
-                  <div className="py-16 text-center border-2 border-dashed border-gray-200 rounded-2xl bg-white">
+                  <div className="py-16 text-center border-2 border-dashed border-white/10 rounded-2xl">
                     <CalendarDays className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                    <h3 className="text-lg font-medium">No bookings yet</h3>
+                    <h3 className="text-lg font-medium text-white">No bookings yet</h3>
                     <p className="text-muted-foreground mt-1">Incubatees will appear here once they make bookings.</p>
                   </div>
                 )}
@@ -415,14 +415,14 @@ export default function AssetBooking() {
                     const colorClass = asset ? (ASSET_TYPE_COLORS[asset.type] ?? "bg-gray-500/10 text-gray-400") : "bg-gray-500/10 text-gray-400";
 
                     return (
-                      <Card key={booking.id} className="p-5 border-gray-200 bg-white shadow-sm hover-elevate">
+                      <Card key={booking.id} className="p-5 border-white/5 bg-card/60 backdrop-blur-xl">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4 flex-wrap">
                             <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${colorClass}`}>
                               <Icon className="h-5 w-5" />
                             </div>
                             <div>
-                              <p className="font-semibold">{asset?.name ?? getAssetName(booking.assetId)}</p>
+                              <p className="font-semibold text-white">{asset?.name ?? getAssetName(booking.assetId)}</p>
                               <p className="text-xs text-muted-foreground">
                                 {asset ? (ASSET_TYPE_LABELS[asset.type] ?? asset.type) : ""}
                               </p>

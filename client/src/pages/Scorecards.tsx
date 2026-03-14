@@ -42,7 +42,7 @@ export default function Scorecards() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold mb-2">Evaluations</h1>
+          <h1 className="text-4xl font-display font-bold text-white mb-2">Evaluations</h1>
           <p className="text-muted-foreground text-lg">Judge scoring and feedback.</p>
         </div>
 
@@ -52,18 +52,18 @@ export default function Scorecards() {
               <Plus className="mr-2 h-4 w-4" /> Add Score
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-white border-gray-200 shadow-xl">
+          <DialogContent className="bg-card border-white/10 text-white">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl">New Scorecard</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label className="text-foreground">Application</Label>
+                <Label>Application</Label>
                 <Select name="applicationId" required>
-                  <SelectTrigger className="bg-white border-gray-200">
+                  <SelectTrigger className="bg-black/50 border-white/10">
                     <SelectValue placeholder="Select Application" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
+                  <SelectContent className="bg-card border-white/10">
                     {applications?.map(a => (
                       <SelectItem key={a.id} value={a.id.toString()}>App #{a.id} - {a.status}</SelectItem>
                     ))}
@@ -71,12 +71,12 @@ export default function Scorecards() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground">Judge</Label>
+                <Label>Judge</Label>
                 <Select name="judgeId" required>
-                  <SelectTrigger className="bg-white border-gray-200">
+                  <SelectTrigger className="bg-black/50 border-white/10">
                     <SelectValue placeholder="Select Judge" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
+                  <SelectContent className="bg-card border-white/10">
                     {users?.map(u => (
                       <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>
                     ))}
@@ -84,12 +84,12 @@ export default function Scorecards() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground">Total Score (0-100)</Label>
-                <Input type="number" name="totalScore" min="0" max="100" required className="bg-white border-gray-200" />
+                <Label>Total Score (0-100)</Label>
+                <Input type="number" name="totalScore" min="0" max="100" required className="bg-black/50 border-white/10" />
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground">Remarks</Label>
-                <Textarea name="remarks" className="bg-white border-gray-200" placeholder="Feedback notes..." />
+                <Label>Remarks</Label>
+                <Textarea name="remarks" className="bg-black/50 border-white/10" placeholder="Feedback notes..." />
               </div>
               <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Evaluation"}
@@ -104,26 +104,26 @@ export default function Scorecards() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {scorecards?.map(score => (
-            <Card key={score.id} className="p-6 border-gray-200 bg-white shadow-sm hover-elevate">
+            <Card key={score.id} className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <ClipboardCheck className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">App #{score.applicationId}</h4>
+                    <h4 className="font-semibold text-white">App #{score.applicationId}</h4>
                     <p className="text-xs text-muted-foreground">Judge #{score.judgeId}</p>
                   </div>
                 </div>
                 <div className="flex flex-col items-end">
-                  <span className="text-2xl font-display font-bold flex items-center gap-1">
+                  <span className="text-2xl font-display font-bold text-white flex items-center gap-1">
                     {score.totalScore} <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                   </span>
                   <span className="text-xs text-muted-foreground">/ 100</span>
                 </div>
               </div>
-              <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <p className="text-sm text-muted-foreground italic">"{score.remarks || "No remarks provided"}"</p>
+              <div className="bg-black/30 rounded-xl p-4 border border-white/5">
+                <p className="text-sm text-white/80 italic">"{score.remarks || "No remarks provided"}"</p>
               </div>
             </Card>
           ))}

@@ -40,7 +40,7 @@ export default function Mentorship() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold mb-2">Mentorship</h1>
+          <h1 className="text-4xl font-display font-bold text-white mb-2">Mentorship</h1>
           <p className="text-muted-foreground text-lg">Connect startups with expert guidance.</p>
         </div>
 
@@ -50,18 +50,18 @@ export default function Mentorship() {
               <Plus className="mr-2 h-4 w-4" /> Assign Mentor
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-white border-gray-200 shadow-xl">
+          <DialogContent className="bg-card border-white/10 text-white">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl">New Pairing</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label className="text-foreground">Startup</Label>
+                <Label>Startup</Label>
                 <Select name="startupId" required>
-                  <SelectTrigger className="bg-white border-gray-200">
+                  <SelectTrigger className="bg-white/50 border-black/70">
                     <SelectValue placeholder="Select Startup" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
+                  <SelectContent className="bg-card border-black/70">
                     {startups?.map(s => (
                       <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
                     ))}
@@ -69,12 +69,12 @@ export default function Mentorship() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label className="text-foreground">Mentor (User)</Label>
+                <Label>Mentor (User)</Label>
                 <Select name="mentorId" required>
-                  <SelectTrigger className="bg-white border-gray-200">
+                  <SelectTrigger className="bg-white/50 border-black/50">
                     <SelectValue placeholder="Select Mentor" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-200">
+                  <SelectContent className="bg-card border-black/70">
                     {users?.map(u => (
                       <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>
                     ))}
@@ -97,14 +97,14 @@ export default function Mentorship() {
             const startup = startups?.find(s => s.id === assignment.startupId);
             const mentor = users?.find(u => u.id === assignment.mentorId);
             return (
-              <Card key={assignment.id} className="p-6 border-gray-200 bg-white shadow-sm hover-elevate">
+              <Card key={assignment.id} className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">
                         {mentor?.name?.[0] || 'M'}
                       </div>
-                      <span className="font-semibold">{mentor?.name || `Mentor #${assignment.mentorId}`}</span>
+                      <span className="font-semibold text-white">{mentor?.name || `Mentor #${assignment.mentorId}`}</span>
                     </div>
                   </div>
                   
@@ -117,12 +117,12 @@ export default function Mentorship() {
                       <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
                         {startup?.name?.[0] || 'S'}
                       </div>
-                      <span className="font-semibold">{startup?.name || `Startup #${assignment.startupId}`}</span>
+                      <span className="font-semibold text-white">{startup?.name || `Startup #${assignment.startupId}`}</span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
+                <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center">
                   <span className="text-xs text-muted-foreground">
                     Assigned: {new Date(assignment.assignedDate!).toLocaleDateString()}
                   </span>
