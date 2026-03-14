@@ -58,10 +58,19 @@ export const evaluationCriteria = pgTable("evaluation_criteria", {
 
 export const scorecards = pgTable("scorecards", {
   id: serial("id").primaryKey(),
-  applicationId: integer("application_id").references(() => applications.id).notNull(),
-  judgeId: integer("judge_id").references(() => users.id).notNull(),
-  totalScore: integer("total_score"),
-  remarks: text("remarks"),
+  // Legacy fields (kept for backward compatibility with existing records)
+  applicationId: integer("application_id").references(() => applications.id),
+  judgeId: integer("judge_id").references(() => users.id),
+  totalScore: integer("total_score"), // superseded by `score`
+  remarks: text("remarks"),           // superseded by `feedback`
+  // New fields
+  startupName: text("startup_name"),
+  judgeName: text("judge_name"),
+  score: integer("score"),
+  feedback: text("feedback"),
+  evaluationDate: text("evaluation_date"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const mentorAssignments = pgTable("mentor_assignments", {

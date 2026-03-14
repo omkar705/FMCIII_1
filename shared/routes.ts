@@ -126,6 +126,14 @@ export const api = {
         200: z.array(z.custom<typeof scorecards.$inferSelect>()),
       }
     },
+    get: {
+      method: 'GET' as const,
+      path: '/api/scorecards/:id' as const,
+      responses: {
+        200: z.custom<typeof scorecards.$inferSelect>(),
+        404: errorSchemas.notFound,
+      }
+    },
     create: {
       method: 'POST' as const,
       path: '/api/scorecards' as const,

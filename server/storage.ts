@@ -32,6 +32,7 @@ export interface IStorage {
 
   // Scorecards
   getScorecards(): Promise<Scorecard[]>;
+  getScorecard(id: number): Promise<Scorecard | undefined>;
   createScorecard(scorecard: any): Promise<Scorecard>;
 
   // Mentor Assignments
@@ -107,6 +108,10 @@ export class DatabaseStorage implements IStorage {
 
   async getScorecards(): Promise<Scorecard[]> {
     return await db.select().from(scorecards);
+  }
+  async getScorecard(id: number): Promise<Scorecard | undefined> {
+    const [scorecard] = await db.select().from(scorecards).where(eq(scorecards.id, id));
+    return scorecard;
   }
   async createScorecard(scorecard: any): Promise<Scorecard> {
     const [newScorecard] = await db.insert(scorecards).values(scorecard).returning();
