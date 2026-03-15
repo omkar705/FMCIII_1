@@ -63,7 +63,7 @@ export default function KnowledgeBase() {
                 <Label className="text-[#015185]">Content</Label>
                 <Textarea name="content" required className="bg-white/50 border-black/30 min-h-[200px] font-sans text-black" placeholder="Write article content here..." />
               </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
+              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl bg-[#015185] hover:bg-[#014a7a]">
                 {isPending ? <Loader2 className="animate-spin" /> : "Publish Article"}
               </Button>
             </form>
