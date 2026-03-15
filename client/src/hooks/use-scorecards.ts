@@ -1,7 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@shared/routes";
-import { insertScorecardSchema } from "@shared/schema";
-import { z } from "zod";
 
 export function useScorecards() {
   return useQuery({
@@ -30,7 +28,14 @@ export function useScorecard(id: number | undefined) {
 export function useCreateScorecard() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: z.infer<typeof insertScorecardSchema>) => {
+    mutationFn: async (data: {
+      startupId: number;
+      startupName?: string;
+      judgeRefId: number;
+      judgeName?: string;
+      evaluationDate?: string;
+      status?: string;
+    }) => {
       console.log("[useCreateScorecard] Sending payload to", api.scorecards.create.path, data);
       const res = await fetch(api.scorecards.create.path, {
         method: api.scorecards.create.method,
@@ -51,5 +56,47 @@ export function useCreateScorecard() {
       return api.scorecards.create.responses[201].parse(await res.json());
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.scorecards.list.path] }),
+  });
+}
+
+export function useScorecardParameters(scorecardId: number | undefined) {
+  return useQuery({
+    queryKey: ["/api/scorecards", scorecardId, "parameters"],
+    enabled: scorecardId !== undefined,
+    queryFn: async () => {
+      const res = await fetch(`/api/scorecards/${scorecardId}/parameters`, { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch scorecard parameters");
+      return api.scorecards.listParameters.responses[200].parse(await res.json());
+    },
+  });
+}
+
+export function useUpsertScorecardParameter(scorecardId: number | undefined) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { parameterName: string; marks: number | null; maxMarks: number }) => {
+      const res = await fetch(`/api/scorecards/${scorecardId}/parameters`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+      if (!res.ok) {
+        let errorMessage = "Failed to save parameter";
+        try {
+          const errorBody = await res.json();
+          if (errorBody?.message) errorMessage = errorBody.message;
+        } catch {
+          // ignore
+        }
+        throw new Error(errorMessage);
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/scorecards", scorecardId, "parameters"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/scorecards", scorecardId] });
+      queryClient.invalidateQueries({ queryKey: [api.scorecards.list.path] });
+    },
   });
 }

@@ -1,9 +1,10 @@
 import { db } from "./db";
 import {
   users, startups, startupProfiles, applications,
-  evaluationCriteria, scorecards, mentorAssignments,
+  evaluationCriteria, scorecards, scorecardParameters, judges, mentorAssignments,
   fundings, knowledgeBase, roles, physicalAssets, assetBookings,
   type User, type Startup, type Application, type Scorecard,
+  type ScorecardParameter, type Judge,
   type MentorAssignment, type Funding, type KnowledgeBaseArticle, type Role,
   type EvaluationCriteria, type PhysicalAsset, type AssetBooking,
 } from "@shared/schema";
@@ -18,6 +19,12 @@ export interface IStorage {
 
   // Roles
   getRoles(): Promise<Role[]>;
+
+  // Judges
+  getJudges(): Promise<Judge[]>;
+  getJudge(id: number): Promise<Judge | undefined>;
+  createJudge(judge: any): Promise<Judge>;
+  updateJudge(id: number, updates: any): Promise<Judge | undefined>;
 
   // Startups
   getStartups(): Promise<Startup[]>;
@@ -34,6 +41,11 @@ export interface IStorage {
   getScorecards(): Promise<Scorecard[]>;
   getScorecard(id: number): Promise<Scorecard | undefined>;
   createScorecard(scorecard: any): Promise<Scorecard>;
+  updateScorecard(id: number, updates: any): Promise<Scorecard | undefined>;
+
+  // Scorecard Parameters
+  getScorecardParameters(scorecardId: number): Promise<ScorecardParameter[]>;
+  upsertScorecardParameter(scorecardId: number, parameterName: string, marks: number | null, maxMarks: number): Promise<ScorecardParameter>;
 
   // Mentor Assignments
   getMentorAssignments(): Promise<MentorAssignment[]>;
@@ -76,6 +88,22 @@ export class DatabaseStorage implements IStorage {
 
   async getRoles(): Promise<Role[]> {
     return await db.select().from(roles);
+  }
+
+  async getJudges(): Promise<Judge[]> {
+    return await db.select().from(judges);
+  }
+  async getJudge(id: number): Promise<Judge | undefined> {
+    const [judge] = await db.select().from(judges).where(eq(judges.id, id));
+    return judge;
+  }
+  async createJudge(judge: any): Promise<Judge> {
+    const [newJudge] = await db.insert(judges).values(judge).returning();
+    return newJudge;
+  }
+  async updateJudge(id: number, updates: any): Promise<Judge | undefined> {
+    const [updated] = await db.update(judges).set(updates).where(eq(judges.id, id)).returning();
+    return updated;
   }
 
   async getStartups(): Promise<Startup[]> {
@@ -124,6 +152,30 @@ async getStartupById(id: number) {
   async createScorecard(scorecard: any): Promise<Scorecard> {
     const [newScorecard] = await db.insert(scorecards).values(scorecard).returning();
     return newScorecard;
+  }
+  async updateScorecard(id: number, updates: any): Promise<Scorecard | undefined> {
+    const [updated] = await db.update(scorecards).set({ ...updates, updatedAt: new Date() }).where(eq(scorecards.id, id)).returning();
+    return updated;
+  }
+
+  async getScorecardParameters(scorecardId: number): Promise<ScorecardParameter[]> {
+    return await db.select().from(scorecardParameters).where(eq(scorecardParameters.scorecardId, scorecardId));
+  }
+  async upsertScorecardParameter(scorecardId: number, parameterName: string, marks: number | null, maxMarks: number): Promise<ScorecardParameter> {
+    const existing = await db.select().from(scorecardParameters)
+      .where(eq(scorecardParameters.scorecardId, scorecardId));
+    const found = existing.find(p => p.parameterName === parameterName);
+    if (found) {
+      const [updated] = await db.update(scorecardParameters)
+        .set({ marks, maxMarks })
+        .where(eq(scorecardParameters.id, found.id))
+        .returning();
+      return updated;
+    }
+    const [created] = await db.insert(scorecardParameters)
+      .values({ scorecardId, parameterName, marks, maxMarks })
+      .returning();
+    return created;
   }
 
   async getMentorAssignments(): Promise<MentorAssignment[]> {

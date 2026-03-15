@@ -2,6 +2,12 @@ import { pgTable, text, serial, integer, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+export const judges = pgTable("judges", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const roles = pgTable("roles", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -83,11 +89,21 @@ export const scorecards = pgTable("scorecards", {
   startupId: integer("startup_id").references(() => startups.id),
   startupName: text("startup_name"),
   judgeName: text("judge_name"),
+  judgeRefId: integer("judge_ref_id").references(() => judges.id),
   score: integer("score"),
   feedback: text("feedback"),
   evaluationDate: text("evaluation_date"),
+  status: text("status").default("pending"), // pending | in_progress | completed
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const scorecardParameters = pgTable("scorecard_parameters", {
+  id: serial("id").primaryKey(),
+  scorecardId: integer("scorecard_id").references(() => scorecards.id).notNull(),
+  parameterName: text("parameter_name").notNull(),
+  marks: integer("marks"),
+  maxMarks: integer("max_marks").notNull().default(15),
 });
 
 export const mentorAssignments = pgTable("mentor_assignments", {
@@ -140,6 +156,8 @@ export const insertStartupSchema = createInsertSchema(startups).omit({ id: true 
 export const insertStartupProfileSchema = createInsertSchema(startupProfiles).omit({ id: true });
 export const insertApplicationSchema = createInsertSchema(applications).omit({ id: true, submittedAt: true });
 export const insertScorecardSchema = createInsertSchema(scorecards).omit({ id: true });
+export const insertScorecardParameterSchema = createInsertSchema(scorecardParameters).omit({ id: true });
+export const insertJudgeSchema = createInsertSchema(judges).omit({ id: true });
 export const insertMentorAssignmentSchema = createInsertSchema(mentorAssignments).omit({ id: true, assignedDate: true });
 export const insertFundingSchema = createInsertSchema(fundings).omit({ id: true, fundingDate: true });
 export const insertKnowledgeBaseSchema = createInsertSchema(knowledgeBase).omit({ id: true, createdAt: true });
@@ -153,6 +171,8 @@ export type Startup = typeof startups.$inferSelect;
 export type StartupProfile = typeof startupProfiles.$inferSelect;
 export type Application = typeof applications.$inferSelect;
 export type Scorecard = typeof scorecards.$inferSelect;
+export type ScorecardParameter = typeof scorecardParameters.$inferSelect;
+export type Judge = typeof judges.$inferSelect;
 export type MentorAssignment = typeof mentorAssignments.$inferSelect;
 export type Funding = typeof fundings.$inferSelect;
 export type KnowledgeBaseArticle = typeof knowledgeBase.$inferSelect;

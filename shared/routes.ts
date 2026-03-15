@@ -4,6 +4,8 @@ import {
   insertStartupSchema, startups,
   insertApplicationSchema, applications,
   insertScorecardSchema, scorecards,
+  insertScorecardParameterSchema, scorecardParameters,
+  insertJudgeSchema, judges,
   insertMentorAssignmentSchema, mentorAssignments,
   insertFundingSchema, fundings,
   insertKnowledgeBaseSchema, knowledgeBase,
@@ -142,7 +144,64 @@ export const api = {
         201: z.custom<typeof scorecards.$inferSelect>(),
         400: errorSchemas.validation,
       }
-    }
+    },
+    update: {
+      method: 'PATCH' as const,
+      path: '/api/scorecards/:id' as const,
+      input: insertScorecardSchema.partial(),
+      responses: {
+        200: z.custom<typeof scorecards.$inferSelect>(),
+        400: errorSchemas.validation,
+        404: errorSchemas.notFound,
+      }
+    },
+    listParameters: {
+      method: 'GET' as const,
+      path: '/api/scorecards/:id/parameters' as const,
+      responses: {
+        200: z.array(z.custom<typeof scorecardParameters.$inferSelect>()),
+      }
+    },
+    upsertParameter: {
+      method: 'PUT' as const,
+      path: '/api/scorecards/:id/parameters' as const,
+      input: z.object({
+        parameterName: z.string(),
+        marks: z.number().nullable(),
+        maxMarks: z.number().default(15),
+      }),
+      responses: {
+        200: z.custom<typeof scorecardParameters.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    },
+  },
+  judges: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/judges' as const,
+      responses: {
+        200: z.array(z.custom<typeof judges.$inferSelect>()),
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/judges' as const,
+      input: insertJudgeSchema,
+      responses: {
+        201: z.custom<typeof judges.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    },
+    update: {
+      method: 'PATCH' as const,
+      path: '/api/judges/:id' as const,
+      input: insertJudgeSchema.partial(),
+      responses: {
+        200: z.custom<typeof judges.$inferSelect>(),
+        404: errorSchemas.notFound,
+      }
+    },
   },
   mentorAssignments: {
     list: {

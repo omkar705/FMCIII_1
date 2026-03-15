@@ -1,27 +1,41 @@
 import { useParams, useLocation } from "wouter";
 import { Shell } from "@/components/layout/Shell";
-import { useScorecard } from "@/hooks/use-scorecards";
+import { useScorecard, useScorecardParameters, useUpsertScorecardParameter } from "@/hooks/use-scorecards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { startups } from "@/data/startups";
+import { Input } from "@/components/ui/input";
 import {
   getScorecardStartupName,
   getScorecardJudgeName,
-  getScorecardScore,
-  getScorecardFeedback,
 } from "@/lib/scorecard-utils";
+import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft,
   ClipboardCheck,
-  Star,
-  MessageSquare,
   BarChart3,
   CalendarDays,
   User,
   Building2,
   AlertCircle,
+  Save,
+  CheckCircle2,
+  Clock,
 } from "lucide-react";
+import { useState, useEffect } from "react";
+
+const PARAMETERS = [
+  { name: "Innovation", maxMarks: 15 },
+  { name: "Business Model", maxMarks: 15 },
+  { name: "Scalability", maxMarks: 15 },
+  { name: "UI/UX", maxMarks: 15 },
+  { name: "Technical Feasibility", maxMarks: 15 },
+  { name: "Market Potential", maxMarks: 15 },
+  { name: "Presentation", maxMarks: 10 },
+];
+
+const MAX_TOTAL = PARAMETERS.reduce((sum, p) => sum + p.maxMarks, 0);
 
 function DetailSkeleton() {
   return (
@@ -43,32 +57,88 @@ function DetailSkeleton() {
   );
 }
 
-function ScoreBadge({ score }: { score: number | null | undefined }) {
-  const value = score ?? 0;
-  const color =
-    value >= 80
-      ? "bg-green-500/20 text-green-400 border-green-500/30"
-      : value >= 60
-        ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-        : "bg-red-500/20 text-red-400 border-red-500/30";
-
+function StatusBadge({ status }: { status: string | null | undefined }) {
+  const s = status ?? "pending";
+  if (s === "completed") {
+    return (
+      <Badge className="bg-green-500/20 text-green-400 border-green-500/30 gap-1">
+        <CheckCircle2 className="h-3 w-3" /> Completed
+      </Badge>
+    );
+  }
+  if (s === "in_progress") {
+    return (
+      <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 gap-1">
+        <Clock className="h-3 w-3" /> In Progress
+      </Badge>
+    );
+  }
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-lg font-bold border ${color}`}
-    >
-      {value}
-      <Star className="h-4 w-4 fill-current" />
-      <span className="text-sm font-normal opacity-70">/ 100</span>
-    </span>
+    <Badge className="bg-slate-500/20 text-slate-400 border-slate-500/30 gap-1">
+      <AlertCircle className="h-3 w-3" /> Pending Evaluation
+    </Badge>
   );
 }
 
 export default function ScorecardDetail() {
   const params = useParams<{ scorecardId: string }>();
   const [, navigate] = useLocation();
+  const { toast } = useToast();
 
   const numericId = params.scorecardId ? parseInt(params.scorecardId) : undefined;
-  const { data: scorecard, isLoading } = useScorecard(isNaN(numericId ?? NaN) ? undefined : numericId);
+  const scorecardId = isNaN(numericId ?? NaN) ? undefined : numericId;
+
+  const { data: scorecard, isLoading } = useScorecard(scorecardId);
+  const { data: parameters, isLoading: paramsLoading } = useScorecardParameters(scorecardId);
+  const { mutateAsync: upsertParam, isPending: isSaving } = useUpsertScorecardParameter(scorecardId);
+
+  // Local state for marks input (parameterName -> marks string)
+  const [localMarks, setLocalMarks] = useState<Record<string, string>>({});
+  const [savingParam, setSavingParam] = useState<string | null>(null);
+
+  // Sync local marks from fetched parameters
+  useEffect(() => {
+    if (parameters) {
+      const initial: Record<string, string> = {};
+      parameters.forEach((p) => {
+        if (p.marks !== null && p.marks !== undefined) {
+          initial[p.parameterName] = String(p.marks);
+        }
+      });
+      setLocalMarks(initial);
+    }
+  }, [parameters]);
+
+  const getParamMarks = (name: string): number | null => {
+    const p = parameters?.find((x) => x.parameterName === name);
+    return p?.marks ?? null;
+  };
+
+  const finalScore = PARAMETERS.reduce((sum, p) => {
+    const marks = getParamMarks(p.name);
+    return sum + (marks ?? 0);
+  }, 0);
+
+  const filledCount = PARAMETERS.filter((p) => getParamMarks(p.name) !== null).length;
+
+  const handleSaveParam = async (paramName: string, maxMarks: number) => {
+    const rawVal = localMarks[paramName];
+    if (rawVal === undefined || rawVal === "") return;
+    const num = Number(rawVal);
+    if (isNaN(num) || num < 0 || num > maxMarks) {
+      toast({ title: "Invalid marks", description: `Marks must be between 0 and ${maxMarks}`, variant: "destructive" });
+      return;
+    }
+    setSavingParam(paramName);
+    try {
+      await upsertParam({ parameterName: paramName, marks: num, maxMarks });
+      toast({ title: "Saved", description: `${paramName} marks saved.` });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } finally {
+      setSavingParam(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -100,13 +170,6 @@ export default function ScorecardDetail() {
 
   const displayStartupName = getScorecardStartupName(scorecard);
   const displayJudgeName = getScorecardJudgeName(scorecard);
-  const displayScore = getScorecardScore(scorecard);
-  const displayFeedback = getScorecardFeedback(scorecard);
-
-  // Try to find matching startup from static data for extra info
-  const startupInfo = startups.find(
-    (s) => s.name.toLowerCase() === (scorecard.startupName ?? "").toLowerCase()
-  );
 
   return (
     <Shell>
@@ -135,7 +198,19 @@ export default function ScorecardDetail() {
             </p>
           </div>
         </div>
-        <ScoreBadge score={displayScore} />
+        <div className="flex items-center gap-3">
+          <StatusBadge status={scorecard.status} />
+          <span className="text-2xl font-display font-bold text-white">
+            {filledCount > 0 ? (
+              <>
+                <span className="text-primary">{finalScore}</span>
+                <span className="text-muted-foreground text-lg"> / {MAX_TOTAL}</span>
+              </>
+            ) : (
+              <span className="text-muted-foreground text-lg">—</span>
+            )}
+          </span>
+        </div>
       </div>
 
       {/* Cards */}
@@ -150,8 +225,10 @@ export default function ScorecardDetail() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b border-white/5">
-              <span className="text-muted-foreground text-sm">Score</span>
-              <ScoreBadge score={displayScore} />
+              <span className="text-muted-foreground text-sm">Final Score</span>
+              <span className="text-white font-bold">
+                {filledCount > 0 ? `${finalScore} / ${MAX_TOTAL}` : "—"}
+              </span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Judge</span>
@@ -160,6 +237,10 @@ export default function ScorecardDetail() {
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Startup</span>
               <span className="text-white font-medium">{displayStartupName}</span>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b border-white/5">
+              <span className="text-muted-foreground text-sm">Status</span>
+              <StatusBadge status={scorecard.status} />
             </div>
             {scorecard.evaluationDate && (
               <div className="flex justify-between items-center py-2">
@@ -172,52 +253,66 @@ export default function ScorecardDetail() {
           </CardContent>
         </Card>
 
-        {/* Judge Feedback */}
+        {/* Parameter Evaluation */}
         <Card className="border-white/5 bg-card/60 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-primary" />
-              Judge Feedback
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-black/30 rounded-xl p-4 border border-white/5 min-h-[100px]">
-              <p className="text-white/80 italic leading-relaxed">
-                "{displayFeedback || "No feedback provided."}"
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Startup Info */}
-        <Card className="border-white/5 bg-card/60 backdrop-blur-xl md:col-span-2">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
               <Building2 className="h-5 w-5 text-primary" />
-              Startup Info
+              Parameter Evaluation
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-black/20 rounded-xl p-4 border border-white/5">
-                <p className="text-xs text-muted-foreground mb-1">Domain</p>
-                <p className="text-white font-medium">{startupInfo?.domain ?? "—"}</p>
+            {paramsLoading ? (
+              <div className="flex justify-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
               </div>
-              <div className="bg-black/20 rounded-xl p-4 border border-white/5">
-                <p className="text-xs text-muted-foreground mb-1">Stage</p>
-                <p className="text-white font-medium">{startupInfo?.stage ?? "—"}</p>
+            ) : (
+              <div className="space-y-3">
+                {PARAMETERS.map((param) => {
+                  const savedMarks = getParamMarks(param.name);
+                  const localVal = localMarks[param.name] ?? (savedMarks !== null ? String(savedMarks) : "");
+                  const isSavingThis = savingParam === param.name;
+                  return (
+                    <div key={param.name} className="flex items-center gap-3">
+                      <span className="flex-1 text-sm text-white/80 min-w-0 truncate">{param.name}</span>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <Input
+                          type="number"
+                          min={0}
+                          max={param.maxMarks}
+                          value={localVal}
+                          onChange={(e) =>
+                            setLocalMarks((prev) => ({ ...prev, [param.name]: e.target.value }))
+                          }
+                          className="w-16 h-8 text-center bg-black/50 border-white/10 text-sm p-1"
+                          placeholder="—"
+                        />
+                        <span className="text-xs text-muted-foreground">/{param.maxMarks}</span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 w-8 p-0 text-primary hover:text-primary/80"
+                          disabled={isSavingThis || isSaving}
+                          onClick={() => handleSaveParam(param.name, param.maxMarks)}
+                        >
+                          {isSavingThis ? (
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-primary" />
+                          ) : (
+                            <Save className="h-3.5 w-3.5" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="pt-3 mt-3 border-t border-white/10 flex justify-between items-center">
+                  <span className="text-sm font-semibold text-white">Final Score</span>
+                  <span className="text-lg font-display font-bold text-primary">
+                    {filledCount > 0 ? `${finalScore} / ${MAX_TOTAL}` : "—"}
+                  </span>
+                </div>
               </div>
-              <div className="bg-black/20 rounded-xl p-4 border border-white/5">
-                <p className="text-xs text-muted-foreground mb-1">Team Size</p>
-                <p className="text-white font-medium">
-                  {startupInfo ? `${startupInfo.teamSize} members` : "—"}
-                </p>
-              </div>
-              <div className="bg-black/20 rounded-xl p-4 border border-white/5">
-                <p className="text-xs text-muted-foreground mb-1">Location</p>
-                <p className="text-white font-medium">{startupInfo?.location ?? "—"}</p>
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </div>
