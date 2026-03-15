@@ -103,7 +103,7 @@ export default function Funding() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
+              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl bg-[#015185] hover:bg-[#013f66]">
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Record"}
               </Button>
             </form>
