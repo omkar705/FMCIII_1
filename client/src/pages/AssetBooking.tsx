@@ -215,7 +215,7 @@ export default function AssetBooking() {
                   <div className="space-y-2">
                     <Label className="text-[#015185]">Asset</Label>
                     <Select name="assetId" required value={selectedAssetId} onValueChange={setSelectedAssetId}>
-                      <SelectTrigger className="bg-white/50 border-black/30">
+                      <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
                         <SelectValue placeholder="Select asset" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-white/10">
@@ -258,7 +258,7 @@ export default function AssetBooking() {
                   </div>
                   <div className="space-y-2">
                     <Label className="text-[#015185]">Purpose</Label>
-                    <Textarea name="purpose" className="bg-white/50 border-black/30" placeholder="What will you use it for?" />
+                    <Textarea name="purpose" className="bg-white/50 border-black/30 text-[#015185]" placeholder="What will you use it for?" />
                   </div>
                   <Button type="submit" disabled={bookingPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
                     {bookingPending ? <Loader2 className="animate-spin" /> : "Confirm Booking"}
@@ -361,7 +361,7 @@ export default function AssetBooking() {
                               <div key={b.id} className="flex items-center justify-between bg-white/5 rounded-xl px-4 py-2.5">
                                 <div className="flex items-center gap-3 text-sm">
                                   <Clock className="h-4 w-4 text-muted-foreground" />
-                                  <span className="text-white font-medium">{b.startTime} – {b.endTime}</span>
+                                  <span className="text-[#015185] font-medium">{b.startTime} – {b.endTime}</span>
                                   {isAdmin && (
                                     <span className="text-muted-foreground">· {getUserName(b.bookedBy)}</span>
                                   )}
