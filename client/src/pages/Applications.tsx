@@ -43,7 +43,7 @@ export default function Applications() {
 
       {user?.roleId === 1 && (
         <div className="bg-white/20 rounded-3xl p-6 border border-black/50">
-          <KanbanBoard
+          <KanbanBoard 
             applications={applications || []}
             startups={startups || []}
             onStatusChange={(id, status) => updateStatus({ id, status })}
