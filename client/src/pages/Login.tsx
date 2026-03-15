@@ -49,31 +49,31 @@ export default function Login() {
           <h1 className="text-3xl font-display font-bold text-white text-center tracking-tight mb-2">
             FMCIII Portal
           </h1>
-          <p className="text-muted-foreground text-center">Sign in to manage your incubator</p>
+          <p className="text-muted-foreground text-center"></p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label className="text-[#015185]/80">Email Address</Label>
+            <Label className="text-[#015185]">Email Address</Label>
             <Input 
               type="email" 
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="bg-white/40 border-black/80 focus:border-primary text-black h-12 rounded-xl"
-              placeholder="admin@fmciii.com"
+              className="bg-white/50 border-black/30 focus:border-primary text-[#015185] h-12 rounded-xl"
+             
             />
           </div>
           
           <div className="space-y-2">
-            <Label className="text-[#015185]/80">Password</Label>
+            <Label className="text-[#015185]">Password</Label>
             <Input 
               type="password" 
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="bg-white/40 border-black/80 focus:border-primary text-black h-12 rounded-xl"
-              placeholder="••••••••"
+              className="bg-white/50 border-black/30 focus:border-primary text-[#015185] h-12 rounded-xl"
+              
             />
           </div>
 

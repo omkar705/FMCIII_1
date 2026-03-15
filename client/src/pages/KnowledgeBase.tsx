@@ -46,7 +46,7 @@ export default function KnowledgeBase() {
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button className="rounded-xl h-11 px-6 bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-900/20">
+            <Button className="rounded-xl h-11 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-purple-900/20">
               <Plus className="mr-2 h-4 w-4" /> New Article
             </Button>
           </DialogTrigger>
@@ -56,14 +56,14 @@ export default function KnowledgeBase() {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label>Title</Label>
-                <Input name="title" required className="bg-black/50 border-white/10 font-medium" placeholder="e.g. How to prepare for Series A" />
+                <Label className="text-[#015185]">Title</Label>
+                <Input name="title" required className="bg-white/50 border-black/30 font-medium" placeholder="e.g. How to prepare for Series A" />
               </div>
               <div className="space-y-2">
-                <Label>Content</Label>
-                <Textarea name="content" required className="bg-black/50 border-white/10 min-h-[200px] font-sans" placeholder="Write article content here..." />
+                <Label className="text-[#015185]">Content</Label>
+                <Textarea name="content" required className="bg-white/50 border-black/30 min-h-[200px] font-sans" placeholder="Write article content here..." />
               </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl bg-purple-600 hover:bg-purple-700">
+              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
                 {isPending ? <Loader2 className="animate-spin" /> : "Publish Article"}
               </Button>
             </form>

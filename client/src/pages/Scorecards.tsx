@@ -162,9 +162,9 @@ export default function Scorecards() {
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               {/* Startup dropdown */}
               <div className="space-y-2">
-                <Label>Startup</Label>
+                <Label className="text-[#015185]">Startup</Label>
                 {startupsLoading ? (
-                  <div className="flex items-center gap-2 h-9 px-3 rounded-md border border-white/10 bg-black/50 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2 h-9 px-3 rounded-md border border-black/30 bg-white/50 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" /> Loading startups…
                   </div>
                 ) : (

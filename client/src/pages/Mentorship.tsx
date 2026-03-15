@@ -50,7 +50,7 @@ export default function Mentorship() {
               <Plus className="mr-2 h-4 w-4" /> Assign Mentor
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-card border-white/10 text-white">
+          <DialogContent className="bg-card border-white/10 text-[#015185]">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl">New Pairing</DialogTitle>
             </DialogHeader>
