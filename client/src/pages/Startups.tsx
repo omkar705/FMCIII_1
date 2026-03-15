@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { useStartups, useCreateStartup } from "@/hooks/use-startups";
-import { startups as sampleStartups } from "@/data/startups";
+// import { startups as sampleStartups } from "@/data/startups";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,22 +60,22 @@ function handleStartupClick(id: number) {
               <Plus className="mr-2 h-4 w-4" /> Add Startup
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px] bg-card border-white/10 text-white">
+          <DialogContent className="sm:max-w-[500px] bg-card border-white/10 text-[#015185]">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl">New Startup</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="space-y-2">
                 <Label>Company Name</Label>
-                <Input name="name" required className="bg-black/50 border-white/10" placeholder="e.g. Acme Corp" />
+                <Input name="name" required className="bg-white/50 border-black/70" placeholder="e.g. Acme Corp" />
               </div>
               <div className="space-y-2">
                 <Label>Industry / Domain</Label>
-                <Input name="domain" className="bg-black/50 border-white/10" placeholder="e.g. FinTech, AI, SaaS" />
+                <Input name="domain" className="bg-white/50 border-black/70" placeholder="e.g. FinTech, AI, SaaS" />
               </div>
               <div className="space-y-2">
                 <Label>Description</Label>
-                <Textarea name="description" className="bg-black/50 border-white/10 min-h-[100px]" placeholder="Brief pitch..." />
+                <Textarea name="description" className="bg-white/50 border-black/70 min-h-[100px]" placeholder="Brief pitch..." />
               </div>
               <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Company"}

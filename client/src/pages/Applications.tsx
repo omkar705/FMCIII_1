@@ -33,12 +33,16 @@ export default function Applications() {
           <p className="text-muted-foreground text-lg">Manage application lifecycle.</p>
         </div>
 
-        {/* Always navigate to the full application form */}
-        {/* <Link href="/applications/new">
+        <div>
+        {user?.roleId === 2 && (
+          <Link href="/applications/new">
           <Button className="rounded-xl h-11 px-6">
             <Plus className="mr-2 h-4 w-4" /> New Application
           </Button>
-        </Link> */}
+        </Link>
+        )}
+        </div>
+        
       </div>
 
       {user?.roleId === 1 && (

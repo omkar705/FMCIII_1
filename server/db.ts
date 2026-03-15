@@ -6,6 +6,7 @@ import * as schema from "@shared/schema";
 const { Pool } = pg;
 
 console.log(process.env.DATABASE_URL);
+console.log(process.env.DATABASE_URL);
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
