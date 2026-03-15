@@ -177,10 +177,10 @@ export default function Scorecards() {
                     }}
                     required
                   >
-                    <SelectTrigger className="bg-black/50 border-white/10 text-white">
+                    <SelectTrigger className="bg-white/50 border-black/80 text-[#015185]">
                       <SelectValue placeholder="Select a startup" />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-white/10 text-white">
+                    <SelectContent className="bg-card border-white/10 text-[#015185]">
                       {startups?.map((startup) => (
                         <SelectItem key={startup.id} value={String(startup.id)}>
                           {startup.name}
@@ -211,10 +211,10 @@ export default function Scorecards() {
                     }}
                     required
                   >
-                    <SelectTrigger className="bg-black/50 border-white/10 text-white">
+                    <SelectTrigger className="bg-white/50 border-black/80 text-[#015185]">
                       <SelectValue placeholder="Select a judge" />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-white/10 text-white">
+                    <SelectContent className="bg-card border-white/10 text-[#015185]">
                       {judges?.map((judge) => (
                         <SelectItem key={judge.id} value={String(judge.id)}>
                           {judge.name}
@@ -236,7 +236,7 @@ export default function Scorecards() {
                   name="evaluationDate"
                   value={evaluationDate}
                   onChange={(e) => setEvaluationDate(e.target.value)}
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/80 text-[#013f69] w-full"
                 />
               </div>
 
@@ -274,10 +274,10 @@ export default function Scorecards() {
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     {displayScore !== null && displayScore !== undefined ? (
-                      <span className="text-xl font-display font-bold text-white flex items-center gap-1">
+                      <span className="text font-display  text-[#015185] flex items-center gap-1">
                         <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                         {displayScore}
-                        <span className="text-xs text-muted-foreground font-normal">/ 100</span>
+                        <span className="text  text-[#015185] font-normal">/ 100</span>
                       </span>
                     ) : (
                       <span className="text-sm text-muted-foreground italic">Not scored</span>

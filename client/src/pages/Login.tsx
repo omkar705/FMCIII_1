@@ -54,25 +54,25 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label className="text-white/80">Email Address</Label>
+            <Label className="text-[#015185]/80">Email Address</Label>
             <Input 
               type="email" 
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="bg-black/40 border-white/10 focus:border-primary text-white h-12 rounded-xl"
+              className="bg-white/40 border-black/80 focus:border-primary text-black h-12 rounded-xl"
               placeholder="admin@fmciii.com"
             />
           </div>
           
           <div className="space-y-2">
-            <Label className="text-white/80">Password</Label>
+            <Label className="text-[#015185]/80">Password</Label>
             <Input 
               type="password" 
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="bg-black/40 border-white/10 focus:border-primary text-white h-12 rounded-xl"
+              className="bg-white/40 border-black/80 focus:border-primary text-black h-12 rounded-xl"
               placeholder="••••••••"
             />
           </div>
@@ -87,7 +87,7 @@ export default function Login() {
         </form>
         
         <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-muted-foreground">
-          <p>Demo Credentials: admin@fmciii.com / password</p>
+          <p>Demo Credentials: admin@fmciii.com / password123</p>
         </div>
       </Card>
     </div>

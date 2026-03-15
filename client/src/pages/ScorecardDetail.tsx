@@ -35,6 +35,8 @@ const PARAMETERS = [
   { name: "Presentation", maxMarks: 10 },
 ];
 
+
+
 const MAX_TOTAL = PARAMETERS.reduce((sum, p) => sum + p.maxMarks, 0);
 
 function DetailSkeleton() {
@@ -46,7 +48,7 @@ function DetailSkeleton() {
         <div className="space-y-2">
           <Skeleton className="h-8 w-56 rounded-lg bg-white/10" />
           <Skeleton className="h-5 w-36 rounded-lg bg-white/10" />
-        </div>
+        </div>  
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {[...Array(3)].map((_, i) => (
@@ -177,7 +179,7 @@ export default function ScorecardDetail() {
       <Button
         variant="ghost"
         onClick={() => navigate("/scorecards")}
-        className="mb-6 -ml-2 text-muted-foreground hover:text-white"
+        className="mb-6 -ml-2 text-muted-foreground"
       >
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Scorecards
       </Button>
@@ -189,7 +191,7 @@ export default function ScorecardDetail() {
             <ClipboardCheck className="h-8 w-8 text-primary" />
           </div>
           <div>
-            <h1 className="text-3xl md:text-4xl font-display font-bold text-white leading-tight">
+            <h1 className="text-3xl md:text-4xl font-display font-bold text-[#015185] leading-tight">
               {displayStartupName}
             </h1>
             <p className="text-muted-foreground mt-1 flex items-center gap-2">
@@ -200,10 +202,10 @@ export default function ScorecardDetail() {
         </div>
         <div className="flex items-center gap-3">
           <StatusBadge status={scorecard.status} />
-          <span className="text-2xl font-display font-bold text-white">
+          <span className="text-2xl font-display font-bold text-[#015185]">
             {filledCount > 0 ? (
               <>
-                <span className="text-primary">{finalScore}</span>
+                <span className="text-[#015185]">{finalScore}</span>
                 <span className="text-muted-foreground text-lg"> / {MAX_TOTAL}</span>
               </>
             ) : (
@@ -218,7 +220,7 @@ export default function ScorecardDetail() {
         {/* Evaluation Summary */}
         <Card className="border-white/5 bg-card/60 backdrop-blur-xl">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-[#015185] flex items-center gap-2">
               <BarChart3 className="h-5 w-5 text-primary" />
               Evaluation Summary
             </CardTitle>
@@ -226,17 +228,17 @@ export default function ScorecardDetail() {
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Final Score</span>
-              <span className="text-white font-bold">
+              <span className="text-[#015185] font-bold">
                 {filledCount > 0 ? `${finalScore} / ${MAX_TOTAL}` : "—"}
               </span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Judge</span>
-              <span className="text-white font-medium">{displayJudgeName}</span>
+              <span className="text-[#015185] font-medium">{displayJudgeName}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Startup</span>
-              <span className="text-white font-medium">{displayStartupName}</span>
+              <span className="text-[#015185] font-medium">{displayStartupName}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Status</span>
@@ -247,7 +249,7 @@ export default function ScorecardDetail() {
                 <span className="text-muted-foreground text-sm flex items-center gap-1">
                   <CalendarDays className="h-3.5 w-3.5" /> Date
                 </span>
-                <span className="text-white font-medium">{scorecard.evaluationDate}</span>
+                <span className="text-[#015185] font-medium">{scorecard.evaluationDate}</span>
               </div>
             )}
           </CardContent>
@@ -256,7 +258,7 @@ export default function ScorecardDetail() {
         {/* Parameter Evaluation */}
         <Card className="border-white/5 bg-card/60 backdrop-blur-xl">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-[#015185] flex items-center gap-2">
               <Building2 className="h-5 w-5 text-primary" />
               Parameter Evaluation
             </CardTitle>
@@ -274,7 +276,7 @@ export default function ScorecardDetail() {
                   const isSavingThis = savingParam === param.name;
                   return (
                     <div key={param.name} className="flex items-center gap-3">
-                      <span className="flex-1 text-sm text-white/80 min-w-0 truncate">{param.name}</span>
+                      <span className="flex-1 text-sm text-[#015185] min-w-0 truncate">{param.name}</span>
                       <div className="flex items-center gap-1.5 shrink-0">
                         <Input
                           type="number"
@@ -284,7 +286,7 @@ export default function ScorecardDetail() {
                           onChange={(e) =>
                             setLocalMarks((prev) => ({ ...prev, [param.name]: e.target.value }))
                           }
-                          className="w-16 h-8 text-center bg-black/50 border-white/10 text-sm p-1"
+                          className="w-16 h-8 text-center bg-white/50 border-black/80 text-sm p-1"
                           placeholder="—"
                         />
                         <span className="text-xs text-muted-foreground">/{param.maxMarks}</span>
@@ -306,8 +308,8 @@ export default function ScorecardDetail() {
                   );
                 })}
                 <div className="pt-3 mt-3 border-t border-white/10 flex justify-between items-center">
-                  <span className="text-sm font-semibold text-white">Final Score</span>
-                  <span className="text-lg font-display font-bold text-primary">
+                  <span className="text-sm font-semibold text-[#015185]">Final Score</span>
+                  <span className="text-lg font-display font-bold text-[#015185]">
                     {filledCount > 0 ? `${finalScore} / ${MAX_TOTAL}` : "—"}
                   </span>
                 </div>

@@ -156,26 +156,26 @@ export default function AssetBooking() {
           {isAdmin && (
             <Dialog open={isAssetOpen} onOpenChange={setIsAssetOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="rounded-xl h-11 px-6 border-white/10 text-white hover:bg-white/5">
+                <Button variant="outline" className="rounded-xl h-11 px-6 border-black/70 text-[#015185] hover:bg-white/5">
                   <Plus className="mr-2 h-4 w-4" /> Add Asset
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-card border-white/10 text-white">
+              <DialogContent className="bg-card border-black/70 text-[#015185]">
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl">Add Physical Asset</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleAssetSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
                     <Label>Asset Name</Label>
-                    <Input name="name" required className="bg-black/50 border-white/10" placeholder="e.g. Conference Room A" />
+                    <Input name="name" required className="bg-white/50 border-black/70" placeholder="e.g. Conference Room A" />
                   </div>
                   <div className="space-y-2">
                     <Label>Type</Label>
                     <Select name="type" required>
-                      <SelectTrigger className="bg-black/50 border-white/10">
+                      <SelectTrigger className="bg-white/50 border-black/70">
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
-                      <SelectContent className="bg-card border-white/10">
+                      <SelectContent className="bg-card border-black/70">
                         <SelectItem value="meeting_room">Meeting Room</SelectItem>
                         <SelectItem value="lab_equipment">Lab Equipment</SelectItem>
                         <SelectItem value="hot_desk">Hot Desk</SelectItem>
@@ -184,11 +184,11 @@ export default function AssetBooking() {
                   </div>
                   <div className="space-y-2">
                     <Label>Description</Label>
-                    <Textarea name="description" className="bg-black/50 border-white/10" placeholder="Optional description..." />
+                    <Textarea name="description" className="bg-white/50 border-black/70" placeholder="Optional description..." />
                   </div>
                   <div className="space-y-2">
                     <Label>Capacity</Label>
-                    <Input name="capacity" type="number" min="1" className="bg-black/50 border-white/10" placeholder="e.g. 10" />
+                    <Input name="capacity" type="number" min="1" className="bg-white/50 border-black/70" placeholder="e.g. 10" />
                   </div>
                   <Button type="submit" disabled={assetPending} className="w-full h-11 rounded-xl">
                     {assetPending ? <Loader2 className="animate-spin" /> : "Add Asset"}
@@ -205,7 +205,7 @@ export default function AssetBooking() {
                   <Plus className="mr-2 h-4 w-4" /> Book Asset
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-card border-white/10 text-white">
+              <DialogContent className="bg-card border-black/70 text-white">
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl">Book an Asset</DialogTitle>
                 </DialogHeader>
@@ -213,10 +213,10 @@ export default function AssetBooking() {
                   <div className="space-y-2">
                     <Label>Asset</Label>
                     <Select name="assetId" required value={selectedAssetId} onValueChange={setSelectedAssetId}>
-                      <SelectTrigger className="bg-black/50 border-white/10">
+                      <SelectTrigger className="bg-white/50 border-black/70">
                         <SelectValue placeholder="Select asset" />
                       </SelectTrigger>
-                      <SelectContent className="bg-card border-white/10">
+                      <SelectContent className="bg-card border-black/70">
                         {assets?.map((a) => (
                           <SelectItem key={a.id} value={a.id.toString()}>
                             {a.name} — {ASSET_TYPE_LABELS[a.type] ?? a.type}
@@ -238,7 +238,7 @@ export default function AssetBooking() {
                       <Input
                         type="time"
                         required
-                        className="bg-black/50 border-white/10"
+                        className="bg-white/50 border-black/70"
                         value={bookingStartTime}
                         onChange={(e) => setBookingStartTime(e.target.value)}
                       />
@@ -248,7 +248,7 @@ export default function AssetBooking() {
                       <Input
                         type="time"
                         required
-                        className="bg-black/50 border-white/10"
+                        className="bg-white/50 border-black/70"
                         value={bookingEndTime}
                         onChange={(e) => setBookingEndTime(e.target.value)}
                       />
@@ -256,7 +256,7 @@ export default function AssetBooking() {
                   </div>
                   <div className="space-y-2">
                     <Label>Purpose</Label>
-                    <Textarea name="purpose" className="bg-black/50 border-white/10" placeholder="What will you use it for?" />
+                    <Textarea name="purpose" className="bg-white/50 border-black/70" placeholder="What will you use it for?" />
                   </div>
                   <Button type="submit" disabled={bookingPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
                     {bookingPending ? <Loader2 className="animate-spin" /> : "Confirm Booking"}
@@ -272,7 +272,7 @@ export default function AssetBooking() {
         <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-8 w-8" /></div>
       ) : (
         <Tabs defaultValue="calendar">
-          <TabsList className="mb-6 bg-white/5 border border-white/10">
+          <TabsList className="mb-6 bg-white/5 border border-black/70">
             <TabsTrigger value="calendar" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
               <CalendarDays className="h-4 w-4 mr-2" /> Calendar View
             </TabsTrigger>
@@ -310,7 +310,7 @@ export default function AssetBooking() {
                 </h3>
 
                 {assets?.length === 0 && (
-                  <div className="py-12 text-center border-2 border-dashed border-white/10 rounded-2xl">
+                  <div className="py-12 text-center border-2 border-dashed border-black/70 rounded-2xl">
                     <Building2 className="h-10 w-10 text-muted-foreground mx-auto mb-3 opacity-50" />
                     <p className="text-muted-foreground">No assets available yet.{isAdmin ? " Add an asset to get started." : ""}</p>
                   </div>
@@ -396,7 +396,7 @@ export default function AssetBooking() {
             <TabsContent value="all">
               <div className="space-y-4">
                 {bookings?.filter((b) => b.status === "confirmed").length === 0 && (
-                  <div className="py-16 text-center border-2 border-dashed border-white/10 rounded-2xl">
+                  <div className="py-16 text-center border-2 border-dashed border-black/70 rounded-2xl">
                     <CalendarDays className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
                     <h3 className="text-lg font-medium text-white">No bookings yet</h3>
                     <p className="text-muted-foreground mt-1">Incubatees will appear here once they make bookings.</p>
