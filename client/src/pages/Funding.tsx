@@ -59,12 +59,12 @@ export default function Funding() {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label>Startup</Label>
+                <Label className="text-[#015185]">Startup</Label>
                 <Select name="startupId" required>
-                  <SelectTrigger className="bg-white/50 border-black/30">
+                  <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
                     <SelectValue placeholder="Select Startup" />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10">
+                  <SelectContent className="bg-card border-white/10 text-[#015185]">
                     {startups?.map(s => (
                       <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
                     ))}
@@ -72,12 +72,12 @@ export default function Funding() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Investor</Label>
+                <Label className="text-[#015185]">Investor</Label>
                 <Select name="investorId" required>
-                  <SelectTrigger className="bg-white/50 border-black/30">
+                  <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
                     <SelectValue placeholder="Select Investor" />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10">
+                  <SelectContent className="bg-card border-white/10 text-[#015185]">
                     {users?.map(u => (
                       <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>
                     ))}
@@ -85,17 +85,17 @@ export default function Funding() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Amount (INR)</Label>
-                <Input type="number" name="amount" required className="bg-white/50 border-black/30" placeholder="500000" />
+                <Label className="text-[#015185]">Amount (INR)</Label>
+                <Input type="number" name="amount" required className="bg-white/50 border-black/30 text-[#015185]" placeholder="500000" />
               </div>
               <div className="space-y-2">
-                <Label>Funding Stage</Label>
+                <Label className="text-[#015185]">Funding Stage</Label>
                 <Select name="fundingType" required>
-                  <SelectTrigger className="bg-white/50 border-black/30">
+                  <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
                     <SelectValue placeholder="Select Stage" />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10">
-                    <SelectItem value="Pre-Seed">Pre-Seed</SelectItem>
+                  <SelectContent className="bg-card border-white/10 text-[#015185]">
+                    <SelectItem value="Pre-Seed" className="text-[#015185]">Pre-Seed</SelectItem>
                     <SelectItem value="Seed">Seed</SelectItem>
                     <SelectItem value="Series A">Series A</SelectItem>
                     <SelectItem value="Series B">Series B</SelectItem>
