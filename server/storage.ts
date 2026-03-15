@@ -42,6 +42,7 @@ export interface IStorage {
   getScorecard(id: number): Promise<Scorecard | undefined>;
   createScorecard(scorecard: any): Promise<Scorecard>;
   updateScorecard(id: number, updates: any): Promise<Scorecard | undefined>;
+  deleteScorecard(id: number): Promise<void>;
 
   // Scorecard Parameters
   getScorecardParameters(scorecardId: number): Promise<ScorecardParameter[]>;
@@ -156,6 +157,10 @@ async getStartupById(id: number) {
   async updateScorecard(id: number, updates: any): Promise<Scorecard | undefined> {
     const [updated] = await db.update(scorecards).set({ ...updates, updatedAt: new Date() }).where(eq(scorecards.id, id)).returning();
     return updated;
+  }
+  async deleteScorecard(id: number): Promise<void> {
+    await db.delete(scorecardParameters).where(eq(scorecardParameters.scorecardId, id));
+    await db.delete(scorecards).where(eq(scorecards.id, id));
   }
 
   async getScorecardParameters(scorecardId: number): Promise<ScorecardParameter[]> {

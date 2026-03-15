@@ -175,6 +175,14 @@ export const api = {
         400: errorSchemas.validation,
       }
     },
+    delete: {
+      method: 'DELETE' as const,
+      path: '/api/scorecards/:id' as const,
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        404: errorSchemas.notFound,
+      }
+    },
   },
   judges: {
     list: {

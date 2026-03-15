@@ -1,11 +1,22 @@
 import { Shell } from "@/components/layout/Shell";
-import { useScorecards, useCreateScorecard } from "@/hooks/use-scorecards";
+import { useScorecards, useCreateScorecard, useDeleteScorecard } from "@/hooks/use-scorecards";
 import { useStartups } from "@/hooks/use-startups";
 import { useJudges } from "@/hooks/use-judges";
+import { useAuth } from "@/hooks/use-auth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ClipboardCheck, Plus, Loader2, Star, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { ClipboardCheck, Plus, Loader2, Star, CheckCircle2, Clock, AlertCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
@@ -23,6 +34,7 @@ import {
   getScorecardStartupName,
   getScorecardJudgeName,
 } from "@/lib/scorecard-utils";
+import { ROLE_IDS } from "@/lib/roles";
 
 const getTodayDate = () => new Date().toISOString().split("T")[0];
 
@@ -54,8 +66,11 @@ function StatusBadge({ status }: { status: string | null | undefined }) {
 export default function Scorecards() {
   const { data: scorecards, isLoading: sLoading } = useScorecards();
   const { mutateAsync: createScorecard, isPending } = useCreateScorecard();
+  const { mutateAsync: deleteScorecard, isPending: isDeleting } = useDeleteScorecard();
   const { data: startups, isLoading: startupsLoading } = useStartups();
   const { data: judges, isLoading: judgesLoading } = useJudges();
+  const { user } = useAuth();
+  const isAdmin = user?.roleId === ROLE_IDS.ADMIN;
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const [, navigate] = useLocation();
@@ -67,6 +82,9 @@ export default function Scorecards() {
   const [selectedJudgeName, setSelectedJudgeName] = useState<string>("");
   const [evaluationDate, setEvaluationDate] = useState<string>(getTodayDate);
   const [submitted, setSubmitted] = useState(false);
+
+  // Delete state
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   const isSaveDisabled = !selectedStartupId || !selectedJudgeId || isPending;
 
@@ -105,6 +123,22 @@ export default function Scorecards() {
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (deleteTargetId === null) return;
+    try {
+      await deleteScorecard(deleteTargetId);
+      toast({ title: "Scorecard deleted", description: "The scorecard has been removed." });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } finally {
+      setDeleteTargetId(null);
+    }
+  };
+
+  const handleDeleteDialogChange = (open: boolean) => {
+    if (!open) setDeleteTargetId(null);
   };
 
   return (
@@ -241,7 +275,8 @@ export default function Scorecards() {
                   <div className="flex flex-col items-end gap-1">
                     {displayScore !== null && displayScore !== undefined ? (
                       <span className="text-xl font-display font-bold text-white flex items-center gap-1">
-                        {displayScore} <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                        <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                        {displayScore}
                         <span className="text-xs text-muted-foreground font-normal">/ 100</span>
                       </span>
                     ) : (
@@ -251,9 +286,24 @@ export default function Scorecards() {
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <StatusBadge status={sc.status} />
-                  {sc.evaluationDate && (
-                    <span className="text-xs text-muted-foreground">{sc.evaluationDate}</span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {sc.evaluationDate && (
+                      <span className="text-xs text-muted-foreground">{sc.evaluationDate}</span>
+                    )}
+                    {isAdmin && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeleteTargetId(sc.id);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </Card>
             );
@@ -266,6 +316,27 @@ export default function Scorecards() {
           )}
         </div>
       )}
+
+      <AlertDialog open={deleteTargetId !== null} onOpenChange={handleDeleteDialogChange}>
+        <AlertDialogContent className="bg-card border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Scorecard</AlertDialogTitle>
+            <AlertDialogDescription className="text-muted-foreground">
+              Are you sure you want to delete this scorecard? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="border-white/10 text-white hover:bg-white/10">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-white hover:bg-destructive/90"
+              onClick={handleDeleteConfirm}
+              disabled={isDeleting}
+            >
+              {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Shell>
   );
 }

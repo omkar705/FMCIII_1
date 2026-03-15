@@ -102,3 +102,27 @@ export function useUpsertScorecardParameter(scorecardId: number | undefined) {
     },
   });
 }
+
+export function useDeleteScorecard() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (scorecardId: number) => {
+      const res = await fetch(`/api/scorecards/${scorecardId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        let errorMessage = "Failed to delete scorecard";
+        try {
+          const errorBody = await res.json();
+          if (errorBody?.message) errorMessage = errorBody.message;
+        } catch {
+          // ignore
+        }
+        throw new Error(errorMessage);
+      }
+      return res.json();
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.scorecards.list.path] }),
+  });
+}

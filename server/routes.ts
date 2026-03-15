@@ -261,6 +261,20 @@ export async function registerRoutes(
     }
   });
 
+  app.delete("/api/scorecards/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid scorecard id" });
+      const existing = await storage.getScorecard(id);
+      if (!existing) return res.status(404).json({ message: "Scorecard not found" });
+      await storage.deleteScorecard(id);
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Delete scorecard error:", err);
+      res.status(500).json({ message: "Failed to delete scorecard" });
+    }
+  });
+
   app.get("/api/scorecards/:id/parameters", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
