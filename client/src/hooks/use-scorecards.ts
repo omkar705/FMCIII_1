@@ -9,6 +9,8 @@ export function useScorecards() {
       if (!res.ok) throw new Error("Failed to fetch scorecards");
       return api.scorecards.list.responses[200].parse(await res.json());
     },
+    refetchOnWindowFocus: true,
+    refetchInterval: 30000,
   });
 }
 

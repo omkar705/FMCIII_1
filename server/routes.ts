@@ -287,7 +287,7 @@ export async function registerRoutes(
         Number(maxMarks),
       );
 
-      // Recalculate and update scorecard status based on parameters
+      // Recalculate and update scorecard score and status based on parameters
       const TOTAL_EXPECTED_PARAMS = 7; // Must match PARAMETERS array in ScorecardDetail.tsx
       const allParams = await storage.getScorecardParameters(scorecardId);
       const filled = allParams.filter(p => p.marks !== null && p.marks !== undefined);
@@ -295,7 +295,10 @@ export async function registerRoutes(
       if (filled.length > 0) {
         newStatus = filled.length >= TOTAL_EXPECTED_PARAMS ? "completed" : "in_progress";
       }
-      await storage.updateScorecard(scorecardId, { status: newStatus });
+      const totalScore = filled.length > 0
+        ? allParams.reduce((sum, p) => sum + (p.marks ?? 0), 0)
+        : null;
+      await storage.updateScorecard(scorecardId, { status: newStatus, score: totalScore });
 
       res.json(param);
     } catch (err) {
