@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { useStartups } from "@/hooks/use-startups";
 import { useApplications } from "@/hooks/use-applications";
 import { useFunding } from "@/hooks/use-funding";
-import { Building2, Target, IndianRupee, TrendingUp, Loader2 } from "lucide-react";
+import { Building2, Target, IndianRupee,Loader2 } from "lucide-react";
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line } from "recharts";
 
@@ -84,23 +84,11 @@ export default function Dashboard() {
             </div>
           </Card>
 
-          <Card className="p-6 bg-card border-white/5 shadow-xl shadow-black/20 hover-elevate">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Success Rate</p>
-                <h3 className="text-3xl font-display font-bold text-white">
-                  {applications?.length ? Math.round((pipelineData[2].value / applications.length) * 100) : 0}%
-                </h3>
-              </div>
-              <div className="h-12 w-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-purple-400" />
-              </div>
-            </div>
-          </Card>
+          
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="p-6 border-white/5 bg-card/50 backdrop-blur-sm">
+          <Card className="p-6 border-white/5 bg-card/50 backdrop-blur-sm mx-auto w-[900px] w-3/4">
             <h3 className="text-lg font-semibold text-white mb-6">Application Pipeline</h3>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -118,22 +106,7 @@ export default function Dashboard() {
             </div>
           </Card>
 
-          <Card className="p-6 border-white/5 bg-card/50 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-white mb-6">Funding Trajectory</h3>
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={fundingData.length ? fundingData : [{name: 'Jan', amount: 100000}, {name: 'Feb', amount: 250000}]}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
-                  <XAxis dataKey="name" stroke="#888" tick={{fill: '#888'}} />
-                  <YAxis stroke="#888" tick={{fill: '#888'}} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#0B0F19', border: '1px solid #333', borderRadius: '8px' }}
-                  />
-                  <Line type="monotone" dataKey="amount" stroke="#2563eb" strokeWidth={3} dot={{r: 4, fill: '#2563eb'}} activeDot={{r: 6}} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </Card>
+          
         </div>
       </div>
     </Shell>
