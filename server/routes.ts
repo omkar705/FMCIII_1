@@ -217,13 +217,11 @@ export async function registerRoutes(
 
   app.post("/api/scorecards", async (req, res) => {
     try {
-      const { startupId, startupName, judgeId, judgeName, score, feedback, evaluationDate } = req.body;
+      const { startupId, startupName, judgeRefId, judgeName, evaluationDate } = req.body;
 
-      // Validate required fields
       const missingFields: string[] = [];
       if (!startupId) missingFields.push("startupId");
-      if (!judgeId) missingFields.push("judgeId");
-      if (score === undefined || score === null || score === "") missingFields.push("score");
+      if (!judgeRefId) missingFields.push("judgeRefId");
 
       if (missingFields.length > 0) {
         return res.status(400).json({
@@ -231,19 +229,13 @@ export async function registerRoutes(
         });
       }
 
-      const parsedScore = Number(score);
-      if (isNaN(parsedScore) || parsedScore < 0 || parsedScore > 100) {
-        return res.status(400).json({ message: "Score must be a number between 0 and 100" });
-      }
-
       const data: Record<string, unknown> = {
         startupId: Number(startupId),
         startupName: startupName ?? null,
-        judgeId: Number(judgeId),
+        judgeRefId: Number(judgeRefId),
         judgeName: judgeName ?? null,
-        score: parsedScore,
-        feedback: feedback ?? null,
         evaluationDate: evaluationDate ?? null,
+        status: "pending",
       };
 
       console.log("[POST /api/scorecards] Creating scorecard with data:", data);
@@ -253,6 +245,62 @@ export async function registerRoutes(
     } catch (err) {
       console.error("Create scorecard error:", err);
       return res.status(500).json({ message: "Failed to create scorecard" });
+    }
+  });
+
+  app.patch("/api/scorecards/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid scorecard id" });
+      const updated = await storage.updateScorecard(id, req.body);
+      if (!updated) return res.status(404).json({ message: "Scorecard not found" });
+      res.json(updated);
+    } catch (err) {
+      console.error("Update scorecard error:", err);
+      res.status(500).json({ message: "Failed to update scorecard" });
+    }
+  });
+
+  app.get("/api/scorecards/:id/parameters", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid scorecard id" });
+      const params = await storage.getScorecardParameters(id);
+      res.json(params);
+    } catch (err) {
+      console.error("Get scorecard parameters error:", err);
+      res.status(500).json({ message: "Failed to fetch parameters" });
+    }
+  });
+
+  app.put("/api/scorecards/:id/parameters", async (req, res) => {
+    try {
+      const scorecardId = parseInt(req.params.id);
+      if (isNaN(scorecardId)) return res.status(400).json({ message: "Invalid scorecard id" });
+      const { parameterName, marks, maxMarks = 15 } = req.body;
+      if (!parameterName) return res.status(400).json({ message: "parameterName is required" });
+
+      const param = await storage.upsertScorecardParameter(
+        scorecardId,
+        parameterName,
+        marks !== undefined ? (marks === null ? null : Number(marks)) : null,
+        Number(maxMarks),
+      );
+
+      // Recalculate and update scorecard status based on parameters
+      const TOTAL_EXPECTED_PARAMS = 7; // Must match PARAMETERS array in ScorecardDetail.tsx
+      const allParams = await storage.getScorecardParameters(scorecardId);
+      const filled = allParams.filter(p => p.marks !== null && p.marks !== undefined);
+      let newStatus = "pending";
+      if (filled.length > 0) {
+        newStatus = filled.length >= TOTAL_EXPECTED_PARAMS ? "completed" : "in_progress";
+      }
+      await storage.updateScorecard(scorecardId, { status: newStatus });
+
+      res.json(param);
+    } catch (err) {
+      console.error("Upsert scorecard parameter error:", err);
+      res.status(500).json({ message: "Failed to save parameter" });
     }
   });
 
@@ -301,6 +349,44 @@ app.get("/api/users", async (req, res) => {
   const items = await storage.getUsers();
   res.json(items);
 });
+
+
+  /* ================= JUDGES ================= */
+
+  app.get("/api/judges", async (req, res) => {
+    try {
+      const items = await storage.getJudges();
+      res.json(items);
+    } catch (err) {
+      console.error("Get judges error:", err);
+      res.status(500).json({ message: "Failed to fetch judges" });
+    }
+  });
+
+  app.post("/api/judges", async (req, res) => {
+    try {
+      const { name } = req.body;
+      if (!name) return res.status(400).json({ message: "name is required" });
+      const item = await storage.createJudge({ name });
+      res.status(201).json(item);
+    } catch (err) {
+      console.error("Create judge error:", err);
+      res.status(500).json({ message: "Failed to create judge" });
+    }
+  });
+
+  app.patch("/api/judges/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid judge id" });
+      const updated = await storage.updateJudge(id, req.body);
+      if (!updated) return res.status(404).json({ message: "Judge not found" });
+      res.json(updated);
+    } catch (err) {
+      console.error("Update judge error:", err);
+      res.status(500).json({ message: "Failed to update judge" });
+    }
+  });
 
 
   /* ================= PHYSICAL ASSETS ================= */

@@ -1,13 +1,13 @@
 import { Shell } from "@/components/layout/Shell";
 import { useScorecards, useCreateScorecard } from "@/hooks/use-scorecards";
 import { useStartups } from "@/hooks/use-startups";
-import { useUsers } from "@/hooks/use-users";
+import { useJudges } from "@/hooks/use-judges";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -15,24 +15,47 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ClipboardCheck, Plus, Loader2, Star } from "lucide-react";
+import { ClipboardCheck, Plus, Loader2, Star, CheckCircle2, Clock, AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import {
   getScorecardStartupName,
   getScorecardJudgeName,
-  getScorecardScore,
-  getScorecardFeedback,
 } from "@/lib/scorecard-utils";
 
 const getTodayDate = () => new Date().toISOString().split("T")[0];
+
+type ScorecardStatus = "pending" | "in_progress" | "completed";
+
+function StatusBadge({ status }: { status: string | null | undefined }) {
+  const s = (status ?? "pending") as ScorecardStatus;
+  if (s === "completed") {
+    return (
+      <Badge className="bg-green-500/20 text-green-400 border-green-500/30 gap-1">
+        <CheckCircle2 className="h-3 w-3" /> Completed
+      </Badge>
+    );
+  }
+  if (s === "in_progress") {
+    return (
+      <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 gap-1">
+        <Clock className="h-3 w-3" /> In Progress
+      </Badge>
+    );
+  }
+  return (
+    <Badge className="bg-slate-500/20 text-slate-400 border-slate-500/30 gap-1">
+      <AlertCircle className="h-3 w-3" /> Pending
+    </Badge>
+  );
+}
 
 export default function Scorecards() {
   const { data: scorecards, isLoading: sLoading } = useScorecards();
   const { mutateAsync: createScorecard, isPending } = useCreateScorecard();
   const { data: startups, isLoading: startupsLoading } = useStartups();
-  const { data: users, isLoading: usersLoading } = useUsers();
+  const { data: judges, isLoading: judgesLoading } = useJudges();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const [, navigate] = useLocation();
@@ -42,20 +65,16 @@ export default function Scorecards() {
   const [selectedStartupName, setSelectedStartupName] = useState<string>("");
   const [selectedJudgeId, setSelectedJudgeId] = useState<string>("");
   const [selectedJudgeName, setSelectedJudgeName] = useState<string>("");
-  const [score, setScore] = useState<string>("");
-  const [feedback, setFeedback] = useState<string>("");
   const [evaluationDate, setEvaluationDate] = useState<string>(getTodayDate);
   const [submitted, setSubmitted] = useState(false);
 
-  const isSaveDisabled = !selectedStartupId || !selectedJudgeId || !score || isPending;
+  const isSaveDisabled = !selectedStartupId || !selectedJudgeId || isPending;
 
   const resetForm = () => {
     setSelectedStartupId("");
     setSelectedStartupName("");
     setSelectedJudgeId("");
     setSelectedJudgeName("");
-    setScore("");
-    setFeedback("");
     setEvaluationDate(getTodayDate());
     setSubmitted(false);
   };
@@ -72,17 +91,17 @@ export default function Scorecards() {
     const payload = {
       startupId: Number(selectedStartupId),
       startupName: selectedStartupName,
-      judgeId: Number(selectedJudgeId),
+      judgeRefId: Number(selectedJudgeId),
       judgeName: selectedJudgeName,
-      score: Number(score),
-      feedback,
       evaluationDate: evaluationDate || getTodayDate(),
+      status: "pending",
     };
     console.log("[Scorecards] Submitting scorecard payload:", payload);
     try {
-      await createScorecard(payload);
+      const created = await createScorecard(payload);
       handleOpenChange(false);
-      toast({ title: "Scorecard submitted" });
+      toast({ title: "Scorecard created", description: "Now enter parameter marks." });
+      navigate(`/scorecards/${created.id}`);
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     }
@@ -99,7 +118,7 @@ export default function Scorecards() {
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>
           <DialogTrigger asChild>
             <Button className="rounded-xl h-11 px-6">
-              <Plus className="mr-2 h-4 w-4" /> Add Score
+              <Plus className="mr-2 h-4 w-4" /> Add Scorecard
             </Button>
           </DialogTrigger>
           <DialogContent className="bg-card border-white/10 text-white">
@@ -144,7 +163,7 @@ export default function Scorecards() {
               {/* Judge dropdown */}
               <div className="space-y-2">
                 <Label>Judge</Label>
-                {usersLoading ? (
+                {judgesLoading ? (
                   <div className="flex items-center gap-2 h-9 px-3 rounded-md border border-white/10 bg-black/50 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" /> Loading judges…
                   </div>
@@ -152,7 +171,7 @@ export default function Scorecards() {
                   <Select
                     value={selectedJudgeId}
                     onValueChange={(val) => {
-                      const judge = users?.find((u) => String(u.id) === val);
+                      const judge = judges?.find((j) => String(j.id) === val);
                       setSelectedJudgeId(val);
                       setSelectedJudgeName(judge?.name ?? "");
                     }}
@@ -162,34 +181,16 @@ export default function Scorecards() {
                       <SelectValue placeholder="Select a judge" />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-white/10 text-white">
-                      {users?.map((user) => (
-                        <SelectItem key={user.id} value={String(user.id)}>
-                          {user.name}
+                      {judges?.map((judge) => (
+                        <SelectItem key={judge.id} value={String(judge.id)}>
+                          {judge.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 )}
-                {!selectedJudgeId && !usersLoading && submitted && (
+                {!selectedJudgeId && !judgesLoading && submitted && (
                   <p className="text-xs text-destructive">Please select a judge.</p>
-                )}
-              </div>
-
-              {/* Score */}
-              <div className="space-y-2">
-                <Label>Score (0–100)</Label>
-                <Input
-                  type="number"
-                  name="score"
-                  min="0"
-                  max="100"
-                  required
-                  value={score}
-                  onChange={(e) => setScore(e.target.value)}
-                  className="bg-black/50 border-white/10"
-                />
-                {!score && submitted && (
-                  <p className="text-xs text-destructive">Score is required.</p>
                 )}
               </div>
 
@@ -205,20 +206,8 @@ export default function Scorecards() {
                 />
               </div>
 
-              {/* Feedback */}
-              <div className="space-y-2">
-                <Label>Feedback</Label>
-                <Textarea
-                  name="feedback"
-                  value={feedback}
-                  onChange={(e) => setFeedback(e.target.value)}
-                  className="bg-black/50 border-white/10"
-                  placeholder="Feedback notes..."
-                />
-              </div>
-
               <Button type="submit" disabled={isSaveDisabled} className="w-full h-11 rounded-xl">
-                {isPending ? <Loader2 className="animate-spin" /> : "Save Evaluation"}
+                {isPending ? <Loader2 className="animate-spin" /> : "Create Scorecard"}
               </Button>
             </form>
           </DialogContent>
@@ -229,18 +218,17 @@ export default function Scorecards() {
         <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-8 w-8" /></div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {scorecards?.map(score => {
-            const displayName = getScorecardStartupName(score);
-            const displayJudge = getScorecardJudgeName(score);
-            const displayScore = getScorecardScore(score);
-            const displayFeedback = getScorecardFeedback(score);
+          {scorecards?.map(sc => {
+            const displayName = getScorecardStartupName(sc);
+            const displayJudge = getScorecardJudgeName(sc);
+            const displayScore = sc.score;
             return (
               <Card
-                key={score.id}
-                onClick={() => navigate(`/scorecards/${score.id}`)}
+                key={sc.id}
+                onClick={() => navigate(`/scorecards/${sc.id}`)}
                 className="p-6 border-white/5 bg-card/60 backdrop-blur-xl cursor-pointer transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:border-white/20 hover:-translate-y-0.5"
               >
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                       <ClipboardCheck className="h-5 w-5 text-primary" />
@@ -250,17 +238,22 @@ export default function Scorecards() {
                       <p className="text-xs text-muted-foreground">{displayJudge}</p>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end">
-                    <span className="text-2xl font-display font-bold text-white flex items-center gap-1">
-                      {displayScore ?? "—"} <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                    </span>
-                    <span className="text-xs text-muted-foreground">/ 100</span>
+                  <div className="flex flex-col items-end gap-1">
+                    {displayScore !== null && displayScore !== undefined ? (
+                      <span className="text-xl font-display font-bold text-white flex items-center gap-1">
+                        {displayScore} <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                        <span className="text-xs text-muted-foreground font-normal">/ 100</span>
+                      </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground italic">Not scored</span>
+                    )}
                   </div>
                 </div>
-                <div className="bg-black/30 rounded-xl p-4 border border-white/5">
-                  <p className="text-sm text-white/80 italic truncate">
-                    "{displayFeedback || "No feedback provided"}"
-                  </p>
+                <div className="flex items-center justify-between mt-2">
+                  <StatusBadge status={sc.status} />
+                  {sc.evaluationDate && (
+                    <span className="text-xs text-muted-foreground">{sc.evaluationDate}</span>
+                  )}
                 </div>
               </Card>
             );
@@ -276,4 +269,3 @@ export default function Scorecards() {
     </Shell>
   );
 }
-
