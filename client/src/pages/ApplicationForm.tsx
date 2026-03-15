@@ -132,7 +132,7 @@ export default function ApplicationForm() {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Applicant Information */}
-          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+          <div className="bg-black/10 rounded-3xl p-6 border border-white/5 space-y-4">
             <h2 className="text-xl font-display font-semibold text-white">
               Applicant Information
             </h2>
@@ -144,7 +144,7 @@ export default function ApplicationForm() {
                   name="applicantName"
                   defaultValue={user.name}
                   required
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/30"
                   placeholder="Full name"
                 />
               </div>
@@ -156,7 +156,7 @@ export default function ApplicationForm() {
                   type="email"
                   defaultValue={user.email}
                   required
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/30"
                   placeholder="email@example.com"
                 />
               </div>
@@ -167,7 +167,7 @@ export default function ApplicationForm() {
                   name="phone"
                   type="tel"
                   required
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/30"
                   placeholder="+91 XXXXX XXXXX"
                 />
               </div>
@@ -175,7 +175,7 @@ export default function ApplicationForm() {
           </div>
 
           {/* Startup Details */}
-          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+          <div className="bg-black/10 rounded-3xl p-6 border border-white/5 space-y-4">
             <h2 className="text-xl font-display font-semibold text-white">
               Startup Details
             </h2>
@@ -186,7 +186,7 @@ export default function ApplicationForm() {
                   id="startupName"
                   name="startupName"
                   required
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/30"
                   placeholder="Your startup name"
                 />
               </div>
@@ -198,7 +198,7 @@ export default function ApplicationForm() {
                   onValueChange={setCategory}
                   required
                 >
-                  <SelectTrigger className="bg-black/50 border-white/10">
+                  <SelectTrigger className="bg-white/50 border-black/30">
                     <SelectValue placeholder="Select a category..." />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-white/10">
@@ -216,7 +216,7 @@ export default function ApplicationForm() {
                   id="problemStatement"
                   name="problemStatement"
                   required
-                  className="bg-black/50 border-white/10 min-h-[100px]"
+                  className="bg-white/50 border-black/30 min-h-[100px]"
                   placeholder="What problem does your startup solve?"
                 />
               </div>
@@ -228,7 +228,7 @@ export default function ApplicationForm() {
                   id="ideaDescription"
                   name="ideaDescription"
                   required
-                  className="bg-black/50 border-white/10 min-h-[100px]"
+                  className="bg-white/50 border-black/30 min-h-[100px]"
                   placeholder="Describe your startup idea in detail..."
                 />
               </div>
@@ -238,7 +238,7 @@ export default function ApplicationForm() {
                   id="targetMarket"
                   name="targetMarket"
                   required
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/30"
                   placeholder="Who are your target customers?"
                 />
               </div>
@@ -250,7 +250,7 @@ export default function ApplicationForm() {
                   type="number"
                   min="0"
                   required
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/30"
                   placeholder="e.g. 500000"
                 />
               </div>
@@ -262,7 +262,7 @@ export default function ApplicationForm() {
                   type="number"
                   min="1"
                   required
-                  className="bg-black/50 border-white/10"
+                  className="bg-white/50 border-black/30"
                   placeholder="Number of team members"
                 />
               </div>
@@ -273,7 +273,7 @@ export default function ApplicationForm() {
                   name="currentRevenue"
                   type="number"
                   min="0"
-                  className="bg-black/50 border-white/10"
+                 className="bg-white/50 border-black/30"
                   placeholder="0 if pre-revenue"
                 />
               </div>
@@ -281,7 +281,7 @@ export default function ApplicationForm() {
           </div>
 
           {/* Business Plan */}
-          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+          <div className="bg-black/10 rounded-3xl p-6 border border-white/5 space-y-4">
             <h2 className="text-xl font-display font-semibold text-white">
               Business Plan
             </h2>
@@ -292,7 +292,7 @@ export default function ApplicationForm() {
                   id="problemSolution"
                   name="problemSolution"
                   required
-                  className="bg-black/50 border-white/10 min-h-[100px]"
+                  className="bg-white/50 border-black/30 min-h-[100px]"
                   placeholder="Explain your solution to the problem..."
                 />
               </div>
@@ -301,7 +301,7 @@ export default function ApplicationForm() {
                 <Textarea
                   id="scalability"
                   name="scalability"
-                  className="bg-black/50 border-white/10 min-h-[80px]"
+                  className="bg-white/50 border-black/30 min-h-[80px]"
                   placeholder="How do you plan to scale your startup?"
                 />
               </div>
@@ -310,7 +310,7 @@ export default function ApplicationForm() {
                 <Textarea
                   id="marketOpportunity"
                   name="marketOpportunity"
-                  className="bg-black/50 border-white/10 min-h-[80px]"
+                  className="bg-white/50 border-black/30 min-h-[80px]"
                   placeholder="Describe the market opportunity..."
                 />
               </div>
@@ -326,7 +326,7 @@ export default function ApplicationForm() {
                   onChange={(e) =>
                     setBusinessPlanFile(e.target.files?.[0] ?? null)
                   }
-                  className="bg-black/50 border-white/10 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
+                  className="bg-white/50 border-black/30 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
                 />
                 {businessPlanFile && (
                   <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
@@ -338,7 +338,7 @@ export default function ApplicationForm() {
           </div>
 
           {/* Financial Information */}
-          <div className="bg-black/20 rounded-3xl p-6 border border-white/5 space-y-4">
+          <div className="bg-black/10 rounded-3xl p-6 border border-white/5 space-y-4">
             <h2 className="text-xl font-display font-semibold text-white">
               Financial Information
             </h2>
@@ -350,7 +350,7 @@ export default function ApplicationForm() {
                 <Textarea
                   id="financialProjections"
                   name="financialProjections"
-                  className="bg-black/50 border-white/10 min-h-[80px]"
+                 className="bg-white/50 border-black/30 min-h-[80px]"
                   placeholder="Describe your financial projections for the next 3–5 years..."
                 />
               </div>
@@ -365,7 +365,7 @@ export default function ApplicationForm() {
                   onChange={(e) =>
                     setFinancialFile(e.target.files?.[0] ?? null)
                   }
-                  className="bg-black/50 border-white/10 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
+                  className="bg-white/50 border-black/30 file:bg-primary/20 file:text-primary file:border-0 file:rounded-lg file:px-3 file:py-1 file:mr-3 cursor-pointer"
                 />
                 {financialFile && (
                   <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">

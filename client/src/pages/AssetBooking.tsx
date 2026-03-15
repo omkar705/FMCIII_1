@@ -59,6 +59,7 @@ export default function AssetBooking() {
   const [selectedAssetId, setSelectedAssetId] = useState<string>("");
   const [bookingStartTime, setBookingStartTime] = useState("09:00");
   const [bookingEndTime, setBookingEndTime] = useState("10:00");
+  const [selectedAssetType, setSelectedAssetType] = useState<string>("");
 
   const isAdmin = user?.roleId === 1;
   const isIncubatee = user?.roleId === 2;
@@ -118,11 +119,12 @@ export default function AssetBooking() {
     try {
       await createAsset({
         name: formData.get("name") as string,
-        type: formData.get("type") as string,
+        type: selectedAssetType,
         description: (formData.get("description") as string) || null,
         capacity: formData.get("capacity") ? Number(formData.get("capacity")) : null,
       });
       setIsAssetOpen(false);
+      setSelectedAssetType("");
       toast({ title: "Asset added successfully!" });
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -156,7 +158,7 @@ export default function AssetBooking() {
           {isAdmin && (
             <Dialog open={isAssetOpen} onOpenChange={setIsAssetOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="rounded-xl h-11 px-6 border-white/10 text-white hover:bg-white/5">
+                <Button variant="outline" className="rounded-xl h-11 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-900/20">
                   <Plus className="mr-2 h-4 w-4" /> Add Asset
                 </Button>
               </DialogTrigger>
@@ -166,13 +168,13 @@ export default function AssetBooking() {
                 </DialogHeader>
                 <form onSubmit={handleAssetSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label>Asset Name</Label>
-                    <Input name="name" required className="bg-black/50 border-white/10" placeholder="e.g. Conference Room A" />
+                    <Label className="text-[#015185]">Asset Name</Label>
+                    <Input name="name" required className="bg-white/50 border-black/30" placeholder="e.g. Conference Room A" />
                   </div>
                   <div className="space-y-2">
-                    <Label>Type</Label>
-                    <Select name="type" required>
-                      <SelectTrigger className="bg-black/50 border-white/10">
+                    <Label className="text-[#015185]">Type</Label>
+                    <Select name="type" required value={selectedAssetType} onValueChange={setSelectedAssetType}>
+                      <SelectTrigger className="bg-white/50 border-black/30">
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-white/10">
@@ -183,12 +185,12 @@ export default function AssetBooking() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Description</Label>
-                    <Textarea name="description" className="bg-black/50 border-white/10" placeholder="Optional description..." />
+                    <Label className="text-[#015185]">Description</Label>
+                    <Textarea name="description" className="bg-white/50 border-black/30" placeholder="Optional description..." />
                   </div>
                   <div className="space-y-2">
-                    <Label>Capacity</Label>
-                    <Input name="capacity" type="number" min="1" className="bg-black/50 border-white/10" placeholder="e.g. 10" />
+                    <Label className="text-[#015185]">Capacity</Label>
+                    <Input name="capacity" type="number" min="1" className="bg-white/50 border-black/30" placeholder="e.g. 10" />
                   </div>
                   <Button type="submit" disabled={assetPending} className="w-full h-11 rounded-xl">
                     {assetPending ? <Loader2 className="animate-spin" /> : "Add Asset"}
@@ -211,9 +213,9 @@ export default function AssetBooking() {
                 </DialogHeader>
                 <form onSubmit={handleBookingSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label>Asset</Label>
+                    <Label className="text-[#015185]">Asset</Label>
                     <Select name="assetId" required value={selectedAssetId} onValueChange={setSelectedAssetId}>
-                      <SelectTrigger className="bg-black/50 border-white/10">
+                      <SelectTrigger className="bg-white/50 border-black/30">
                         <SelectValue placeholder="Select asset" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-white/10">
@@ -226,37 +228,37 @@ export default function AssetBooking() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Date</Label>
+                    <Label className="text-[#015185]">Date</Label>
                     <div className="text-sm text-muted-foreground px-1">
-                      Booking for: <span className="text-white font-medium">{format(selectedDate, "MMMM d, yyyy")}</span>
+                      Booking for: <span className="text-black/40 font-medium">{format(selectedDate, "MMMM d, yyyy")}</span>
                       <span className="text-xs text-muted-foreground ml-2">(change via calendar below)</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Start Time</Label>
+                      <Label className="text-[#015185]">Start Time</Label>
                       <Input
                         type="time"
                         required
-                        className="bg-black/50 border-white/10"
+                        className="bg-white/50 border-black/30 text-black/60"
                         value={bookingStartTime}
                         onChange={(e) => setBookingStartTime(e.target.value)}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>End Time</Label>
+                      <Label className="text-[#015185]">End Time</Label>
                       <Input
                         type="time"
                         required
-                        className="bg-black/50 border-white/10"
+                        className="bg-white/50 border-black/30 text-black/60"
                         value={bookingEndTime}
                         onChange={(e) => setBookingEndTime(e.target.value)}
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Purpose</Label>
-                    <Textarea name="purpose" className="bg-black/50 border-white/10" placeholder="What will you use it for?" />
+                    <Label className="text-[#015185]">Purpose</Label>
+                    <Textarea name="purpose" className="bg-white/50 border-black/30" placeholder="What will you use it for?" />
                   </div>
                   <Button type="submit" disabled={bookingPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
                     {bookingPending ? <Loader2 className="animate-spin" /> : "Confirm Booking"}
@@ -426,22 +428,22 @@ export default function AssetBooking() {
                               <p className="text-xs text-muted-foreground">
                                 {asset ? (ASSET_TYPE_LABELS[asset.type] ?? asset.type) : ""}
                               </p>
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <CalendarIcon className="h-4 w-4" />
+                                <span>{format(new Date(booking.bookingDate + "T00:00:00"), "MMM d, yyyy")}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <Clock className="h-4 w-4" />
+                                <span>{booking.startTime} – {booking.endTime}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <User className="h-4 w-4" />
+                                <span>{booker?.name ?? getUserName(booking.bookedBy)}</span>
+                              </div>
+                              {booking.purpose && (
+                                <span className="text-sm text-muted-foreground italic">"{booking.purpose}"</span>
+                              )}
                             </div>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <CalendarIcon className="h-4 w-4" />
-                              <span>{format(new Date(booking.bookingDate + "T00:00:00"), "MMM d, yyyy")}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <Clock className="h-4 w-4" />
-                              <span>{booking.startTime} – {booking.endTime}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <User className="h-4 w-4" />
-                              <span>{booker?.name ?? getUserName(booking.bookedBy)}</span>
-                            </div>
-                            {booking.purpose && (
-                              <span className="text-sm text-muted-foreground italic">"{booking.purpose}"</span>
-                            )}
                           </div>
                           <Button
                             size="sm"

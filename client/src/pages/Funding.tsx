@@ -61,7 +61,7 @@ export default function Funding() {
               <div className="space-y-2">
                 <Label>Startup</Label>
                 <Select name="startupId" required>
-                  <SelectTrigger className="bg-black/50 border-white/10">
+                  <SelectTrigger className="bg-white/50 border-black/30">
                     <SelectValue placeholder="Select Startup" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-white/10">
@@ -74,7 +74,7 @@ export default function Funding() {
               <div className="space-y-2">
                 <Label>Investor</Label>
                 <Select name="investorId" required>
-                  <SelectTrigger className="bg-black/50 border-white/10">
+                  <SelectTrigger className="bg-white/50 border-black/30">
                     <SelectValue placeholder="Select Investor" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-white/10">
@@ -86,12 +86,12 @@ export default function Funding() {
               </div>
               <div className="space-y-2">
                 <Label>Amount (INR)</Label>
-                <Input type="number" name="amount" required className="bg-black/50 border-white/10" placeholder="500000" />
+                <Input type="number" name="amount" required className="bg-white/50 border-black/30" placeholder="500000" />
               </div>
               <div className="space-y-2">
                 <Label>Funding Stage</Label>
                 <Select name="fundingType" required>
-                  <SelectTrigger className="bg-black/50 border-white/10">
+                  <SelectTrigger className="bg-white/50 border-black/30">
                     <SelectValue placeholder="Select Stage" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-white/10">
