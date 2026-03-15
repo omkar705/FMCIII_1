@@ -93,6 +93,14 @@ export class DatabaseStorage implements IStorage {
     const [updated] = await db.update(startups).set(updates).where(eq(startups.id, id)).returning();
     return updated;
   }
+async getStartupById(id: number) {
+  const [startup] = await db
+    .select()
+    .from(startups)
+    .where(eq(startups.id, id));
+
+  return startup;
+}
 
   async getApplications(): Promise<Application[]> {
     return await db.select().from(applications);

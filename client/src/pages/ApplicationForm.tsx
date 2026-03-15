@@ -322,7 +322,7 @@ export default function ApplicationForm() {
                   id="businessPlan"
                   type="file"
                   accept=".pdf,.doc,.docx"
-                  required
+                  
                   onChange={(e) =>
                     setBusinessPlanFile(e.target.files?.[0] ?? null)
                   }

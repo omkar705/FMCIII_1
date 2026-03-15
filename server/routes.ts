@@ -3,6 +3,7 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
+import { start } from "repl";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -56,6 +57,24 @@ export async function registerRoutes(
     const item = await storage.createStartup(req.body);
     res.json(item);
   });
+  app.get("/api/startups/:id", async (req, res) => {
+
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    return res.status(400).json({ message: "Invalid startup id" });
+  }
+
+  const startup = await storage.getStartupById(id);
+
+  if (!startup) {
+    return res.status(404).json({ message: "Startup not found" });
+  }
+
+  res.json(startup);
+});
+
+
 
 
   /* ================= APPLICATIONS ================= */
@@ -107,6 +126,13 @@ export async function registerRoutes(
         problemSolution,
         businessPlanFile,
         financialProjectionsFile,
+        targetMarket,
+        estimatedBudget,
+        teamStrength,
+        currentRevenue,
+        scalability,
+        marketOpportunity,
+        financialProjections
       } = body;
 
       const missingFields: string[] = [];
@@ -129,6 +155,7 @@ export async function registerRoutes(
         name: startupName,
         domain: startupCategory ?? null,
         description: ideaDescription ?? null,
+        teammembers: teamStrength ? Number(teamStrength) : null,
       });
 
       const application = await storage.createApplication({
@@ -136,12 +163,29 @@ export async function registerRoutes(
         pitchDeckUrl: businessPlanFile ?? null,
         financialsUrl: financialProjectionsFile ?? null,
         status: "Applied",
+        name:startupName,
+        appl_name: applicantName,
+        category:startupCategory,
+        St_idea_desc:ideaDescription,
+        target:targetMarket,
+        est_budg:estimatedBudget ? Number(estimatedBudget) : null,
+        mark_oppoe:marketOpportunity,
+        Scalability:scalability,
+        finan_projection:financialProjections,
+        curr_revenue:currentRevenue ? Number(currentRevenue) : null,
+        Team_strength:teamStrength ? Number(teamStrength) : null,
+        prob_solution:problemSolution,
+        prob_statement:problemStatement,
+        email,
+        phone: phone ?? null,
+
       });
 
       return res.status(201).json({ application, startup });
     } catch (err) {
       console.error("Application form error:", err);
-      return res.status(500).json({ message: "Failed to submit application" });
+      return res.status(500).json({ message: console.error()
+       });
     }
   });
 

@@ -20,9 +20,10 @@ export const users = pgTable("users", {
 
 export const startups = pgTable("startups", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
+  name: text("startupName").notNull(),
   domain: text("domain"),
   description: text("description"),
+  teammembers: text("teamStrength"),
 });
 
 export const events = pgTable("events", {
@@ -48,6 +49,21 @@ export const applications = pgTable("applications", {
   status: text("status").default("Applied"), // Applied, Interview, Selected
   pitchDeckUrl: text("pitch_deck_url"),
   financialsUrl: text("financials_url"),
+  name: text("startupName").notNull(),
+  email:text("email").notNull(),
+  phone:text("phone").notNull(),
+  appl_name: text("applicantName").notNull(),
+  category:text("startupCategory").notNull(),
+  prob_statement:text("problemStatement").notNull(),
+  St_idea_desc:text("ideaDescription").notNull(),
+  target:text("targetMarket"),
+  est_budg:integer("estimatedBudget"),
+  Team_strength:integer("teamStrength"),
+  curr_revenue:integer("currentRevenue"),
+  prob_solution:text("problemSolution").notNull(),
+  Scalability:text("scalability"),
+  mark_oppor:text("marketOpportunity"),
+  finan_projection:text("financialProjections"),
 });
 
 export const evaluationCriteria = pgTable("evaluation_criteria", {

@@ -1,3 +1,0 @@
-﻿server/routes.ts(74,1): error TS1185: Merge conflict marker encountered.
-server/routes.ts(92,1): error TS1185: Merge conflict marker encountered.
-server/routes.ts(151,1): error TS1185: Merge conflict marker encountered.

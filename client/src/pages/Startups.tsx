@@ -41,12 +41,10 @@ export default function Startups() {
   };
 
   /** Navigate to the startup profile page using its slug ID. */
-  function handleStartupClick(name: string) {
-    const slug = nameToSlug(name);
-    // Check if a sample profile exists for this slug; fall back to slug anyway
-    const matchedSample = sampleStartups.find((s) => s.id === slug);
-    navigate(`/startups/${matchedSample ? matchedSample.id : slug}`);
-  }
+function handleStartupClick(id: number) {
+  navigate(`/startups/${id}`);
+}
+
 
   return (
     <Shell adminOnly>
@@ -95,7 +93,7 @@ export default function Startups() {
             <Card
               key={startup.id}
               className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate overflow-hidden group cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200"
-              onClick={() => handleStartupClick(startup.name)}
+              onClick={() => handleStartupClick(startup.id)}
             >
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Building2 className="h-24 w-24" />
