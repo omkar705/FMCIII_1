@@ -49,7 +49,7 @@ export default function Funding() {
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button className="rounded-xl h-11 px-6 bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="rounded-xl h-11 px-6 bg-[#015185] text-white">
               <Plus className="mr-2 h-4 w-4" /> Log Investment
             </Button>
           </DialogTrigger>

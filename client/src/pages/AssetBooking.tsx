@@ -158,7 +158,7 @@ export default function AssetBooking() {
           {isAdmin && (
             <Dialog open={isAssetOpen} onOpenChange={setIsAssetOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="rounded-xl h-11 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-900/20">
+                <Button variant="outline" className="rounded-xl h-11 px-6 bg-[#015185] text-white shadow-lg">
                   <Plus className="mr-2 h-4 w-4" /> Add Asset
                 </Button>
               </DialogTrigger>
