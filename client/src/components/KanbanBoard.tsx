@@ -126,7 +126,7 @@ export function KanbanBoard({ applications, startups, onStatusChange }: KanbanBo
             className={`flex flex-col bg-card/30 rounded-2xl border transition-all duration-300 p-4 relative min-h-[500px] ${
               dragOverColumn === column 
                 ? isTargetValid ? "border-primary bg-primary/10 ring-2 ring-primary/20" : "border-destructive/50 bg-destructive/5"
-                : "border-[#015185]/80"
+                : "border-white/80"
             }`}
           >
             <div className="flex items-center justify-between mb-4 px-2">
