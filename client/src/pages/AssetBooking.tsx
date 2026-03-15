@@ -203,7 +203,7 @@ export default function AssetBooking() {
           {isIncubatee && (
             <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
               <DialogTrigger asChild>
-                <Button className="rounded-xl h-11 px-6 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-900/20">
+                <Button className="rounded-xl h-11 px-6 bg-[#015185] text-white shadow-lg">
                   <Plus className="mr-2 h-4 w-4" /> Book Asset
                 </Button>
               </DialogTrigger>
