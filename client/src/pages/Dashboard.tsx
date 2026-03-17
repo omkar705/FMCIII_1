@@ -1,11 +1,9 @@
 import { Shell } from "@/components/layout/Shell";
-import { Card } from "@/components/ui/card";
 import { useStartups } from "@/hooks/use-startups";
 import { useApplications } from "@/hooks/use-applications";
 import { useFunding } from "@/hooks/use-funding";
-import { Building2, Target, IndianRupee,Loader2 } from "lucide-react";
-
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LineChart, Line } from "recharts";
+import { Building2, Target, IndianRupee, Loader2, TrendingUp } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 export default function Dashboard() {
   const { data: startups, isLoading: sLoading } = useStartups();
@@ -16,97 +14,127 @@ export default function Dashboard() {
     return (
       <Shell>
         <div className="flex h-64 items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <Loader2 className="h-7 w-7 animate-spin text-primary" />
         </div>
       </Shell>
     );
   }
 
   const totalFunding = funding?.reduce((sum, f) => sum + f.amount, 0) || 0;
-  
-  // Prepare funnel data
+
   const pipelineData = [
-    { name: "Applied", value: applications?.filter(a => a.status === 'Applied').length || 0 },
+    { name: "Applied",   value: applications?.filter(a => a.status === 'Applied').length || 0 },
     { name: "Interview", value: applications?.filter(a => a.status === 'Interview').length || 0 },
-    { name: "Selected", value: applications?.filter(a => a.status === 'Selected').length || 0 },
+    { name: "Selected",  value: applications?.filter(a => a.status === 'Selected').length || 0 },
   ];
 
-  // Prepare funding history data (mocked grouping by month)
-  const fundingData = funding?.map(f => ({
-    name: new Date(f.fundingDate!).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
-    amount: f.amount
-  })) || [];
+  const statCards = [
+    {
+      label: "Total Startups",
+      value: startups?.length || 0,
+      icon: Building2,
+      iconBg: "rgba(1,81,133,0.08)",
+      iconColor: "#015185",
+      topColor: "#015185",
+      delay: "stagger-1",
+    },
+    {
+      label: "Active Applications",
+      value: applications?.length || 0,
+      icon: Target,
+      iconBg: "rgba(200,120,0,0.08)",
+      iconColor: "#c87800",
+      topColor: "#c87800",
+      delay: "stagger-2",
+    },
+    {
+      label: "Total Funding",
+      value: `₹${(totalFunding / 1000000).toFixed(1)}M`,
+      icon: IndianRupee,
+      iconBg: "rgba(20,140,80,0.08)",
+      iconColor: "#148c50",
+      topColor: "#148c50",
+      delay: "stagger-3",
+    },
+  ];
 
   return (
     <Shell>
-      <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">Overview</h1>
-          <p className="text-muted-foreground text-lg">Your incubator's key metrics at a glance.</p>
+      <div className="space-y-8">
+        {/* Header */}
+        <div className="stagger-1">
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Overview</h1>
+          <p className="text-muted-foreground">Your incubator's key metrics at a glance.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="p-6 bg-card border-white/5 shadow-xl shadow-black/20 hover-elevate">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Total Startups</p>
-                <h3 className="text-3xl font-display font-bold text-white">{startups?.length || 0}</h3>
+        {/* Stat cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {statCards.map(card => (
+            <div key={card.label} className={`stat-card flex items-center gap-5 ${card.delay}`}>
+              <div
+                className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-200 hover:scale-105"
+                style={{ background: card.iconBg, border: `1px solid ${card.topColor}20` }}
+              >
+                <card.icon className="h-6 w-6" style={{ color: card.iconColor }} />
               </div>
-              <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                <Building2 className="h-6 w-6 text-blue-400" />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">{card.label}</p>
+                <p className="text-3xl font-display font-bold tracking-tight" style={{ color: "#015185" }}>
+                  {card.value}
+                </p>
               </div>
+              {/* Right accent */}
+              <div className="w-1 h-10 rounded-full self-center opacity-40" style={{ background: card.topColor }} />
             </div>
-          </Card>
-          
-          <Card className="p-6 bg-card border-white/5 shadow-xl shadow-black/20 hover-elevate">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Active Applications</p>
-                <h3 className="text-3xl font-display font-bold text-white">{applications?.length || 0}</h3>
-              </div>
-              <div className="h-12 w-12 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                <Target className="h-6 w-6 text-amber-400" />
-              </div>
-            </div>
-          </Card>
-
-          <Card className="p-6 bg-card border-white/5 shadow-xl shadow-black/20 hover-elevate">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">Total Funding</p>
-                <h3 className="text-3xl font-display font-bold text-white">
-                  ₹{(totalFunding / 1000000).toFixed(1)}M
-                </h3>
-              </div>
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <IndianRupee className="h-6 w-6 text-primary" />
-              </div>
-            </div>
-          </Card>
-
-          
+          ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Card className="p-6 border-white/5 bg-card/50 backdrop-blur-sm mx-auto w-[900px] w-3/4">
-            <h3 className="text-lg font-semibold text-white mb-6">Application Pipeline</h3>
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={pipelineData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
-                  <XAxis dataKey="name" stroke="#888" tick={{fill: '#888'}} />
-                  <YAxis stroke="#888" tick={{fill: '#888'}} />
-                  <Tooltip 
-                    cursor={{fill: 'rgba(255,255,255,0.05)'}} 
-                    contentStyle={{ backgroundColor: '#0B0F19', border: '1px solid #333', borderRadius: '8px' }}
-                  />
-                  <Bar dataKey="value" fill="hsl(160 84% 39%)" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+        {/* Chart */}
+        <div className="glass-card p-6 stagger-4">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ background: "rgba(1,81,133,0.08)" }}>
+              <TrendingUp className="h-4 w-4" style={{ color: "#015185" }} />
             </div>
-          </Card>
-
-          
+            <h3 className="text-base font-display font-semibold" style={{ color: "#015185" }}>Application Pipeline</h3>
+          </div>
+          <div className="h-[260px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={pipelineData} barCategoryGap="40%">
+                <defs>
+                  <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#0270b8" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#015185" stopOpacity={0.8} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(1,81,133,0.06)" vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fill: "#6b7280", fontSize: 13 }}
+                  axisLine={{ stroke: "rgba(1,81,133,0.1)" }}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fill: "#6b7280", fontSize: 13 }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  cursor={{ fill: "rgba(1,81,133,0.04)" }}
+                  contentStyle={{
+                    background: "rgba(255,255,255,0.96)",
+                    border: "1px solid rgba(1,81,133,0.15)",
+                    borderRadius: "10px",
+                    boxShadow: "0 8px 24px rgba(1,81,133,0.12)",
+                    color: "#015185",
+                    fontFamily: "Manrope, sans-serif",
+                    fontSize: 13
+                  }}
+                  labelStyle={{ color: "#015185", fontWeight: 600 }}
+                />
+                <Bar dataKey="value" fill="url(#barGrad)" radius={[5, 5, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </Shell>

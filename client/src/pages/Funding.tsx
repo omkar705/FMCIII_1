@@ -2,17 +2,28 @@ import { Shell } from "@/components/layout/Shell";
 import { useFunding, useCreateFunding } from "@/hooks/use-funding";
 import { useStartups } from "@/hooks/use-startups";
 import { useUsers } from "@/hooks/use-users";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Plus, Loader2, TrendingUp, IndianRupee } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6"];
+const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(1,81,133,0.12)" };
+
+// Per-funding-type accent (professional, not neon)
+const FUNDING_PALETTE: Record<string, { accent: string; bg: string; text: string }> = {
+  "Pre-Seed": { accent: "#c87800", bg: "rgba(200,120,0,0.07)",  text: "#a06200" },
+  "Seed":     { accent: "#148c50", bg: "rgba(20,140,80,0.07)",  text: "#0f6e3f" },
+  "Series A": { accent: "#015185", bg: "rgba(1,81,133,0.07)",   text: "#015185" },
+  "Series B": { accent: "#5a3fa8", bg: "rgba(90,63,168,0.07)",  text: "#4a2f98" },
+  "Grant":    { accent: "#a0295c", bg: "rgba(160,41,92,0.07)",  text: "#841e4c" },
+};
+
+const DEFAULT_PALETTE = { accent: "#015185", bg: "rgba(1,81,133,0.07)", text: "#015185" };
 
 export default function Funding() {
   const { data: funding, isLoading: fLoading } = useFunding();
@@ -41,69 +52,67 @@ export default function Funding() {
 
   return (
     <Shell>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">Funding Tracker</h1>
-          <p className="text-muted-foreground text-lg">Monitor investments and capital raised.</p>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Funding Tracker</h1>
+          <p className="text-muted-foreground">Monitor investments and capital raised.</p>
         </div>
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button className="rounded-xl h-11 px-6 bg-[#015185] text-white">
-              <Plus className="mr-2 h-4 w-4" /> Log Investment
+            <Button
+              className="h-10 px-5 rounded-lg font-semibold text-white relative overflow-hidden group"
+              style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+            >
+              <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
+              <Plus className="mr-1.5 h-4 w-4 relative z-10" />
+              <span className="relative z-10">Log Investment</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-card border-white/10 text-white">
+          <DialogContent className="border-border/60"
+            style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(1,81,133,0.12)" }}>
+            <div className="h-1 rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
             <DialogHeader>
-              <DialogTitle className="font-display text-2xl">Record Funding</DialogTitle>
+              <DialogTitle className="font-display text-xl" style={{ color: "#015185" }}>Record Funding</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label className="text-[#015185]">Startup</Label>
-                <Select name="startupId" required>
-                  <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
-                    <SelectValue placeholder="Select Startup" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10 text-[#015185]">
-                    {startups?.map(s => (
-                      <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+              {[
+                { label: "Startup", name: "startupId", data: startups, getLabel: (s: any) => s.name },
+                { label: "Investor", name: "investorId", data: users, getLabel: (u: any) => u.name },
+              ].map(({ label, name, data, getLabel }) => (
+                <div key={name} className="space-y-1.5">
+                  <Label className="text-xs font-semibold tracking-wide uppercase text-foreground/60">{label}</Label>
+                  <Select name={name} required>
+                    <SelectTrigger className="h-10 rounded-lg border-border/70 bg-white/90 focus:border-primary focus:ring-2 focus:ring-primary/10">
+                      <SelectValue placeholder={`Select ${label}`} />
+                    </SelectTrigger>
+                    <SelectContent style={selectStyle}>
+                      {data?.map((item: any) => (
+                        <SelectItem key={item.id} value={item.id.toString()} className="focus:bg-primary/5">{getLabel(item)}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              ))}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold tracking-wide uppercase text-foreground/60">Amount (INR)</Label>
+                <Input type="number" name="amount" required className="h-10 rounded-lg border-border/70 bg-white/90 focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="e.g. 500000" />
               </div>
-              <div className="space-y-2">
-                <Label className="text-[#015185]">Investor</Label>
-                <Select name="investorId" required>
-                  <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
-                    <SelectValue placeholder="Select Investor" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10 text-[#015185]">
-                    {users?.map(u => (
-                      <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label className="text-[#015185]">Amount (INR)</Label>
-                <Input type="number" name="amount" required className="bg-white/50 border-black/30 text-[#015185]" placeholder="500000" />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-[#015185]">Funding Stage</Label>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold tracking-wide uppercase text-foreground/60">Funding Stage</Label>
                 <Select name="fundingType" required>
-                  <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
+                  <SelectTrigger className="h-10 rounded-lg border-border/70 bg-white/90 focus:border-primary focus:ring-2 focus:ring-primary/10">
                     <SelectValue placeholder="Select Stage" />
                   </SelectTrigger>
-                  <SelectContent className="bg-card border-white/10 text-[#015185]">
-                    <SelectItem value="Pre-Seed" className="text-[#015185]">Pre-Seed</SelectItem>
-                    <SelectItem value="Seed">Seed</SelectItem>
-                    <SelectItem value="Series A">Series A</SelectItem>
-                    <SelectItem value="Series B">Series B</SelectItem>
-                    <SelectItem value="Grant">Grant</SelectItem>
+                  <SelectContent style={selectStyle}>
+                    {["Pre-Seed","Seed","Series A","Series B","Grant"].map(v => (
+                      <SelectItem key={v} value={v} className="focus:bg-primary/5">{v}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl bg-[#015185] hover:bg-[#013f66]">
+              <Button type="submit" disabled={isPending} className="w-full h-10 rounded-lg font-semibold text-white"
+                style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Record"}
               </Button>
             </form>
@@ -112,38 +121,57 @@ export default function Funding() {
       </div>
 
       {fLoading ? (
-        <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-8 w-8" /></div>
+        <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-7 w-7" /></div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {funding?.map(record => {
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {funding?.map((record, idx) => {
             const startup = startups?.find(s => s.id === record.startupId);
+            const p = FUNDING_PALETTE[record.fundingType] || DEFAULT_PALETTE;
+
             return (
-              <Card key={record.id} className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                  <TrendingUp className="h-24 w-24 text-blue-500" />
+              <div key={record.id} className={`glass-card p-5 relative overflow-hidden group ${STAGGER[idx % STAGGER.length]}`}>
+                {/* Colored top accent bar */}
+                <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl" style={{ background: p.accent }} />
+
+                {/* Background watermark */}
+                <div className="absolute -right-3 -bottom-3 opacity-[0.04] group-hover:opacity-[0.07] transition-opacity pointer-events-none">
+                  <TrendingUp className="h-24 w-24" style={{ color: p.accent }} />
                 </div>
-                <div className="relative z-10">
-                  <Badge variant="outline" className="mb-4 bg-blue-500/10 text-blue-400 border-blue-500/20">
+
+                <div className="relative z-10 pt-2">
+                  {/* Funding type badge */}
+                  <span className="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full mb-3"
+                    style={{ background: p.bg, color: p.text, border: `1px solid ${p.accent}22` }}>
                     {record.fundingType}
-                  </Badge>
-                  <h3 className="text-3xl font-display font-bold text-white mb-1">
-                    ₹{(record.amount).toLocaleString()}
-                  </h3>
-                  <p className="text-lg text-white/90 mb-4">{startup?.name || `Startup #${record.startupId}`}</p>
-                  
-                  <div className="flex items-center justify-between text-sm pt-4 border-t border-white/10">
-                    <span className="text-muted-foreground">Investor #{record.investorId}</span>
-                    <span className="text-muted-foreground">{new Date(record.fundingDate!).toLocaleDateString()}</span>
+                  </span>
+
+                  {/* Amount */}
+                  <div className="text-2xl font-display font-bold mb-1" style={{ color: "#015185" }}>
+                    ₹{record.amount.toLocaleString()}
+                  </div>
+
+                  <p className="text-foreground/70 font-medium text-sm mb-4">
+                    {startup?.name || `Startup #${record.startupId}`}
+                  </p>
+
+                  <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border/40 pt-3">
+                    <span>Investor #{record.investorId}</span>
+                    <span>{new Date(record.fundingDate!).toLocaleDateString()}</span>
                   </div>
                 </div>
-              </Card>
+              </div>
             );
           })}
+
           {funding?.length === 0 && (
-            <div className="col-span-full py-12 text-center border-2 border-dashed border-white/10 rounded-2xl">
-              <IndianRupee className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <h3 className="text-lg font-medium text-white">No funding records</h3>
-              <p className="text-muted-foreground mt-1">Log the first investment.</p>
+            <div className="col-span-full py-14 text-center stagger-1">
+              <div className="inline-flex flex-col items-center gap-3 p-8 rounded-2xl border-2 border-dashed border-border">
+                <IndianRupee className="h-10 w-10 text-muted-foreground/30 animate-float" />
+                <div>
+                  <h3 className="text-base font-medium text-foreground/60">No funding records</h3>
+                  <p className="text-sm text-muted-foreground mt-0.5">Log the first investment above.</p>
+                </div>
+              </div>
             </div>
           )}
         </div>

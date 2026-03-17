@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Building2, Loader2 } from "lucide-react";
+import { Building2, Loader2, Lock, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+
+
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -22,74 +25,108 @@ export default function Login() {
       toast({ title: "Welcome back!" });
       setLocation("/");
     } catch (err: any) {
-      toast({ 
-        title: "Login failed", 
-        description: err.message || "Invalid credentials", 
-        variant: "destructive" 
-      });
+      toast({ title: "Login failed", description: err.message || "Invalid credentials", variant: "destructive" });
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background">
-      {/* Unsplash abstract tech background */}
-      {/* landing page hero abstract dark geometric */}
-      <img
-        src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop"
-        alt="Background"
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.15] mix-blend-screen"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+    
+    <div
+    
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      style={{
+        background: "linear-gradient(160deg, #f0f6fc 0%, #e8f2fb 40%, #ddeeff 100%)"
+      }}
+    >
+      {/* Subtle decorative circles */}
+      <div className="absolute top-[-80px] left-[-80px] w-[350px] h-[350px] rounded-full opacity-20 pointer-events-none"
+        style={{ background: "radial-gradient(circle, #015185, transparent 70%)" }} />
+      <div className="absolute bottom-[-60px] right-[-60px] w-[280px] h-[280px] rounded-full opacity-15 pointer-events-none"
+        style={{ background: "radial-gradient(circle, #0270b8, transparent 70%)" }} />
+
+      {/* Login card */}
+      <div
+        className="w-full max-w-md mx-4 relative z-10 rounded-2xl overflow-hidden animate-fade-in-scale"
+        style={{
+          background: "rgba(255,255,255,0.88)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(1,81,133,0.12)",
+          boxShadow: "0 20px 60px rgba(1,81,133,0.13), 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1)"
+        }}
+      >
+        {/* Top accent stripe */}
+        <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, #015185, #0270b8, #015185)" }} />
+
+        <div className="p-8 pt-7">
+          {/* Logo */}
+          <div className="flex flex-col items-center mb-8">
+            <div
+              className="h-14 w-14 rounded-xl flex items-center justify-center mb-4 shadow-primary-sm"
+              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+            >
+              <Building2 className="h-7 w-7 text-white" />
+            </div>
+            <h1 className="text-2xl font-display font-bold text-center mb-1" style={{ color: "#015185" }}>
+              FMCIII Portal
+            </h1>
+            <p className="text-muted-foreground text-sm text-center">Sign in to your account</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label className="text-foreground/70 text-xs font-semibold tracking-wide uppercase">Email Address</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
+                <Input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className="pl-9 h-11 rounded-xl border-border/70 bg-white/80 focus:border-primary focus:ring-2 focus:ring-primary/10 placeholder:text-muted-foreground/50"
+                  placeholder="admin@fmciii.com"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label className="text-foreground/70 text-xs font-semibold tracking-wide uppercase">Password</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60" />
+                <Input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="pl-9 h-11 rounded-xl border-border/70 bg-white/80 focus:border-primary focus:ring-2 focus:ring-primary/10 placeholder:text-muted-foreground/50"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isLoggingIn}
+              className="w-full h-11 rounded-xl font-semibold text-white relative overflow-hidden group mt-2"
+              style={{
+                background: "linear-gradient(135deg, #015185, #0270b8)",
+                boxShadow: "0 3px 12px rgba(1,81,133,0.3)"
+              }}
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-600" />
+              {isLoggingIn
+                ? <Loader2 className="h-5 w-5 animate-spin" />
+                : <span className="relative z-10">Sign In</span>
+              }
+            </Button>
+          </form>
+
+          <div className="mt-6 pt-5 border-t border-border/40 text-center">
+            <p className="text-xs text-muted-foreground/60">Demo: admin@fmciii.com / password123</p>
+          </div>
+        </div>
+      </div>
       
-      <Card className="w-full max-w-md p-8 relative z-10 glass-panel border-white/10 rounded-2xl shadow-2xl shadow-primary/10">
-        <div className="flex flex-col items-center mb-8">
-          <div className="h-16 w-16 bg-primary/20 rounded-2xl flex items-center justify-center mb-6 shadow-inner border border-primary/30">
-            <Building2 className="h-8 w-8 text-primary" />
-          </div>
-          <h1 className="text-3xl font-display font-bold text-white text-center tracking-tight mb-2">
-            FMCIII Portal
-          </h1>
-          <p className="text-muted-foreground text-center"></p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <Label className="text-[#015185]">Email Address</Label>
-            <Input 
-              type="email" 
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              className="bg-white/50 border-black/30 focus:border-primary text-[#015185] h-12 rounded-xl"
-             
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label className="text-[#015185]">Password</Label>
-            <Input 
-              type="password" 
-              required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className="bg-white/50 border-black/30 focus:border-primary text-[#015185] h-12 rounded-xl"
-              
-            />
-          </div>
-
-          <Button 
-            type="submit" 
-            className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg shadow-primary/25 transition-all"
-            disabled={isLoggingIn}
-          >
-            {isLoggingIn ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign In"}
-          </Button>
-        </form>
-        
-        <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-muted-foreground">
-          <p>Demo Credentials: admin@fmciii.com / password123</p>
-        </div>
-      </Card>
     </div>
   );
 }

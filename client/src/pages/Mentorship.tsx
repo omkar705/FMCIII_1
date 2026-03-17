@@ -2,7 +2,6 @@ import { Shell } from "@/components/layout/Shell";
 import { useMentorAssignments, useCreateMentorAssignment } from "@/hooks/use-mentorship";
 import { useStartups } from "@/hooks/use-startups";
 import { useUsers } from "@/hooks/use-users";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -10,7 +9,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Users, Plus, Loader2, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/use-auth";
+import { ROLE_IDS } from "@/lib/roles";
+
+const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6"];
+const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(1,81,133,0.12)" };
 
 export default function Mentorship() {
   const { data: assignments, isLoading: mLoading } = useMentorAssignments();
@@ -19,6 +22,7 @@ export default function Mentorship() {
   const { mutateAsync: createAssignment, isPending } = useCreateMentorAssignment();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,105 +42,134 @@ export default function Mentorship() {
 
   return (
     <Shell>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">Mentorship</h1>
-          <p className="text-muted-foreground text-lg">Connect startups with expert guidance.</p>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Mentorship</h1>
+          <p className="text-muted-foreground">Connect startups with expert guidance.</p>
         </div>
 
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button className="rounded-xl h-11 px-6">
-              <Plus className="mr-2 h-4 w-4" /> Assign Mentor
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-card border-white/10 text-[#015185]">
-            <DialogHeader>
-              <DialogTitle className="font-display text-2xl">New Pairing</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label>Startup</Label>
-                <Select name="startupId" required>
-                  <SelectTrigger className="bg-white/50 border-black/70">
-                    <SelectValue placeholder="Select Startup" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-black/70">
-                    {startups?.map(s => (
-                      <SelectItem key={s.id} value={s.id.toString()}>{s.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Mentor (User)</Label>
-                <Select name="mentorId" required>
-                  <SelectTrigger className="bg-white/50 border-black/50">
-                    <SelectValue placeholder="Select Mentor" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-black/70">
-                    {users?.map(u => (
-                      <SelectItem key={u.id} value={u.id.toString()}>{u.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
-                {isPending ? <Loader2 className="animate-spin" /> : "Create Assignment"}
+        {user?.roleId === ROLE_IDS.ADMIN && (
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button
+                className="h-10 px-5 rounded-lg font-semibold text-white relative overflow-hidden group"
+                style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+              >
+                <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
+                <Plus className="mr-1.5 h-4 w-4 relative z-10" />
+                <span className="relative z-10">Assign Mentor</span>
               </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="border-border/60"
+              style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(1,81,133,0.12)" }}>
+              <div className="h-1 rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+              <DialogHeader>
+                <DialogTitle className="font-display text-xl" style={{ color: "#015185" }}>New Pairing</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+                {[
+                  { label: "Startup", name: "startupId", data: startups },
+                  { label: "Mentor (User)", name: "mentorId", data: users },
+                ].map(({ label, name, data }) => (
+                  <div key={name} className="space-y-1.5">
+                    <Label className="text-xs font-semibold tracking-wide uppercase text-foreground/60">{label}</Label>
+                    <Select name={name} required>
+                      <SelectTrigger className="h-10 rounded-lg border-border/70 bg-white/90 focus:border-primary focus:ring-2 focus:ring-primary/10">
+                        <SelectValue placeholder={`Select ${label}`} />
+                      </SelectTrigger>
+                      <SelectContent style={selectStyle}>
+                        {data?.map((item: any) => (
+                          <SelectItem key={item.id} value={item.id.toString()} className="focus:bg-primary/5">
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ))}
+                <Button type="submit" disabled={isPending} className="w-full h-10 rounded-lg font-semibold text-white"
+                  style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
+                  {isPending ? <Loader2 className="animate-spin" /> : "Create Assignment"}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       {mLoading ? (
-        <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-8 w-8" /></div>
+        <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-7 w-7" /></div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {assignments?.map(assignment => {
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {assignments?.map((assignment, idx) => {
             const startup = startups?.find(s => s.id === assignment.startupId);
-            const mentor = users?.find(u => u.id === assignment.mentorId);
+            const mentor  = users?.find(u => u.id === assignment.mentorId);
+            const isActive = assignment.status === 'active';
+
             return (
-              <Card key={assignment.id} className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-sm">
-                        {mentor?.name?.[0] || 'M'}
-                      </div>
-                      <span className="font-semibold text-white">{mentor?.name || `Mentor #${assignment.mentorId}`}</span>
+              <div key={assignment.id} className={`glass-card p-5 ${STAGGER[idx % STAGGER.length]}`}>
+                {/* Mentor ↔ Startup */}
+                <div className="flex items-center gap-4">
+                  {/* Mentor */}
+                  <div className="flex flex-col items-center gap-1.5 flex-1">
+                    <div className="h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                      style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
+                      {mentor?.name?.[0] || 'M'}
                     </div>
+                    <span className="text-sm font-semibold text-center text-foreground leading-tight">
+                      {mentor?.name || `Mentor #${assignment.mentorId}`}
+                    </span>
+                    <span className="text-[10px] font-semibold tracking-wider uppercase" style={{ color: "#015185" }}>Mentor</span>
                   </div>
-                  
-                  <div className="px-4 text-muted-foreground">
-                    <ArrowRight className="h-5 w-5" />
+
+                  {/* Connector */}
+                  <div className="flex items-center gap-1 px-1">
+                    <div className="w-8 h-px" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+                    <ArrowRight className="h-4 w-4 text-primary/60 animate-float" style={{ animationDuration: "3s" }} />
+                    <div className="w-8 h-px" style={{ background: "linear-gradient(90deg, #0270b8, #00907a)" }} />
                   </div>
-                  
-                  <div className="flex-1 flex justify-end">
-                    <div className="flex items-center gap-2 mb-1 flex-row-reverse">
-                      <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-                        {startup?.name?.[0] || 'S'}
-                      </div>
-                      <span className="font-semibold text-white">{startup?.name || `Startup #${assignment.startupId}`}</span>
+
+                  {/* Startup */}
+                  <div className="flex flex-col items-center gap-1.5 flex-1">
+                    <div className="h-10 w-10 rounded-xl flex items-center justify-center text-white font-bold text-sm"
+                      style={{ background: "linear-gradient(135deg, #00907a, #007a68)" }}>
+                      {startup?.name?.[0] || 'S'}
                     </div>
+                    <span className="text-sm font-semibold text-center text-foreground leading-tight">
+                      {startup?.name || `Startup #${assignment.startupId}`}
+                    </span>
+                    <span className="text-[10px] font-semibold tracking-wider uppercase" style={{ color: "#00907a" }}>Startup</span>
                   </div>
                 </div>
-                
-                <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center">
+
+                {/* Footer */}
+                <div className="mt-4 pt-3 border-t border-border/50 flex justify-between items-center">
                   <span className="text-xs text-muted-foreground">
                     Assigned: {new Date(assignment.assignedDate!).toLocaleDateString()}
                   </span>
-                  <Badge variant={assignment.status === 'active' ? 'default' : 'secondary'} className="bg-primary/20 text-primary border-0">
+                  <span
+                    className="text-xs font-semibold px-2.5 py-1 rounded-full"
+                    style={isActive
+                      ? { background: "rgba(1,81,133,0.08)", border: "1px solid rgba(1,81,133,0.15)", color: "#015185" }
+                      : { background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.08)", color: "#6b7280" }
+                    }
+                  >
                     {assignment.status}
-                  </Badge>
+                  </span>
                 </div>
-              </Card>
+              </div>
             );
           })}
+
           {assignments?.length === 0 && (
-            <div className="col-span-full py-12 text-center">
-              <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <p className="text-muted-foreground">No mentorship pairings yet.</p>
+            <div className="col-span-full py-14 text-center stagger-1">
+              <div className="inline-flex flex-col items-center gap-3 p-8 rounded-2xl border-2 border-dashed border-border">
+                <Users className="h-10 w-10 text-muted-foreground/30 animate-float" />
+                <div>
+                  <h3 className="text-base font-medium text-foreground/60">No mentorship pairings yet</h3>
+                  <p className="text-sm text-muted-foreground mt-0.5">Create the first mentor-startup pairing above.</p>
+                </div>
+              </div>
             </div>
           )}
         </div>

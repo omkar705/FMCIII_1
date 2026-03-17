@@ -3,48 +3,75 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
-import { start } from "repl";
-
+import bcrypt from "bcrypt";
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
 
   /* ================= AUTH ================= */
+  
 
   app.post(api.auth.login.path, async (req, res) => {
-    try {
-      const input = api.auth.login.input.parse(req.body);
+  try {
+    const input = api.auth.login.input.parse(req.body);
 
-      const user = await storage.getUserByEmail(input.email);
+    // ✅ Normalize input
+    const email = input.email.trim().toLowerCase();
+    const password = input.password.trim();
 
-      if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" });
-      }
+    console.log("LOGIN ATTEMPT:");
+    console.log("Email:", email);
+    console.log("Password:", JSON.stringify(password));
 
-      if (user.passwordHash !== input.password) {
-        return res.status(401).json({ message: "Invalid email or password" });
-      }
+    // ✅ Fetch user
+    const user = await storage.getUserByEmail(email);
 
-      return res.json({
-        user,
-        token: "mock-jwt-token"
-      });
-
-    } catch (err) {
-
-      if (err instanceof z.ZodError) {
-        return res.status(400).json({
-          message: err.errors[0].message,
-          field: err.errors[0].path.join(".")
-        });
-      }
-
-      console.error("Login error:", err);
-      return res.status(500).json({ message: "Server error" });
+    if (!user) {
+      console.log("User not found");
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-  });
 
+    console.log("DB Password:", JSON.stringify(user.passwordHash));
+
+    // ✅ Check password
+    let isMatch = false;
+
+    // 🔁 Support BOTH plain text and hashed (for now)
+    if (user.passwordHash.startsWith("$2b$")) {
+      // bcrypt hash
+      isMatch = await bcrypt.compare(password, user.passwordHash);
+    } else {
+      // plain text (temporary support)
+      isMatch = user.passwordHash === password;
+    }
+
+    if (!isMatch) {
+      console.log("Password mismatch");
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    console.log("Login success");
+
+    // ✅ Success response
+    return res.json({
+      user,
+      token: "mock-jwt-token"
+    });
+
+  } catch (err) {
+
+    if (err instanceof z.ZodError) {
+      return res.status(400).json({
+        message: err.errors[0].message,
+        field: err.errors[0].path.join(".")
+      });
+    }
+
+    console.error("Login error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
 
   /* ================= STARTUPS ================= */
 
@@ -330,8 +357,13 @@ export async function registerRoutes(
   });
 
   app.post("/api/mentorAssignments", async (req, res) => {
-    const item = await storage.createMentorAssignment(req.body);
-    res.json(item);
+    try {
+      const item = await storage.createMentorAssignment(req.body);
+      res.status(201).json(item);
+    } catch (err) {
+      console.error("Create mentor assignment error:", err);
+      res.status(500).json({ message: "Failed to create mentor assignment" });
+    }
   });
 
 

@@ -1,21 +1,32 @@
 import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { useStartups, useCreateStartup } from "@/hooks/use-startups";
-// import { startups as sampleStartups } from "@/data/startups";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Building2, Plus, Globe, Loader2 } from "lucide-react";
+import { Building2, Plus, Globe, Loader2, ArrowUpRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 
-/** Derive a URL-safe slug from a startup name to match sample data IDs. */
 function nameToSlug(name: string): string {
   return name.toLowerCase().replace(/\s+/g, "_");
 }
+
+const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6","stagger-7","stagger-8"];
+
+// Professional icon background tints keyed to index
+const ICON_STYLES = [
+  { bg: "rgba(1,81,133,0.09)",   color: "#015185" },
+  { bg: "rgba(100,50,200,0.09)", color: "#6432c8" },
+  { bg: "rgba(0,160,130,0.09)",  color: "#00907a" },
+  { bg: "rgba(200,100,0,0.09)",  color: "#c86400" },
+  { bg: "rgba(180,30,80,0.09)",  color: "#b41e50" },
+  { bg: "rgba(0,140,200,0.09)",  color: "#008cc8" },
+];
+
+const inputStyle = { background: "rgba(255,255,255,0.9)" };
 
 export default function Startups() {
   const { data: startups, isLoading } = useStartups();
@@ -40,44 +51,52 @@ export default function Startups() {
     }
   };
 
-  /** Navigate to the startup profile page using its slug ID. */
-function handleStartupClick(id: number) {
-  navigate(`/startups/${id}`);
-}
-
+  function handleStartupClick(id: number) {
+    navigate(`/startups/${id}`);
+  }
 
   return (
     <Shell adminOnly>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">Startups</h1>
-          <p className="text-muted-foreground text-lg">Directory of all portfolio companies.</p>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Startups</h1>
+          <p className="text-muted-foreground">Directory of all portfolio companies.</p>
         </div>
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button className="rounded-xl h-11 px-6 shadow-lg shadow-primary/20">
-              <Plus className="mr-2 h-4 w-4" /> Add Startup
+            <Button
+              className="h-10 px-5 rounded-lg font-semibold text-white relative overflow-hidden group"
+              style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+            >
+              <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
+              <Plus className="mr-1.5 h-4 w-4 relative z-10" />
+              <span className="relative z-10">Add Startup</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px] bg-card border-white/10 text-[#015185]">
+
+          <DialogContent className="sm:max-w-[480px] border-border/60"
+            style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(1,81,133,0.12)" }}>
+            <div className="h-1 w-full rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
             <DialogHeader>
-              <DialogTitle className="font-display text-2xl">New Startup</DialogTitle>
+              <DialogTitle className="font-display text-xl" style={{ color: "#015185" }}>New Startup</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label>Company Name</Label>
-                <Input name="name" required className="bg-white/50 border-black/70" placeholder="e.g. Acme Corp" />
+            <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+              {[
+                { name: "name", label: "Company Name", placeholder: "e.g. Acme Corp", required: true },
+                { name: "domain", label: "Industry / Domain", placeholder: "e.g. FinTech, AI, SaaS" },
+              ].map(f => (
+                <div key={f.name} className="space-y-1.5">
+                  <Label className="text-xs font-semibold tracking-wide uppercase text-foreground/60">{f.label}</Label>
+                  <Input name={f.name} required={f.required} style={inputStyle} className="h-10 rounded-lg border-border/70 focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder={f.placeholder} />
+                </div>
+              ))}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold tracking-wide uppercase text-foreground/60">Description</Label>
+                <Textarea name="description" style={inputStyle} className="rounded-lg border-border/70 min-h-[90px] focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Brief pitch..." />
               </div>
-              <div className="space-y-2">
-                <Label>Industry / Domain</Label>
-                <Input name="domain" className="bg-white/50 border-black/70" placeholder="e.g. FinTech, AI, SaaS" />
-              </div>
-              <div className="space-y-2">
-                <Label>Description</Label>
-                <Textarea name="description" className="bg-white/50 border-black/70 min-h-[100px]" placeholder="Brief pitch..." />
-              </div>
-              <Button type="submit" disabled={isPending} className="w-full h-11 rounded-xl">
+              <Button type="submit" disabled={isPending} className="w-full h-10 rounded-lg font-semibold text-white"
+                style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Company"}
               </Button>
             </form>
@@ -86,37 +105,61 @@ function handleStartupClick(id: number) {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-8 w-8" /></div>
+        <div className="flex justify-center p-12"><Loader2 className="animate-spin text-primary h-7 w-7" /></div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {startups?.map(startup => (
-            <Card
-              key={startup.id}
-              className="p-6 border-white/5 bg-card/60 backdrop-blur-xl hover-elevate overflow-hidden group cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 transition-all duration-200"
-              onClick={() => handleStartupClick(startup.id)}
-            >
-              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                <Building2 className="h-24 w-24" />
-              </div>
-              <div className="relative z-10">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 border border-white/10 flex items-center justify-center mb-4">
-                  <span className="font-display font-bold text-xl text-primary">{startup.name.charAt(0)}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {startups?.map((startup, idx) => {
+            const ic = ICON_STYLES[idx % ICON_STYLES.length];
+            return (
+              <div
+                key={startup.id}
+                className={`glass-card p-5 cursor-pointer group relative overflow-hidden ${STAGGER[idx % STAGGER.length]}`}
+                onClick={() => handleStartupClick(startup.id)}
+              >
+                {/* Subtle background watermark */}
+                <div className="absolute -right-3 -top-3 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-300 pointer-events-none">
+                  <Building2 className="h-24 w-24" />
                 </div>
-                <h3 className="text-xl font-display font-bold text-white mb-1">{startup.name}</h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                  <Globe className="h-4 w-4" /> {startup.domain || "No Domain"}
+                {/* Arrow on hover */}
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                  <ArrowUpRight className="h-4 w-4" style={{ color: ic.color }} />
                 </div>
-                <p className="text-muted-foreground text-sm line-clamp-3">
-                  {startup.description || "No description provided."}
-                </p>
+
+                <div className="relative z-10">
+                  <div
+                    className="h-11 w-11 rounded-xl flex items-center justify-center mb-4 border transition-transform duration-200 group-hover:scale-105"
+                    style={{ background: ic.bg, borderColor: `${ic.color}20` }}
+                  >
+                    <span className="font-display font-bold text-lg" style={{ color: ic.color }}>
+                      {startup.name.charAt(0)}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-display font-bold mb-1 text-foreground">{startup.name}</h3>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
+                    <Globe className="h-3.5 w-3.5" />
+                    {startup.domain || "No Domain"}
+                  </div>
+                  <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
+                    {startup.description || "No description provided."}
+                  </p>
+                </div>
+
+                {/* Bottom line */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ background: `linear-gradient(90deg, transparent, ${ic.color}50, transparent)` }} />
               </div>
-            </Card>
-          ))}
+            );
+          })}
+
           {startups?.length === 0 && (
-            <div className="col-span-full py-12 text-center border-2 border-dashed border-white/10 rounded-2xl">
-              <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <h3 className="text-lg font-medium text-white">No startups yet</h3>
-              <p className="text-muted-foreground mt-1">Get started by adding a new company.</p>
+            <div className="col-span-full py-14 text-center stagger-1">
+              <div className="inline-flex flex-col items-center gap-3 p-8 rounded-2xl border-2 border-dashed border-border">
+                <Building2 className="h-10 w-10 text-muted-foreground/40 animate-float" />
+                <div>
+                  <h3 className="text-base font-medium text-foreground/60">No startups yet</h3>
+                  <p className="text-sm text-muted-foreground mt-0.5">Get started by adding a new company.</p>
+                </div>
+              </div>
             </div>
           )}
         </div>
