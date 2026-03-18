@@ -268,7 +268,7 @@ export default function Scorecards() {
                       <ClipboardCheck className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-white">{displayName}</h4>
+                      <h4 className="font-semibold text-[#015185]">{displayName}</h4>
                       <p className="text-xs text-muted-foreground">{displayJudge}</p>
                     </div>
                   </div>
