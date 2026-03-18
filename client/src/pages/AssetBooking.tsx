@@ -149,7 +149,7 @@ export default function AssetBooking() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">Asset Booking</h1>
+          <h1 className="text-4xl font-display font-bold text-[#015185] mb-2">Asset Booking</h1>
           <p className="text-muted-foreground text-lg">
             {isAdmin ? "View and manage bookings for physical assets." : "Book meeting rooms, lab equipment, and hot desks."}
           </p>

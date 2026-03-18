@@ -145,7 +145,7 @@ export default function Scorecards() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white mb-2">Evaluations</h1>
+          <h1 className="text-4xl font-display font-bold text-[#015185] mb-2">Evaluations</h1>
           <p className="text-muted-foreground text-lg">Judge scoring and feedback.</p>
         </div>
 
