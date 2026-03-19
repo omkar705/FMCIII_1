@@ -303,10 +303,10 @@ export default function AssetBooking() {
 
               {/* Assets for selected date */}
               <div className="lg:col-span-2 space-y-4">
-                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-[#015185] flex items-center gap-2">
                   <CalendarDays className="h-5 w-5 text-primary" />
                   {format(selectedDate, "MMMM d, yyyy")}
-                  <span className="text-sm text-muted-foreground font-normal ml-1">
+                  <span className="text-sm text-[#015185] font-normal ml-1">
                     — {bookingsForDate.length} booking{bookingsForDate.length !== 1 ? "s" : ""}
                   </span>
                 </h3>
@@ -331,8 +331,8 @@ export default function AssetBooking() {
                             <Icon className="h-5 w-5" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-white">{asset.name}</h4>
-                            <p className="text-xs text-muted-foreground">
+                            <h4 className="font-semibold text-[#015185]">{asset.name}</h4>
+                            <p className="text-xs text-[#015185]">
                               {ASSET_TYPE_LABELS[asset.type] ?? asset.type}
                               {asset.capacity ? ` · Capacity: ${asset.capacity}` : ""}
                             </p>
