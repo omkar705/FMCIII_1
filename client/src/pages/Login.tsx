@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Building2, Loader2, Lock, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ROLE_IDS } from "@/lib/roles";
 
 
 
@@ -24,7 +25,7 @@ export default function Login() {
       const result = await login({ email, password });
       toast({ title: "Welcome back!" });
       // Redirect founders to their profile on first login
-      if (result?.user?.roleId === 2) {
+      if (result?.user?.roleId === ROLE_IDS.STARTUP_FOUNDER) {
         setLocation("/profile");
       } else {
         setLocation("/");

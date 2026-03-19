@@ -50,10 +50,10 @@ function FounderProfile({ userId }: { userId: number }) {
     setForm({
       name: startup?.name ?? "",
       domain: startup?.domain ?? "",
-      stage: (startup as any)?.stage ?? "",
+      stage: startup?.stage ?? "",
       teammembers: startup?.teammembers ?? "",
-      location: (startup as any)?.location ?? "",
-      website: (startup as any)?.website ?? "",
+      location: startup?.location ?? "",
+      website: startup?.website ?? "",
       description: startup?.description ?? "",
     });
     setIsEditing(true);
@@ -127,7 +127,7 @@ function FounderProfile({ userId }: { userId: number }) {
               <div key={field} className="space-y-1.5">
                 <Label className="text-xs font-semibold tracking-wide uppercase text-foreground/60">{label}</Label>
                 <Input
-                  value={(form as any)[field]}
+                  value={form[field as keyof typeof form]}
                   onChange={(e) => setForm((f) => ({ ...f, [field]: e.target.value }))}
                   placeholder={placeholder}
                   className="h-10 rounded-lg border-border/70"
@@ -186,12 +186,12 @@ function FounderProfile({ userId }: { userId: number }) {
             <h1 className="text-4xl font-bold" style={{ color: "#015185" }}>{startup?.name}</h1>
             <p className="text-muted-foreground mt-1">
               {startup?.domain}
-              {(startup as any)?.stage ? ` • ${(startup as any).stage} Stage` : ""}
+              {startup?.stage ? ` • ${startup.stage} Stage` : ""}
             </p>
             <div className="flex flex-wrap gap-2 mt-2">
-              {(startup as any)?.location && (
+              {startup?.location && (
                 <span className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10" style={{ color: "#015185" }}>
-                  <MapPin className="inline h-3 w-3 mr-1" />{(startup as any).location}
+                  <MapPin className="inline h-3 w-3 mr-1" />{startup.location}
                 </span>
               )}
               {startup?.teammembers && (
@@ -222,7 +222,7 @@ function FounderProfile({ userId }: { userId: number }) {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-5 pt-5 border-t mt-5">
             {[
               { label: "Domain", value: startup?.domain },
-              { label: "Stage", value: (startup as any)?.stage },
+              { label: "Stage", value: startup?.stage },
               { label: "Team Size", value: startup?.teammembers },
             ].map(({ label, value }) => (
               <div key={label}>
@@ -236,20 +236,20 @@ function FounderProfile({ userId }: { userId: number }) {
         <Card className="p-6">
           <h2 className="text-xl font-bold mb-5" style={{ color: "#015185" }}>Contact</h2>
           <div className="space-y-4 text-sm">
-            {(startup as any)?.website && (
+            {startup?.website && (
               <div className="flex gap-3 items-center">
                 <Globe className="h-4 w-4 text-muted-foreground shrink-0" />
-                <a href={(startup as any).website} target="_blank" rel="noopener noreferrer"
+                <a href={startup.website} target="_blank" rel="noopener noreferrer"
                   className="text-primary flex items-center gap-1 hover:underline truncate">
-                  {(startup as any).website.replace(/^https?:\/\//, "")}
+                  {startup.website.replace(/^https?:\/\//, "")}
                   <ExternalLink className="h-3 w-3 shrink-0" />
                 </a>
               </div>
             )}
-            {(startup as any)?.location && (
+            {startup?.location && (
               <div className="flex gap-3 items-center">
                 <MapPin className="h-4 w-4 text-muted-foreground shrink-0" />
-                <span style={{ color: "#015185" }}>{(startup as any).location}</span>
+                <span style={{ color: "#015185" }}>{startup.location}</span>
               </div>
             )}
           </div>

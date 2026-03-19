@@ -178,7 +178,7 @@ export async function registerRoutes(
       return res.json(items);
     }
     const items = await storage.getApplications();
-    res.json(items);
+    return res.json(items);
   });
 
   app.post("/api/applications", async (req, res) => {
