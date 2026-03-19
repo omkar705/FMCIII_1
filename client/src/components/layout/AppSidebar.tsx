@@ -23,7 +23,6 @@ const getNavigationItems = (roleId?: number | null) => {
   ];
   if (roleId === ROLE_IDS.INCUBATEE) return [
     { title: "Dashboard",    url: "/",             icon: LayoutDashboard },
-    { title: "Mentorship",   url: "/mentorship",   icon: Users },
     { title: "Applications", url: "/applications", icon: Target },
     { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
     { title: "Bookings",     url: "/bookings",     icon: CalendarDays },
