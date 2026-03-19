@@ -75,6 +75,17 @@ export async function registerRoutes(
 
   /* ================= STARTUPS ================= */
 
+  // Admin view: only startups with "Selected" application
+  app.get("/api/startups/selected", async (req, res) => {
+    try {
+      const items = await storage.getSelectedStartups();
+      res.json(items);
+    } catch (err) {
+      console.error("Get selected startups error:", err);
+      res.status(500).json({ message: "Failed to fetch startups" });
+    }
+  });
+
   app.get("/api/startups", async (req, res) => {
     const items = await storage.getStartups();
     res.json(items);
@@ -84,6 +95,20 @@ export async function registerRoutes(
     const item = await storage.createStartup(req.body);
     res.json(item);
   });
+
+  app.get("/api/startups/by-user/:userId", async (req, res) => {
+    try {
+      const userId = Number(req.params.userId);
+      if (isNaN(userId)) return res.status(400).json({ message: "Invalid user id" });
+      const startup = await storage.getStartupByUserId(userId);
+      if (!startup) return res.status(404).json({ message: "Startup not found" });
+      res.json(startup);
+    } catch (err) {
+      console.error("Get startup by user error:", err);
+      res.status(500).json({ message: "Failed to fetch startup" });
+    }
+  });
+
   app.get("/api/startups/:id", async (req, res) => {
 
   const id = Number(req.params.id);
@@ -101,14 +126,59 @@ export async function registerRoutes(
   res.json(startup);
 });
 
+  app.put("/api/startups/:id", async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid startup id" });
+      const updated = await storage.updateStartup(id, req.body);
+      if (!updated) return res.status(404).json({ message: "Startup not found" });
+      res.json(updated);
+    } catch (err) {
+      console.error("Update startup error:", err);
+      res.status(500).json({ message: "Failed to update startup" });
+    }
+  });
+
+  /* ================= STARTUP PROFILES ================= */
+
+  app.get("/api/startup-profiles/by-startup/:startupId", async (req, res) => {
+    try {
+      const startupId = Number(req.params.startupId);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      const profile = await storage.getStartupProfileByStartupId(startupId);
+      if (!profile) return res.status(404).json({ message: "Profile not found" });
+      res.json(profile);
+    } catch (err) {
+      console.error("Get startup profile error:", err);
+      res.status(500).json({ message: "Failed to fetch startup profile" });
+    }
+  });
+
+  app.put("/api/startup-profiles/by-startup/:startupId", async (req, res) => {
+    try {
+      const startupId = Number(req.params.startupId);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      const profile = await storage.upsertStartupProfileByStartupId(startupId, req.body);
+      res.json(profile);
+    } catch (err) {
+      console.error("Upsert startup profile error:", err);
+      res.status(500).json({ message: "Failed to update startup profile" });
+    }
+  });
+
 
 
 
   /* ================= APPLICATIONS ================= */
 
   app.get("/api/applications", async (req, res) => {
+    const { email } = req.query;
+    if (email && typeof email === "string") {
+      const items = await storage.getApplicationsByEmail(email.trim().toLowerCase());
+      return res.json(items);
+    }
     const items = await storage.getApplications();
-    res.json(items);
+    return res.json(items);
   });
 
   app.post("/api/applications", async (req, res) => {
@@ -351,12 +421,39 @@ export async function registerRoutes(
 
   /* ================= MENTOR ASSIGNMENTS ================= */
 
+  // Support both camelCase and kebab-case paths for backwards compatibility
   app.get("/api/mentorAssignments", async (req, res) => {
     const items = await storage.getMentorAssignments();
     res.json(items);
   });
+  app.get("/api/mentor-assignments", async (req, res) => {
+    const items = await storage.getMentorAssignments();
+    res.json(items);
+  });
+
+  app.get("/api/mentor-assignments/by-startup/:startupId", async (req, res) => {
+    try {
+      const startupId = Number(req.params.startupId);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      const assignment = await storage.getMentorAssignmentByStartupId(startupId);
+      if (!assignment) return res.status(404).json({ message: "No mentor assigned" });
+      res.json(assignment);
+    } catch (err) {
+      console.error("Get mentor assignment by startup error:", err);
+      res.status(500).json({ message: "Failed to fetch mentor assignment" });
+    }
+  });
 
   app.post("/api/mentorAssignments", async (req, res) => {
+    try {
+      const item = await storage.createMentorAssignment(req.body);
+      res.status(201).json(item);
+    } catch (err) {
+      console.error("Create mentor assignment error:", err);
+      res.status(500).json({ message: "Failed to create mentor assignment" });
+    }
+  });
+  app.post("/api/mentor-assignments", async (req, res) => {
     try {
       const item = await storage.createMentorAssignment(req.body);
       res.status(201).json(item);

@@ -14,6 +14,21 @@ export function useApplications() {
   });
 }
 
+/** Fetch only the applications submitted by a specific founder (filtered by email). */
+export function useFounderApplications(email: string | undefined) {
+  return useQuery({
+    queryKey: [api.applications.list.path, { email }],
+    queryFn: async () => {
+      if (!email) return [];
+      const url = `${api.applications.list.path}?email=${encodeURIComponent(email)}`;
+      const res = await fetch(url, { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch applications");
+      return api.applications.list.responses[200].parse(await res.json());
+    },
+    enabled: !!email,
+  });
+}
+
 export function useCreateApplication() {
   const queryClient = useQueryClient();
   return useMutation({

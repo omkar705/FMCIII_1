@@ -30,6 +30,10 @@ export const startups = pgTable("startups", {
   domain: text("domain"),
   description: text("description"),
   teammembers: text("teamStrength"),
+  userId: integer("user_id").references(() => users.id),
+  stage: text("stage"),
+  location: text("location"),
+  website: text("website"),
 });
 
 export const events = pgTable("events", {
