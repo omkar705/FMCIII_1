@@ -22,11 +22,11 @@ const getNavigationItems = (roleId?: number | null) => {
     { title: "Bookings",     url: "/bookings",     icon: CalendarDays },
   ];
   if (roleId === ROLE_IDS.INCUBATEE) return [
-    { title: "Dashboard",    url: "/",             icon: LayoutDashboard },
+    { title: "Profile",      url: "/profile",      icon: Building },
     { title: "Applications", url: "/applications", icon: Target },
+    { title: "Mentorship",   url: "/mentorship",   icon: Users },
     { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
     { title: "Bookings",     url: "/bookings",     icon: CalendarDays },
-    { title: "Profile",      url: "/profile",      icon: Building },
   ];
   if (roleId === ROLE_IDS.MENTOR) return [
     { title: "Dashboard",    url: "/",             icon: LayoutDashboard },
