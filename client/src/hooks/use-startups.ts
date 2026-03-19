@@ -7,6 +7,18 @@ export function useStartups() {
   return useQuery({
     queryKey: [api.startups.list.path],
     queryFn: async () => {
+      // Admin view: only show startups that have a "Selected" application
+      const res = await fetch("/api/startups/selected", { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch startups");
+      return api.startups.list.responses[200].parse(await res.json());
+    },
+  });
+}
+
+export function useAllStartups() {
+  return useQuery({
+    queryKey: [api.startups.list.path, "all"],
+    queryFn: async () => {
       const res = await fetch(api.startups.list.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch startups");
       return api.startups.list.responses[200].parse(await res.json());
@@ -28,6 +40,19 @@ export function useStartup(id: number) {
   });
 }
 
+export function useStartupByUserId(userId: number | undefined) {
+  return useQuery({
+    queryKey: ["/api/startups/by-user", userId],
+    queryFn: async () => {
+      const res = await fetch(`/api/startups/by-user/${userId}`, { credentials: "include" });
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error("Failed to fetch startup");
+      return api.startups.get.responses[200].parse(await res.json());
+    },
+    enabled: !!userId,
+  });
+}
+
 export function useCreateStartup() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -44,3 +69,24 @@ export function useCreateStartup() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.startups.list.path] }),
   });
 }
+
+export function useUpdateStartup() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, ...data }: { id: number;[key: string]: any }) => {
+      const res = await fetch(`/api/startups/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to update startup");
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.startups.list.path] });
+      queryClient.invalidateQueries({ queryKey: ["/api/startups/by-user"] });
+    },
+  });
+}
+

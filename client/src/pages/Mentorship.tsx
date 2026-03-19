@@ -1,12 +1,12 @@
 import { Shell } from "@/components/layout/Shell";
 import { useMentorAssignments, useCreateMentorAssignment } from "@/hooks/use-mentorship";
-import { useStartups } from "@/hooks/use-startups";
+import { useAllStartups, useStartupByUserId } from "@/hooks/use-startups";
 import { useUsers } from "@/hooks/use-users";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, Plus, Loader2, ArrowRight } from "lucide-react";
+import { Users, Plus, Loader2, ArrowRight, UserCircle, Mail, CalendarDays } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
@@ -15,14 +15,98 @@ import { ROLE_IDS } from "@/lib/roles";
 const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6"];
 const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(1,81,133,0.12)" };
 
+/** Founder-specific Mentorship View */
+function FounderMentorshipView({ userId }: { userId: number }) {
+  const { data: startup, isLoading: sLoading } = useStartupByUserId(userId);
+  const { data: assignments, isLoading: mLoading } = useMentorAssignments();
+  const { data: users } = useUsers();
+
+  if (sLoading || mLoading) {
+    return (
+      <div className="flex justify-center p-12">
+        <Loader2 className="animate-spin text-primary h-7 w-7" />
+      </div>
+    );
+  }
+
+  // Find assignment for this founder's startup
+  const assignment = startup
+    ? assignments?.find((a) => a.startupId === startup.id && a.status === "active")
+    : undefined;
+
+  const mentor = assignment ? users?.find((u) => u.id === assignment.mentorId) : undefined;
+
+  if (!assignment || !mentor) {
+    return (
+      <div className="py-16 text-center stagger-2">
+        <div className="inline-flex flex-col items-center gap-3 p-10 rounded-2xl border-2 border-dashed border-border max-w-sm mx-auto">
+          <Users className="h-12 w-12 text-muted-foreground/30 animate-float" />
+          <div>
+            <h3 className="text-base font-semibold text-foreground/70">No mentor assigned yet</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              No mentors have been assigned yet. The admin will assign a mentor soon.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-md stagger-2">
+      <div className="glass-card p-6 flex flex-col gap-4">
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase" style={{ color: "#015185" }}>
+          <UserCircle className="h-4 w-4" />
+          Your Assigned Mentor
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div
+            className="h-14 w-14 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0"
+            style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+          >
+            {mentor.name?.[0]?.toUpperCase() || "M"}
+          </div>
+          <div>
+            <p className="text-base font-bold text-foreground">{mentor.name}</p>
+            <p className="text-sm text-muted-foreground">{mentor.email}</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 pt-2 border-t border-border/40 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <Mail className="h-4 w-4 shrink-0" style={{ color: "#015185" }} />
+            <span>{mentor.email}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CalendarDays className="h-4 w-4 shrink-0" style={{ color: "#015185" }} />
+            <span>
+              Assigned:{" "}
+              {assignment.assignedDate
+                ? new Date(assignment.assignedDate).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })
+                : "—"}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Mentorship() {
   const { data: assignments, isLoading: mLoading } = useMentorAssignments();
-  const { data: startups } = useStartups();
+  const { data: startups } = useAllStartups();
   const { data: users } = useUsers();
   const { mutateAsync: createAssignment, isPending } = useCreateMentorAssignment();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
+
+  const isFounder = user?.roleId === ROLE_IDS.STARTUP_FOUNDER;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,6 +124,20 @@ export default function Mentorship() {
     }
   };
 
+  // ── Founder View ─────────────────────────────────────────
+  if (isFounder && user) {
+    return (
+      <Shell>
+        <div className="mb-7 stagger-1">
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Mentorship</h1>
+          <p className="text-muted-foreground">View your assigned mentor details.</p>
+        </div>
+        <FounderMentorshipView userId={user.id} />
+      </Shell>
+    );
+  }
+
+  // ── Admin / Other Roles View ─────────────────────────────
   return (
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
@@ -177,3 +275,4 @@ export default function Mentorship() {
     </Shell>
   );
 }
+

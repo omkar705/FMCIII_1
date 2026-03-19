@@ -21,9 +21,14 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login({ email, password });
+      const result = await login({ email, password });
       toast({ title: "Welcome back!" });
-      setLocation("/");
+      // Redirect founders to their profile on first login
+      if (result?.user?.roleId === 2) {
+        setLocation("/profile");
+      } else {
+        setLocation("/");
+      }
     } catch (err: any) {
       toast({ title: "Login failed", description: err.message || "Invalid credentials", variant: "destructive" });
     }

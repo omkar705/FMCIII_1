@@ -3,12 +3,12 @@ import {
   users, startups, startupProfiles, applications,
   evaluationCriteria, scorecards, scorecardParameters, judges, mentorAssignments,
   fundings, knowledgeBase, roles, physicalAssets, assetBookings,
-  type User, type Startup, type Application, type Scorecard,
+  type User, type Startup, type StartupProfile, type Application, type Scorecard,
   type ScorecardParameter, type Judge,
   type MentorAssignment, type Funding, type KnowledgeBaseArticle, type Role,
   type EvaluationCriteria, type PhysicalAsset, type AssetBooking,
 } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 export interface IStorage {
   // Users
@@ -28,12 +28,19 @@ export interface IStorage {
 
   // Startups
   getStartups(): Promise<Startup[]>;
+  getSelectedStartups(): Promise<Startup[]>;
   getStartup(id: number): Promise<Startup | undefined>;
+  getStartupByUserId(userId: number): Promise<Startup | undefined>;
   createStartup(startup: any): Promise<Startup>;
   updateStartup(id: number, startup: any): Promise<Startup | undefined>;
 
+  // Startup Profiles
+  getStartupProfileByStartupId(startupId: number): Promise<StartupProfile | undefined>;
+  upsertStartupProfileByStartupId(startupId: number, data: any): Promise<StartupProfile>;
+
   // Applications
   getApplications(): Promise<Application[]>;
+  getApplicationsByEmail(email: string): Promise<Application[]>;
   createApplication(application: any): Promise<Application>;
   updateApplicationStatus(id: number, status: string): Promise<Application | undefined>;
 
@@ -50,6 +57,7 @@ export interface IStorage {
 
   // Mentor Assignments
   getMentorAssignments(): Promise<MentorAssignment[]>;
+  getMentorAssignmentByStartupId(startupId: number): Promise<MentorAssignment | undefined>;
   createMentorAssignment(assignment: any): Promise<MentorAssignment>;
 
   // Fundings
@@ -110,6 +118,17 @@ export class DatabaseStorage implements IStorage {
   async getStartups(): Promise<Startup[]> {
     return await db.select().from(startups);
   }
+
+  async getSelectedStartups(): Promise<Startup[]> {
+    // Only return startups that have at least one "Selected" application
+    const selectedApps = await db
+      .select({ startupId: applications.startupId })
+      .from(applications)
+      .where(eq(applications.status, "Selected"));
+    const ids = Array.from(new Set(selectedApps.map((a) => a.startupId)));
+    if (ids.length === 0) return [];
+    return await db.select().from(startups).where(inArray(startups.id, ids));
+  }
   async getStartup(id: number): Promise<Startup | undefined> {
     const [startup] = await db.select().from(startups).where(eq(startups.id, id));
     return startup;
@@ -122,6 +141,36 @@ export class DatabaseStorage implements IStorage {
     const [updated] = await db.update(startups).set(updates).where(eq(startups.id, id)).returning();
     return updated;
   }
+
+  async getStartupByUserId(userId: number): Promise<Startup | undefined> {
+    const [startup] = await db.select().from(startups).where(eq(startups.userId, userId));
+    return startup;
+  }
+
+  async getStartupProfileByStartupId(startupId: number): Promise<StartupProfile | undefined> {
+    const [profile] = await db
+      .select()
+      .from(startupProfiles)
+      .where(eq(startupProfiles.startupId, startupId));
+    return profile;
+  }
+
+  async upsertStartupProfileByStartupId(startupId: number, data: any): Promise<StartupProfile> {
+    const existing = await this.getStartupProfileByStartupId(startupId);
+    if (existing) {
+      const [updated] = await db
+        .update(startupProfiles)
+        .set(data)
+        .where(eq(startupProfiles.startupId, startupId))
+        .returning();
+      return updated;
+    }
+    const [created] = await db
+      .insert(startupProfiles)
+      .values({ startupId, ...data })
+      .returning();
+    return created;
+  }
 async getStartupById(id: number) {
   const [startup] = await db
     .select()
@@ -133,6 +182,10 @@ async getStartupById(id: number) {
 
   async getApplications(): Promise<Application[]> {
     return await db.select().from(applications);
+  }
+
+  async getApplicationsByEmail(email: string): Promise<Application[]> {
+    return await db.select().from(applications).where(eq(applications.email, email));
   }
   async createApplication(application: any): Promise<Application> {
     const [newApplication] = await db.insert(applications).values(application).returning();
@@ -185,6 +238,14 @@ async getStartupById(id: number) {
 
   async getMentorAssignments(): Promise<MentorAssignment[]> {
     return await db.select().from(mentorAssignments);
+  }
+
+  async getMentorAssignmentByStartupId(startupId: number): Promise<MentorAssignment | undefined> {
+    const [assignment] = await db
+      .select()
+      .from(mentorAssignments)
+      .where(eq(mentorAssignments.startupId, startupId));
+    return assignment;
   }
   async createMentorAssignment(assignment: any): Promise<MentorAssignment> {
     const [newAssignment] = await db.insert(mentorAssignments).values(assignment).returning();
