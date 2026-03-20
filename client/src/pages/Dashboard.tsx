@@ -2,13 +2,22 @@ import { Shell } from "@/components/layout/Shell";
 import { useStartups } from "@/hooks/use-startups";
 import { useApplications } from "@/hooks/use-applications";
 import { useFunding } from "@/hooks/use-funding";
+import { useAuth } from "@/hooks/use-auth";
 import { Building2, Target, IndianRupee, Loader2, TrendingUp } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { Redirect } from "wouter";
+import { ROLE_IDS } from "@/lib/roles";
 
 export default function Dashboard() {
+  const { user, isLoading: authLoading } = useAuth();
   const { data: startups, isLoading: sLoading } = useStartups();
   const { data: applications, isLoading: aLoading } = useApplications();
   const { data: funding, isLoading: fLoading } = useFunding();
+
+  // Founders do not have access to the dashboard — redirect them to their profile
+  if (!authLoading && user?.roleId === ROLE_IDS.STARTUP_FOUNDER) {
+    return <Redirect href="/profile" />;
+  }
 
   if (sLoading || aLoading || fLoading) {
     return (
