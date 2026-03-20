@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6"];
 const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(1,81,133,0.12)" };
-
+const user = { id: 1, name: "Admin User" }; // Placeholder for current user (investor) info
 // Per-funding-type accent (professional, not neon)
 const FUNDING_PALETTE: Record<string, { accent: string; bg: string; text: string }> = {
   "Pre-Seed": { accent: "#c87800", bg: "rgba(200,120,0,0.07)",  text: "#a06200" },
@@ -155,7 +155,7 @@ export default function Funding() {
                   </p>
 
                   <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border/40 pt-3">
-                    <span>Investor #{record.investorId}</span>
+                    <span>Investor: {user.name}</span>
                     <span>{new Date(record.fundingDate!).toLocaleDateString()}</span>
                   </div>
                 </div>
