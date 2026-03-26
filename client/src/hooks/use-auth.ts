@@ -45,6 +45,26 @@ export function useAuth() {
     },
   });
 
+  const registerMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof api.auth.register.input>) => {
+      const res = await fetch(api.auth.register.path, {
+        method: api.auth.register.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || "Registration failed");
+      }
+      const result = await res.json();
+      return api.auth.register.responses[201].parse(result);
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData([api.auth.profile.path], data.user);
+    },
+  });
+
   const logoutMutation = useMutation({
     mutationFn: async () => {
       queryClient.setQueryData([api.auth.profile.path], null);
@@ -58,7 +78,9 @@ export function useAuth() {
     user,
     isLoading,
     login: loginMutation.mutateAsync,
+    register: registerMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
     isLoggingIn: loginMutation.isPending,
+    isRegistering: registerMutation.isPending,
   };
 }

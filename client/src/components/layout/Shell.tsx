@@ -31,7 +31,7 @@ export function Shell({ children, adminOnly }: ShellProps) {
   }
 
   if (!user) {
-    return <Redirect href="/login" />;
+    return <Redirect href="/landing" />;
   }
 
   if (adminOnly && user.roleId !== ROLE_IDS.ADMIN) {

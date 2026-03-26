@@ -479,14 +479,33 @@ export async function registerRoutes(
 
   /* ================= KNOWLEDGE BASE ================= */
 
+  // Support both camelCase and kebab-case paths (shared/routes.ts uses kebab-case)
   app.get("/api/knowledgeBase", async (req, res) => {
+    const items = await storage.getKnowledgeBaseArticles();
+    res.json(items);
+  });
+  app.get("/api/knowledge-base", async (req, res) => {
     const items = await storage.getKnowledgeBaseArticles();
     res.json(items);
   });
 
   app.post("/api/knowledgeBase", async (req, res) => {
-    const item = await storage.createKnowledgeBaseArticle(req.body);
-    res.json(item);
+    try {
+      const item = await storage.createKnowledgeBaseArticle(req.body);
+      res.status(201).json(item);
+    } catch (err) {
+      console.error("Create knowledge base article error:", err);
+      res.status(500).json({ message: "Failed to create article" });
+    }
+  });
+  app.post("/api/knowledge-base", async (req, res) => {
+    try {
+      const item = await storage.createKnowledgeBaseArticle(req.body);
+      res.status(201).json(item);
+    } catch (err) {
+      console.error("Create knowledge base article error:", err);
+      res.status(500).json({ message: "Failed to create article" });
+    }
   });
 
   /* ================= USERS ================= */

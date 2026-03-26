@@ -18,10 +18,12 @@ import Funding from "./pages/Funding";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import Profile from "./pages/Profile";
 import AssetBooking from "./pages/AssetBooking";
+import LandingPage from "./pages/LandingPage";
 
 function Router() {
   return (
     <Switch>
+      <Route path="/landing" component={LandingPage} />
       <Route path="/login" component={Login} />
       <Route path="/" component={Dashboard} />
       <Route path="/startups" component={Startups} />
