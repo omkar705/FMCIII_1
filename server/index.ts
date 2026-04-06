@@ -1,13 +1,23 @@
 import "dotenv/config";
 
 import express, { type Request, Response, NextFunction } from "express";
+import session from "express-session";
+import MemoryStore from "memorystore";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
-import "dotenv/config";
 
 const app = express();
 const httpServer = createServer(app);
+
+// Session store that auto-prunes expired entries
+const MemoryStoreSession = MemoryStore(session);
+
+declare module "express-session" {
+  interface SessionData {
+    userId?: number;
+  }
+}
 
 declare module "http" {
   interface IncomingMessage {
@@ -24,6 +34,23 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET ?? (process.env.NODE_ENV === "production"
+      ? (() => { throw new Error("SESSION_SECRET environment variable must be set in production"); })()
+      : "fmciii-portal-dev-secret"),
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+    store: new MemoryStoreSession({ checkPeriod: 86_400_000 }),
+  }),
+);
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
