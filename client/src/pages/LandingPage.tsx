@@ -8,10 +8,11 @@ import { useToast } from "@/hooks/use-toast";
 import { ROLE_IDS } from "@/lib/roles";
 import {
   Building2, Loader2, Lock, Mail, User, Phone,
-  Rocket, Users, DollarSign, Lightbulb, BookOpen,
+  Rocket, Users, IndianRupee
+, Lightbulb, BookOpen,
   ArrowRight, ChevronDown, Shield, Target, Zap,
   CheckCircle2, GraduationCap, TrendingUp, Globe,
-  Sparkles, Award, BarChart3
+  Sparkles, Award, BarChart3, 
 } from "lucide-react";
 
 /* ─── Animated counter hook ─── */
@@ -320,7 +321,7 @@ export default function LandingPage() {
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { icon: GraduationCap, label: "Expert Mentorship", desc: "45+ mentors on board" },
-                  { icon: DollarSign, label: "Funding Support", desc: "₹50Cr+ facilitated" },
+                  { icon: IndianRupee, label: "Funding Support", desc: "₹50Cr+ facilitated" },
                   { icon: Users, label: "Vibrant Community", desc: "120+ startups" },
                   { icon: Globe, label: "Global Network", desc: "Pan-India reach" },
                 ].map((item, i) => (
@@ -422,7 +423,8 @@ export default function LandingPage() {
                 accent: "#015185",
               },
               {
-                icon: DollarSign,
+                icon: IndianRupee
+,
                 title: "Funding Access",
                 desc: "Connect with angel investors, VCs, and government grants. ₹50Cr+ in funding facilitated for our startups.",
                 accent: "#0270b8",
