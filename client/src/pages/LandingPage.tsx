@@ -127,10 +127,10 @@ export default function LandingPage() {
   const authReveal = useScrollReveal();
 
   /* Stat counters */
-  const s1 = useCounter(120);
-  const s2 = useCounter(45);
-  const s3 = useCounter(50);
-  const s4 = useCounter(200);
+  const s1 = useCounter(70);
+  const s2 = useCounter(100);
+  const s3 = useCounter(20);
+  const s4 = useCounter(100);
 
   return (
     <div className="min-h-screen overflow-x-hidden" style={{ background: "linear-gradient(160deg, #f0f6fc 0%, #e8f2fb 40%, #ddeeff 100%)" }}>
@@ -260,7 +260,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0" style={{ color: "hsl(215,15%,45%)" }}>
-              FMCIII — First Model Incubation Centre provides world-class mentorship, funding access,
+              FMCIII — Foundation for MAKEITHAPPEN Center for Invention, Innovation , Incubation provides world-class mentorship, funding access,
               co-working infrastructure, and an innovation ecosystem designed to accelerate your startup
               from a bold idea to market leadership.
             </p>
@@ -426,7 +426,7 @@ export default function LandingPage() {
                 icon: IndianRupee
 ,
                 title: "Funding Access",
-                desc: "Connect with angel investors, VCs, and government grants. ₹50Cr+ in funding facilitated for our startups.",
+                desc: "Connect with angel investors, VCs, and government grants. ₹20Cr+ in funding facilitated for our startups.",
                 accent: "#0270b8",
               },
               {
@@ -569,7 +569,7 @@ export default function LandingPage() {
               <span style={{ color: "#0270b8" }}>Next Big Thing?</span>
             </h2>
             <p className="text-base leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0" style={{ color: "hsl(215,15%,50%)" }}>
-              Join 120+ startups already thriving in the FMCIII ecosystem.
+              Join 70+ startups already thriving in the FMCIII ecosystem.
               Sign up today and take your first step toward market leadership.
             </p>
             <div className="flex flex-col gap-4 max-w-sm mx-auto lg:mx-0">
@@ -769,7 +769,7 @@ export default function LandingPage() {
                 <span className="font-display font-bold text-lg" style={{ color: "#015185" }}>FMCIII</span>
               </div>
               <p className="text-sm leading-relaxed max-w-sm" style={{ color: "hsl(215,15%,50%)" }}>
-                First Model Incubation Centre — Empowering founders with mentorship,
+                Foundation for MAKEITHAPPEN Center for Invention, Innovation , Incubation — Empowering founders with mentorship,
                 funding, infrastructure, and a world-class innovation ecosystem.
               </p>
             </div>
@@ -793,8 +793,8 @@ export default function LandingPage() {
             <div>
               <h4 className="text-sm font-display font-bold mb-4" style={{ color: "#015185" }}>Contact</h4>
               <ul className="space-y-2 text-sm" style={{ color: "hsl(215,15%,50%)" }}>
-                <li>2nd Floor, Innovation Hub</li>
-                <li>FMCIII Campus, Pune 411001</li>
+                <li>1st Floor, Innovation Hub</li>
+                <li>MMCOE Campus, Pune 411052</li>
                 <li>info@fmciii.com</li>
                 <li>+91 20 1234 5678</li>
               </ul>
@@ -804,7 +804,7 @@ export default function LandingPage() {
           {/* Bottom bar */}
           <div className="border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderColor: "rgba(1,81,133,0.10)" }}>
             <p className="text-xs" style={{ color: "hsl(215,15%,55%)" }}>
-              © {new Date().getFullYear()} FMCIII — First Model Incubation Centre. All rights reserved.
+              © {new Date().getFullYear()} FMCIII — Foundation for MAKEITHAPPEN Center for Invention, Innovation , Incubation. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
               {["Privacy Policy", "Terms of Service"].map(link => (
