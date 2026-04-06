@@ -54,6 +54,7 @@ export async function registerRoutes(
     console.log("Login success");
 
     // ✅ Success response
+    req.session.userId = user.id;
     return res.json({
       user,
       token: "mock-jwt-token"
@@ -72,6 +73,58 @@ export async function registerRoutes(
     return res.status(500).json({ message: "Server error" });
   }
 });
+
+  /* ── Register ── */
+  app.post(api.auth.register.path, async (req, res) => {
+    try {
+      const input = api.auth.register.input.parse(req.body);
+      const email = input.email.trim().toLowerCase();
+
+      // Reject duplicate email
+      const existing = await storage.getUserByEmail(email);
+      if (existing) {
+        return res.status(400).json({ message: "An account with this email already exists" });
+      }
+
+      // Hash the plain-text password that arrives in the passwordHash field
+      const passwordHash = await bcrypt.hash(input.passwordHash, 10);
+
+      // Default role: startup_founder (role_id = 2, matches ROLE_IDS.STARTUP_FOUNDER in client/src/lib/roles.ts)
+      const STARTUP_FOUNDER_ROLE_ID = 2;
+
+      const user = await storage.createUser({
+        ...input,
+        email,
+        passwordHash,
+        roleId: input.roleId ?? STARTUP_FOUNDER_ROLE_ID,
+        status: input.status ?? "active",
+      });
+
+      // Persist the logged-in user in the session
+      req.session.userId = user.id;
+
+      return res.status(201).json({ user, token: "mock-jwt-token" });
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message, field: err.errors[0].path.join(".") });
+      }
+      console.error("Register error:", err);
+      return res.status(500).json({ message: "Registration failed" });
+    }
+  });
+
+  /* ── Profile (current session user) ── */
+  app.get(api.auth.profile.path, async (req, res) => {
+    const userId = req.session.userId;
+    if (!userId) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    const user = await storage.getUser(userId);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    return res.json(user);
+  });
 
   /* ================= STARTUPS ================= */
 
