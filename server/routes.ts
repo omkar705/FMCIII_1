@@ -564,12 +564,25 @@ export async function registerRoutes(
   /* ================= USERS ================= */
 
 app.get("/api/users", async (req, res) => {
+  const requesterId = req.session.userId;
+  if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+  const requester = await storage.getUser(requesterId);
+  if (!requester || requester.roleId !== 1) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
   const items = await storage.getUsers();
   res.json(items);
 });
 
 app.patch("/api/users/:id", async (req, res) => {
   try {
+    // Only admins may update other users' roles
+    const requesterId = req.session.userId;
+    if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+    const requester = await storage.getUser(requesterId);
+    if (!requester || requester.roleId !== 1) {
+      return res.status(403).json({ message: "Forbidden: admin access required" });
+    }
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) return res.status(400).json({ message: "Invalid user id" });
     const { name, roleId } = req.body;
@@ -590,13 +603,19 @@ app.patch("/api/users/:id", async (req, res) => {
 
 app.patch("/api/users/:id/profile", async (req, res) => {
   try {
+    // Users may only update their own profile
+    const requesterId = req.session.userId;
+    if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) return res.status(400).json({ message: "Invalid user id" });
+    if (requesterId !== id) {
+      return res.status(403).json({ message: "Forbidden: cannot update another user's profile" });
+    }
     const { name } = req.body;
     if (!name || typeof name !== "string") {
       return res.status(400).json({ message: "name is required" });
     }
-    const updated = await storage.updateUser(id, { name });
+    const updated = await storage.updateUser(id, { name: name.trim() });
     if (!updated) return res.status(404).json({ message: "User not found" });
     res.json(updated);
   } catch (err) {

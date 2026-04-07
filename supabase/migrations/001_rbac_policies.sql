@@ -79,8 +79,8 @@ CREATE POLICY "users_update_self" ON users
     id = NULLIF(current_setting('app.current_user_id', true), '')::INTEGER
   )
   WITH CHECK (
-    -- Prevent self-escalation of role
-    role_id IS NOT DISTINCT FROM (SELECT role_id FROM users WHERE id = users.id)
+    -- Prevent self-escalation: role_id must not change
+    role_id = (SELECT u2.role_id FROM users u2 WHERE u2.id = users.id LIMIT 1)
   );
 
 -- ── startups ───────────────────────────────────────────────
