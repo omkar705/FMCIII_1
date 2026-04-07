@@ -19,6 +19,9 @@ import KnowledgeBase from "./pages/KnowledgeBase";
 import Profile from "./pages/Profile";
 import AssetBooking from "./pages/AssetBooking";
 import LandingPage from "./pages/LandingPage";
+import MentorProfile from "./pages/MentorProfile";
+import InvestorProfile from "./pages/InvestorProfile";
+import AdminUsers from "./pages/AdminUsers";
 
 function Router() {
   return (
@@ -37,6 +40,9 @@ function Router() {
       <Route path="/knowledge-base" component={KnowledgeBase} />
       <Route path="/profile" component={Profile} />
       <Route path="/bookings" component={AssetBooking} />
+      <Route path="/mentor-profile" component={MentorProfile} />
+      <Route path="/investor-profile" component={InvestorProfile} />
+      <Route path="/admin/users" component={AdminUsers} />
       <Route component={NotFound} />
     </Switch>
   );

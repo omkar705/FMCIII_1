@@ -564,8 +564,70 @@ export async function registerRoutes(
   /* ================= USERS ================= */
 
 app.get("/api/users", async (req, res) => {
+  const requesterId = req.session.userId;
+  if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+  const requester = await storage.getUser(requesterId);
+  if (!requester || requester.roleId !== 1) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
   const items = await storage.getUsers();
   res.json(items);
+});
+
+app.patch("/api/users/:id", async (req, res) => {
+  try {
+    // Only admins may update other users' roles
+    const requesterId = req.session.userId;
+    if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+    const requester = await storage.getUser(requesterId);
+    if (!requester || requester.roleId !== 1) {
+      return res.status(403).json({ message: "Forbidden: admin access required" });
+    }
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid user id" });
+    const { name, roleId } = req.body;
+    const updates: Partial<{ name: string; roleId: number }> = {};
+    if (name !== undefined) updates.name = name;
+    if (roleId !== undefined) {
+      const parsedRoleId = parseInt(String(roleId), 10);
+      if (isNaN(parsedRoleId) || parsedRoleId <= 0) {
+        return res.status(400).json({ message: "Invalid roleId: must be a positive integer" });
+      }
+      updates.roleId = parsedRoleId;
+    }
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "No valid fields to update" });
+    }
+    const updated = await storage.updateUser(id, updates);
+    if (!updated) return res.status(404).json({ message: "User not found" });
+    res.json(updated);
+  } catch (err) {
+    console.error("Update user error:", err);
+    res.status(500).json({ message: "Failed to update user" });
+  }
+});
+
+app.patch("/api/users/:id/profile", async (req, res) => {
+  try {
+    // Users may only update their own profile
+    const requesterId = req.session.userId;
+    if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid user id" });
+    if (requesterId !== id) {
+      return res.status(403).json({ message: "Forbidden: cannot update another user's profile" });
+    }
+    const { name } = req.body;
+    if (!name || typeof name !== "string") {
+      return res.status(400).json({ message: "name is required" });
+    }
+    const updated = await storage.updateUser(id, { name: name.trim() });
+    if (!updated) return res.status(404).json({ message: "User not found" });
+    res.json(updated);
+  } catch (err) {
+    console.error("Update user profile error:", err);
+    res.status(500).json({ message: "Failed to update profile" });
+  }
 });
 
 

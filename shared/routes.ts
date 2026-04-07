@@ -281,7 +281,27 @@ export const api = {
       responses: {
         200: z.array(z.custom<typeof users.$inferSelect>()),
       }
-    }
+    },
+    update: {
+      method: 'PATCH' as const,
+      path: '/api/users/:id' as const,
+      input: z.object({ name: z.string().optional(), roleId: z.number().optional() }),
+      responses: {
+        200: z.custom<typeof users.$inferSelect>(),
+        400: errorSchemas.validation,
+        404: errorSchemas.notFound,
+      }
+    },
+    updateProfile: {
+      method: 'PATCH' as const,
+      path: '/api/users/:id/profile' as const,
+      input: z.object({ name: z.string() }),
+      responses: {
+        200: z.custom<typeof users.$inferSelect>(),
+        400: errorSchemas.validation,
+        404: errorSchemas.notFound,
+      }
+    },
   },
   physicalAssets: {
     list: {
