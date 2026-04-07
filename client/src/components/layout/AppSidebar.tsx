@@ -1,6 +1,6 @@
 import { 
   Building2, LayoutDashboard, Target, Users, LogOut, Library,
-  IndianRupee, ClipboardCheck, Building, CalendarDays,
+  IndianRupee, ClipboardCheck, Building, CalendarDays, UserCircle,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent,
@@ -20,6 +20,7 @@ const getNavigationItems = (roleId?: number | null) => {
     { title: "Scorecards",   url: "/scorecards",   icon: ClipboardCheck },
     { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
     { title: "Bookings",     url: "/bookings",     icon: CalendarDays },
+    { title: "User Management", url: "/admin/users", icon: UserCircle },
   ];
   if (roleId === ROLE_IDS.INCUBATEE) return [
     { title: "Profile",      url: "/profile",      icon: Building },
@@ -29,13 +30,13 @@ const getNavigationItems = (roleId?: number | null) => {
     { title: "Bookings",     url: "/bookings",     icon: CalendarDays },
   ];
   if (roleId === ROLE_IDS.MENTOR) return [
-    { title: "Dashboard",    url: "/",             icon: LayoutDashboard },
+    { title: "My Profile",   url: "/mentor-profile", icon: UserCircle },
     { title: "Mentorship",   url: "/mentorship",   icon: Users },
     { title: "Scorecards",   url: "/scorecards",   icon: ClipboardCheck },
     { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
   ];
   if (roleId === ROLE_IDS.INVESTOR) return [
-    { title: "Dashboard",    url: "/",             icon: LayoutDashboard },
+    { title: "My Profile",   url: "/investor-profile", icon: UserCircle },
     { title: "Funding",      url: "/funding",      icon: IndianRupee },
     { title: "Knowledge Base", url: "/knowledge-base", icon: Library },
   ];

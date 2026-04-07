@@ -14,9 +14,15 @@ export default function Dashboard() {
   const { data: applications, isLoading: aLoading } = useApplications();
   const { data: funding, isLoading: fLoading } = useFunding();
 
-  // Founders do not have access to the dashboard — redirect them to their profile
+  // Founders, mentors and investors do not have access to the dashboard — redirect them
   if (!authLoading && user?.roleId === ROLE_IDS.STARTUP_FOUNDER) {
     return <Redirect href="/profile" />;
+  }
+  if (!authLoading && user?.roleId === ROLE_IDS.MENTOR) {
+    return <Redirect href="/mentor-profile" />;
+  }
+  if (!authLoading && user?.roleId === ROLE_IDS.INVESTOR) {
+    return <Redirect href="/investor-profile" />;
   }
 
   if (sLoading || aLoading || fLoading) {

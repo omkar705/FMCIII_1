@@ -568,6 +568,43 @@ app.get("/api/users", async (req, res) => {
   res.json(items);
 });
 
+app.patch("/api/users/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid user id" });
+    const { name, roleId } = req.body;
+    const updates: Partial<{ name: string; roleId: number }> = {};
+    if (name !== undefined) updates.name = name;
+    if (roleId !== undefined) updates.roleId = Number(roleId);
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ message: "No valid fields to update" });
+    }
+    const updated = await storage.updateUser(id, updates);
+    if (!updated) return res.status(404).json({ message: "User not found" });
+    res.json(updated);
+  } catch (err) {
+    console.error("Update user error:", err);
+    res.status(500).json({ message: "Failed to update user" });
+  }
+});
+
+app.patch("/api/users/:id/profile", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) return res.status(400).json({ message: "Invalid user id" });
+    const { name } = req.body;
+    if (!name || typeof name !== "string") {
+      return res.status(400).json({ message: "name is required" });
+    }
+    const updated = await storage.updateUser(id, { name });
+    if (!updated) return res.status(404).json({ message: "User not found" });
+    res.json(updated);
+  } catch (err) {
+    console.error("Update user profile error:", err);
+    res.status(500).json({ message: "Failed to update profile" });
+  }
+});
+
 
   /* ================= JUDGES ================= */
 

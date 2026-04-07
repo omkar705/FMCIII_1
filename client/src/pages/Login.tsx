@@ -24,9 +24,13 @@ export default function Login() {
     try {
       const result = await login({ email, password });
       toast({ title: "Welcome back!" });
-      // Redirect founders to their profile on first login
+      // Redirect based on role
       if (result?.user?.roleId === ROLE_IDS.STARTUP_FOUNDER) {
         setLocation("/profile");
+      } else if (result?.user?.roleId === ROLE_IDS.MENTOR) {
+        setLocation("/mentor-profile");
+      } else if (result?.user?.roleId === ROLE_IDS.INVESTOR) {
+        setLocation("/investor-profile");
       } else {
         setLocation("/");
       }
