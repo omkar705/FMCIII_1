@@ -588,7 +588,13 @@ app.patch("/api/users/:id", async (req, res) => {
     const { name, roleId } = req.body;
     const updates: Partial<{ name: string; roleId: number }> = {};
     if (name !== undefined) updates.name = name;
-    if (roleId !== undefined) updates.roleId = Number(roleId);
+    if (roleId !== undefined) {
+      const parsedRoleId = parseInt(String(roleId), 10);
+      if (isNaN(parsedRoleId) || parsedRoleId <= 0) {
+        return res.status(400).json({ message: "Invalid roleId: must be a positive integer" });
+      }
+      updates.roleId = parsedRoleId;
+    }
     if (Object.keys(updates).length === 0) {
       return res.status(400).json({ message: "No valid fields to update" });
     }
