@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useParams, useLocation } from "wouter";
 import { Shell } from "@/components/layout/Shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -99,7 +99,7 @@ export default function StartupProfile() {
         variant="ghost"
         size="sm"
         onClick={() => navigate("/startups")}
-        className="mb-6 text-muted-foreground hover:text-[#015185]"
+        className="mb-6 text-muted-foreground hover:text-[#2EA3E0]"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Startups
@@ -125,7 +125,7 @@ export default function StartupProfile() {
               {startup.stage}
             </Badge>
 
-            <Badge className="bg-white/10 text-[#015185] border border-white/20">
+            <Badge className="bg-white/10 text-[#2EA3E0] border border-white/20">
               <Users className="h-3 w-3 mr-1" />
               {startup.teammembers} members
             </Badge>

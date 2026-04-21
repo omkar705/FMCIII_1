@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/Shell";
+﻿import { Shell } from "@/components/layout/Shell";
 import { useMentorAssignments, useCreateMentorAssignment } from "@/hooks/use-mentorship";
 import { useAllStartups, useStartupByUserId } from "@/hooks/use-startups";
 import { useUsers } from "@/hooks/use-users";
@@ -13,7 +13,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { ROLE_IDS } from "@/lib/roles";
 
 const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6"];
-const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(1,81,133,0.12)" };
+const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(46,163,224,0.12)" };
 
 /** Founder-specific Mentorship View */
 function FounderMentorshipView({ userId }: { userId: number }) {
@@ -55,7 +55,7 @@ function FounderMentorshipView({ userId }: { userId: number }) {
   return (
     <div className="max-w-md stagger-2">
       <div className="glass-card p-6 flex flex-col gap-4">
-        <div className="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase" style={{ color: "#015185" }}>
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase" style={{ color: "#2EA3E0" }}>
           <UserCircle className="h-4 w-4" />
           Your Assigned Mentor
         </div>
@@ -63,7 +63,7 @@ function FounderMentorshipView({ userId }: { userId: number }) {
         <div className="flex items-center gap-4">
           <div
             className="h-14 w-14 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0"
-            style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+            style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
           >
             {mentor.name?.[0]?.toUpperCase() || "M"}
           </div>
@@ -75,11 +75,11 @@ function FounderMentorshipView({ userId }: { userId: number }) {
 
         <div className="flex flex-col gap-2 pt-2 border-t border-border/40 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
-            <Mail className="h-4 w-4 shrink-0" style={{ color: "#015185" }} />
+            <Mail className="h-4 w-4 shrink-0" style={{ color: "#2EA3E0" }} />
             <span>{mentor.email}</span>
           </div>
           <div className="flex items-center gap-2">
-            <CalendarDays className="h-4 w-4 shrink-0" style={{ color: "#015185" }} />
+            <CalendarDays className="h-4 w-4 shrink-0" style={{ color: "#2EA3E0" }} />
             <span>
               Assigned:{" "}
               {assignment.assignedDate
@@ -129,7 +129,7 @@ export default function Mentorship() {
     return (
       <Shell>
         <div className="mb-7 stagger-1">
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Mentorship</h1>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>Mentorship</h1>
           <p className="text-muted-foreground">View your assigned mentor details.</p>
         </div>
         <FounderMentorshipView userId={user.id} />
@@ -142,7 +142,7 @@ export default function Mentorship() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
         <div>
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Mentorship</h1>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>Mentorship</h1>
           <p className="text-muted-foreground">Connect startups with expert guidance.</p>
         </div>
 
@@ -151,7 +151,7 @@ export default function Mentorship() {
             <DialogTrigger asChild>
               <Button
                 className="h-10 px-5 rounded-lg font-semibold text-white relative overflow-hidden group"
-                style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+                style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)", boxShadow: "0 2px 10px rgba(46,163,224,0.25)" }}
               >
                 <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
                 <Plus className="mr-1.5 h-4 w-4 relative z-10" />
@@ -159,10 +159,10 @@ export default function Mentorship() {
               </Button>
             </DialogTrigger>
             <DialogContent className="border-border/60"
-              style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(1,81,133,0.12)" }}>
-              <div className="h-1 rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+              style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(46,163,224,0.12)" }}>
+              <div className="h-1 rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #2EA3E0, #2EA3E0)" }} />
               <DialogHeader>
-                <DialogTitle className="font-display text-xl" style={{ color: "#015185" }}>New Pairing</DialogTitle>
+                <DialogTitle className="font-display text-xl" style={{ color: "#2EA3E0" }}>New Pairing</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4 mt-2">
                 {[
@@ -186,7 +186,7 @@ export default function Mentorship() {
                   </div>
                 ))}
                 <Button type="submit" disabled={isPending} className="w-full h-10 rounded-lg font-semibold text-white"
-                  style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
+                  style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}>
                   {isPending ? <Loader2 className="animate-spin" /> : "Create Assignment"}
                 </Button>
               </form>
@@ -211,20 +211,20 @@ export default function Mentorship() {
                   {/* Mentor */}
                   <div className="flex flex-col items-center gap-1.5 flex-1">
                     <div className="h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                      style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
+                      style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}>
                       {mentor?.name?.[0] || 'M'}
                     </div>
                     <span className="text-sm font-semibold text-center text-foreground leading-tight">
                       {mentor?.name || `Mentor #${assignment.mentorId}`}
                     </span>
-                    <span className="text-[10px] font-semibold tracking-wider uppercase" style={{ color: "#015185" }}>Mentor</span>
+                    <span className="text-[10px] font-semibold tracking-wider uppercase" style={{ color: "#2EA3E0" }}>Mentor</span>
                   </div>
 
                   {/* Connector */}
                   <div className="flex items-center gap-1 px-1">
-                    <div className="w-8 h-px" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+                    <div className="w-8 h-px" style={{ background: "linear-gradient(90deg, #2EA3E0, #2EA3E0)" }} />
                     <ArrowRight className="h-4 w-4 text-primary/60 animate-float" style={{ animationDuration: "3s" }} />
-                    <div className="w-8 h-px" style={{ background: "linear-gradient(90deg, #0270b8, #00907a)" }} />
+                    <div className="w-8 h-px" style={{ background: "linear-gradient(90deg, #2EA3E0, #00907a)" }} />
                   </div>
 
                   {/* Startup */}
@@ -248,7 +248,7 @@ export default function Mentorship() {
                   <span
                     className="text-xs font-semibold px-2.5 py-1 rounded-full"
                     style={isActive
-                      ? { background: "rgba(1,81,133,0.08)", border: "1px solid rgba(1,81,133,0.15)", color: "#015185" }
+                      ? { background: "rgba(46,163,224,0.08)", border: "1px solid rgba(46,163,224,0.15)", color: "#2EA3E0" }
                       : { background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.08)", color: "#6b7280" }
                     }
                   >

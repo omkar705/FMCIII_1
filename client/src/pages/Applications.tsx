@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/Shell";
+﻿import { Shell } from "@/components/layout/Shell";
 import { KanbanBoard } from "@/components/KanbanBoard";
 import { useApplications, useFounderApplications, useUpdateApplicationStatus } from "@/hooks/use-applications";
 import { useAllStartups } from "@/hooks/use-startups";
@@ -13,9 +13,9 @@ const STATUS_CONFIG: Record<string, { label: string; icon: React.ElementType; bg
   Applied: {
     label: "Applied",
     icon: Clock,
-    bg: "rgba(1,81,133,0.07)",
-    color: "#015185",
-    border: "rgba(1,81,133,0.18)",
+    bg: "rgba(46,163,224,0.07)",
+    color: "#2EA3E0",
+    border: "rgba(46,163,224,0.18)",
   },
   "Under Review": {
     label: "Under Review",
@@ -71,8 +71,8 @@ function FounderApplicationsView({ email }: { email: string }) {
       <div className="py-16 text-center stagger-1">
         <div className="inline-flex flex-col items-center gap-4 p-10 rounded-2xl border-2 border-dashed border-border max-w-md mx-auto">
           <div className="h-14 w-14 rounded-2xl flex items-center justify-center"
-            style={{ background: "rgba(1,81,133,0.07)" }}>
-            <FileText className="h-7 w-7" style={{ color: "#015185" }} />
+            style={{ background: "rgba(46,163,224,0.07)" }}>
+            <FileText className="h-7 w-7" style={{ color: "#2EA3E0" }} />
           </div>
           <div>
             <h3 className="text-base font-semibold text-foreground">No applications submitted yet</h3>
@@ -83,7 +83,7 @@ function FounderApplicationsView({ email }: { email: string }) {
           <Link href="/applications/new">
             <Button
               className="h-9 px-4 rounded-lg font-semibold text-white text-sm"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
             >
               <Plus className="mr-1.5 h-4 w-4" />
               New Application
@@ -107,9 +107,9 @@ function FounderApplicationsView({ email }: { email: string }) {
             <div className="flex items-center gap-3">
               <div
                 className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-                style={{ background: "rgba(1,81,133,0.08)" }}
+                style={{ background: "rgba(46,163,224,0.08)" }}
               >
-                <FileText className="h-5 w-5" style={{ color: "#015185" }} />
+                <FileText className="h-5 w-5" style={{ color: "#2EA3E0" }} />
               </div>
               <div>
                 <p className="text-sm font-bold text-foreground">
@@ -154,7 +154,7 @@ function FounderApplicationsView({ email }: { email: string }) {
                   ? "linear-gradient(90deg, #00907a, #007a68)"
                   : app.status === "Rejected"
                   ? "linear-gradient(90deg, #b41e32, #8b1526)"
-                  : "linear-gradient(90deg, #015185, #0270b8)",
+                  : "linear-gradient(90deg, #2EA3E0, #2EA3E0)",
             }}
           />
         </div>
@@ -188,7 +188,7 @@ export default function Applications() {
       <Shell>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
           <div>
-            <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>
+            <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>
               My Applications
             </h1>
             <p className="text-muted-foreground">Track the status of your submitted applications.</p>
@@ -197,7 +197,7 @@ export default function Applications() {
           <Link href="/applications/new">
             <Button
               className="h-10 px-5 rounded-lg font-semibold text-white relative overflow-hidden group"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)", boxShadow: "0 2px 10px rgba(46,163,224,0.25)" }}
             >
               <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
               <Plus className="mr-1.5 h-4 w-4 relative z-10" />
@@ -216,7 +216,7 @@ export default function Applications() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
         <div>
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Pipeline</h1>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>Pipeline</h1>
           <p className="text-muted-foreground">Manage application lifecycle.</p>
         </div>
       </div>

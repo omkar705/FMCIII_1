@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/Shell";
+﻿import { Shell } from "@/components/layout/Shell";
 import { usePhysicalAssets, useAssetBookings, useCreateAssetBooking, useCreatePhysicalAsset, useCancelAssetBooking } from "@/hooks/use-bookings";
 import { useUsers } from "@/hooks/use-users";
 import { useAuth } from "@/hooks/use-auth";
@@ -149,7 +149,7 @@ export default function AssetBooking() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold text-[#015185] mb-2">Asset Booking</h1>
+          <h1 className="text-4xl font-display font-bold text-[#2EA3E0] mb-2">Asset Booking</h1>
           <p className="text-muted-foreground text-lg">
             {isAdmin ? "View and manage bookings for physical assets." : "Book meeting rooms, lab equipment, and hot desks."}
           </p>
@@ -158,21 +158,21 @@ export default function AssetBooking() {
           {isAdmin && (
             <Dialog open={isAssetOpen} onOpenChange={setIsAssetOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="rounded-xl h-11 px-6 bg-[#015185] text-white shadow-lg">
+                <Button variant="outline" className="rounded-xl h-11 px-6 bg-[#2EA3E0] text-white shadow-lg">
                   <Plus className="mr-2 h-4 w-4" /> Add Asset
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-card border-black/70 text-[#015185]">
+              <DialogContent className="bg-card border-black/70 text-[#2EA3E0]">
                 <DialogHeader>
                   <DialogTitle className="font-display text-2xl">Add Physical Asset</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleAssetSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label className="text-[#015185]">Asset Name</Label>
+                    <Label className="text-[#2EA3E0]">Asset Name</Label>
                     <Input name="name" required className="bg-white/50 border-black/30" placeholder="e.g. Conference Room A" />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[#015185]">Type</Label>
+                    <Label className="text-[#2EA3E0]">Type</Label>
                     <Select name="type" required value={selectedAssetType} onValueChange={setSelectedAssetType}>
                       <SelectTrigger className="bg-white/50 border-black/30">
                         <SelectValue placeholder="Select type" />
@@ -185,11 +185,11 @@ export default function AssetBooking() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[#015185]">Description</Label>
+                    <Label className="text-[#2EA3E0]">Description</Label>
                     <Textarea name="description" className="bg-white/50 border-black/30" placeholder="Optional description..." />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[#015185]">Capacity</Label>
+                    <Label className="text-[#2EA3E0]">Capacity</Label>
                     <Input name="capacity" type="number" min="1" className="bg-white/50 border-black/30" placeholder="e.g. 10" />
                   </div>
                   <Button type="submit" disabled={assetPending} className="w-full h-11 rounded-xl">
@@ -203,7 +203,7 @@ export default function AssetBooking() {
           {isIncubatee && (
             <Dialog open={isBookingOpen} onOpenChange={setIsBookingOpen}>
               <DialogTrigger asChild>
-                <Button className="rounded-xl h-11 px-6 bg-[#015185] text-white shadow-lg">
+                <Button className="rounded-xl h-11 px-6 bg-[#2EA3E0] text-white shadow-lg">
                   <Plus className="mr-2 h-4 w-4" /> Book Asset
                 </Button>
               </DialogTrigger>
@@ -213,9 +213,9 @@ export default function AssetBooking() {
                 </DialogHeader>
                 <form onSubmit={handleBookingSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label className="text-[#015185]">Asset</Label>
+                    <Label className="text-[#2EA3E0]">Asset</Label>
                     <Select name="assetId" required value={selectedAssetId} onValueChange={setSelectedAssetId}>
-                      <SelectTrigger className="bg-white/50 border-black/30 text-[#015185]">
+                      <SelectTrigger className="bg-white/50 border-black/30 text-[#2EA3E0]">
                         <SelectValue placeholder="Select asset" />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-black/70">
@@ -228,7 +228,7 @@ export default function AssetBooking() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[#015185]">Date</Label>
+                    <Label className="text-[#2EA3E0]">Date</Label>
                     <div className="text-sm text-muted-foreground px-1">
                       Booking for: <span className="text-black/40 font-medium">{format(selectedDate, "MMMM d, yyyy")}</span>
                       <span className="text-xs text-muted-foreground ml-2">(change via calendar below)</span>
@@ -236,7 +236,7 @@ export default function AssetBooking() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-[#015185]">Start Time</Label>
+                      <Label className="text-[#2EA3E0]">Start Time</Label>
                       <Input
                         type="time"
                         required
@@ -246,7 +246,7 @@ export default function AssetBooking() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-[#015185]">End Time</Label>
+                      <Label className="text-[#2EA3E0]">End Time</Label>
                       <Input
                         type="time"
                         required
@@ -257,8 +257,8 @@ export default function AssetBooking() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-[#015185]">Purpose</Label>
-                    <Textarea name="purpose" className="bg-white/50 border-black/30 text-[#015185]" placeholder="What will you use it for?" />
+                    <Label className="text-[#2EA3E0]">Purpose</Label>
+                    <Textarea name="purpose" className="bg-white/50 border-black/30 text-[#2EA3E0]" placeholder="What will you use it for?" />
                   </div>
                   <Button type="submit" disabled={bookingPending} className="w-full h-11 rounded-xl bg-blue-600 hover:bg-blue-700">
                     {bookingPending ? <Loader2 className="animate-spin" /> : "Confirm Booking"}
@@ -303,10 +303,10 @@ export default function AssetBooking() {
 
               {/* Assets for selected date */}
               <div className="lg:col-span-2 space-y-4">
-                <h3 className="text-lg font-semibold text-[#015185] flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-[#2EA3E0] flex items-center gap-2">
                   <CalendarDays className="h-5 w-5 text-primary" />
                   {format(selectedDate, "MMMM d, yyyy")}
-                  <span className="text-sm text-[#015185] font-normal ml-1">
+                  <span className="text-sm text-[#2EA3E0] font-normal ml-1">
                     — {bookingsForDate.length} booking{bookingsForDate.length !== 1 ? "s" : ""}
                   </span>
                 </h3>
@@ -331,8 +331,8 @@ export default function AssetBooking() {
                             <Icon className="h-5 w-5" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-[#015185]">{asset.name}</h4>
-                            <p className="text-xs text-[#015185]">
+                            <h4 className="font-semibold text-[#2EA3E0]">{asset.name}</h4>
+                            <p className="text-xs text-[#2EA3E0]">
                               {ASSET_TYPE_LABELS[asset.type] ?? asset.type}
                               {asset.capacity ? ` · Capacity: ${asset.capacity}` : ""}
                             </p>
@@ -361,7 +361,7 @@ export default function AssetBooking() {
                               <div key={b.id} className="flex items-center justify-between bg-white/5 rounded-xl px-4 py-2.5">
                                 <div className="flex items-center gap-3 text-sm">
                                   <Clock className="h-4 w-4 text-muted-foreground" />
-                                  <span className="text-[#015185] font-medium">{b.startTime} – {b.endTime}</span>
+                                  <span className="text-[#2EA3E0] font-medium">{b.startTime} – {b.endTime}</span>
                                   {isAdmin && (
                                     <span className="text-muted-foreground">· {getUserName(b.bookedBy)}</span>
                                   )}

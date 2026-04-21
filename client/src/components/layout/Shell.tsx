@@ -43,8 +43,8 @@ export function Shell({ children, adminOnly }: ShellProps) {
           <AppSidebar />
           <div className="flex flex-col flex-1 w-full overflow-hidden">
             <header
-              className="h-14 flex items-center px-6 border-b border-border/60 sticky top-0 z-20"
-              style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)" }}
+              className="h-14 flex items-center px-6 border-b border-border/60 sticky top-0 z-20 relative"
+              style={{ background: "rgba(255,255,255,0.88)", backdropFilter: "blur(16px)" }}
             >
               <SidebarTrigger className="hover:bg-accent text-muted-foreground hover:text-foreground transition-colors rounded-md" />
             </header>
@@ -53,7 +53,7 @@ export function Shell({ children, adminOnly }: ShellProps) {
                 <div className="h-16 w-16 rounded-full bg-red-50 border border-red-100 flex items-center justify-center mx-auto mb-5">
                   <ShieldAlert className="h-8 w-8 text-red-500" />
                 </div>
-                <h2 className="text-2xl font-display font-bold mb-2" style={{ color: "#015185" }}>Access Denied</h2>
+                <h2 className="text-2xl font-display font-bold mb-2" style={{ color: "#2EA3E0" }}>Access Denied</h2>
                 <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
                   You don't have permission to view this page. This section is restricted to administrators only.
                 </p>
@@ -75,12 +75,19 @@ export function Shell({ children, adminOnly }: ShellProps) {
         <div className="flex flex-col flex-1 w-full overflow-hidden">
           {/* Sticky glass header bar */}
           <header
-            className="h-14 flex items-center gap-3 px-6 border-b border-border/60 sticky top-0 z-20"
-            style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)" }}
+            className="h-14 flex items-center gap-3 px-6 border-b border-border/50 sticky top-0 z-20 relative"
+            style={{
+              background: "rgba(255,255,255,0.88)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+            }}
           >
             <SidebarTrigger className="hover:bg-accent text-muted-foreground hover:text-foreground transition-colors rounded-md" />
-            {/* Gradient separator at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+            {/* Dual-tone gradient separator at bottom */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-[2px]"
+              style={{ background: "linear-gradient(90deg, #2EA3E0 0%, #5dbdea 40%, #F7B731 70%, #F5941E 100%)", opacity: 0.5 }}
+            />
           </header>
 
           <main className="flex-1 overflow-auto p-6 md:p-8 w-full max-w-7xl mx-auto animate-fade-in-up">

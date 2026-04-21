@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,7 @@ const ROLE_LABELS: Record<number, string> = {
 };
 
 const ROLE_COLORS: Record<number, { bg: string; color: string }> = {
-  [ROLE_IDS.ADMIN]: { bg: "rgba(1,81,133,0.08)", color: "#015185" },
+  [ROLE_IDS.ADMIN]: { bg: "rgba(46,163,224,0.08)", color: "#2EA3E0" },
   [ROLE_IDS.STARTUP_FOUNDER]: { bg: "rgba(200,120,0,0.08)", color: "#c87800" },
   [ROLE_IDS.MENTOR]: { bg: "rgba(80,80,200,0.08)", color: "#4040c8" },
   [ROLE_IDS.INVESTOR]: { bg: "rgba(20,140,80,0.08)", color: "#148c50" },
@@ -99,7 +99,7 @@ export default function AdminUsers() {
       <div className="space-y-6">
         {/* Header */}
         <div className="stagger-1">
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>
             User Management
           </h1>
           <p className="text-muted-foreground">Manage all portal users and their roles.</p>
@@ -151,7 +151,7 @@ export default function AdminUsers() {
                           <div className="flex items-center gap-2.5">
                             <div
                               className="h-8 w-8 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0"
-                              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
                             >
                               {u.name?.[0]?.toUpperCase() || "U"}
                             </div>
@@ -196,7 +196,7 @@ export default function AdminUsers() {
                               onClick={() => handleSaveRole(u.id)}
                               disabled={savingId === u.id}
                               className="h-8 px-3 rounded-lg text-xs font-semibold text-white"
-                              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
                             >
                               {savingId === u.id ? (
                                 <Loader2 className="h-3.5 w-3.5 animate-spin" />

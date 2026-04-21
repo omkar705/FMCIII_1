@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { useStartups, useCreateStartup } from "@/hooks/use-startups";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","st
 
 // Professional icon background tints keyed to index
 const ICON_STYLES = [
-  { bg: "rgba(1,81,133,0.09)",   color: "#015185" },
+  { bg: "rgba(46,163,224,0.09)",   color: "#2EA3E0" },
   { bg: "rgba(100,50,200,0.09)", color: "#6432c8" },
   { bg: "rgba(0,160,130,0.09)",  color: "#00907a" },
   { bg: "rgba(200,100,0,0.09)",  color: "#c86400" },
@@ -59,7 +59,7 @@ export default function Startups() {
     <Shell adminOnly>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
         <div>
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Startups</h1>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>Startups</h1>
           <p className="text-muted-foreground">Directory of all portfolio companies.</p>
         </div>
 
@@ -67,7 +67,7 @@ export default function Startups() {
           <DialogTrigger asChild>
             <Button
               className="h-10 px-5 rounded-lg font-semibold text-white relative overflow-hidden group"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)", boxShadow: "0 2px 10px rgba(46,163,224,0.25)" }}
             >
               <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
               <Plus className="mr-1.5 h-4 w-4 relative z-10" />
@@ -76,10 +76,10 @@ export default function Startups() {
           </DialogTrigger>
 
           <DialogContent className="sm:max-w-[480px] border-border/60"
-            style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(1,81,133,0.12)" }}>
-            <div className="h-1 w-full rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+            style={{ background: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(46,163,224,0.12)" }}>
+            <div className="h-1 w-full rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #2EA3E0, #2EA3E0)" }} />
             <DialogHeader>
-              <DialogTitle className="font-display text-xl" style={{ color: "#015185" }}>New Startup</DialogTitle>
+              <DialogTitle className="font-display text-xl" style={{ color: "#2EA3E0" }}>New Startup</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-2">
               {[
@@ -96,7 +96,7 @@ export default function Startups() {
                 <Textarea name="description" style={inputStyle} className="rounded-lg border-border/70 min-h-[90px] focus:border-primary focus:ring-2 focus:ring-primary/10" placeholder="Brief pitch..." />
               </div>
               <Button type="submit" disabled={isPending} className="w-full h-10 rounded-lg font-semibold text-white"
-                style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
+                style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}>
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Company"}
               </Button>
             </form>

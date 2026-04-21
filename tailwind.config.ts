@@ -51,6 +51,13 @@ export default {
         destructive: {
           DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
           foreground: "hsl(var(--destructive-foreground) / <alpha-value>)"
+        },
+        /* FMCIII Brand Palette */
+        brand: {
+          sky:      "#2EA3E0",
+          orange:   "#F5941E",
+          gold:     "#F7B731",
+          charcoal: "#4D4D4F"
         }
       },
 
@@ -60,12 +67,12 @@ export default {
       },
 
       boxShadow: {
-        card: "0 2px 10px rgba(1,81,133,0.07)",
-        float: "0 8px 24px rgba(1,81,133,0.10)",
-        soft: "0 4px 16px rgba(1,81,133,0.08)",
-        "primary-sm": "0 2px 8px rgba(1,81,133,0.20)",
-        "primary-md": "0 4px 16px rgba(1,81,133,0.22)",
-        "glass": "0 4px 20px rgba(1,81,133,0.07), inset 0 1px 0 rgba(255,255,255,0.9)"
+        card: "0 2px 10px rgba(46,163,224,0.07)",
+        float: "0 8px 24px rgba(46,163,224,0.10)",
+        soft: "0 4px 16px rgba(46,163,224,0.08)",
+        "primary-sm": "0 2px 8px rgba(46,163,224,0.20)",
+        "primary-md": "0 4px 16px rgba(46,163,224,0.22)",
+        "glass": "0 4px 20px rgba(46,163,224,0.07), inset 0 1px 0 rgba(255,255,255,0.9)"
       },
 
       transitionTimingFunction: {

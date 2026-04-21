@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/Shell";
+﻿import { Shell } from "@/components/layout/Shell";
 import { useFunding, useCreateFunding } from "@/hooks/use-funding";
 import { useStartups } from "@/hooks/use-startups";
 import { useUsers } from "@/hooks/use-users";
@@ -12,18 +12,18 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6"];
-const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(1,81,133,0.12)" };
+const selectStyle = { background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(46,163,224,0.12)" };
 const user = { id: 1, name: "Admin User" }; // Placeholder for current user (investor) info
 // Per-funding-type accent (professional, not neon)
 const FUNDING_PALETTE: Record<string, { accent: string; bg: string; text: string }> = {
   "Pre-Seed": { accent: "#c87800", bg: "rgba(200,120,0,0.07)",  text: "#a06200" },
   "Seed":     { accent: "#148c50", bg: "rgba(20,140,80,0.07)",  text: "#0f6e3f" },
-  "Series A": { accent: "#015185", bg: "rgba(1,81,133,0.07)",   text: "#015185" },
+  "Series A": { accent: "#2EA3E0", bg: "rgba(46,163,224,0.07)",   text: "#2EA3E0" },
   "Series B": { accent: "#5a3fa8", bg: "rgba(90,63,168,0.07)",  text: "#4a2f98" },
   "Grant":    { accent: "#a0295c", bg: "rgba(160,41,92,0.07)",  text: "#841e4c" },
 };
 
-const DEFAULT_PALETTE = { accent: "#015185", bg: "rgba(1,81,133,0.07)", text: "#015185" };
+const DEFAULT_PALETTE = { accent: "#2EA3E0", bg: "rgba(46,163,224,0.07)", text: "#2EA3E0" };
 
 export default function Funding() {
   const { data: funding, isLoading: fLoading } = useFunding();
@@ -54,7 +54,7 @@ export default function Funding() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-7 stagger-1">
         <div>
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>Funding Tracker</h1>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>Funding Tracker</h1>
           <p className="text-muted-foreground">Monitor investments and capital raised.</p>
         </div>
 
@@ -62,7 +62,7 @@ export default function Funding() {
           <DialogTrigger asChild>
             <Button
               className="h-10 px-5 rounded-lg font-semibold text-white relative overflow-hidden group"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)", boxShadow: "0 2px 10px rgba(46,163,224,0.25)" }}
             >
               <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
               <Plus className="mr-1.5 h-4 w-4 relative z-10" />
@@ -70,10 +70,10 @@ export default function Funding() {
             </Button>
           </DialogTrigger>
           <DialogContent className="border-border/60"
-            style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(1,81,133,0.12)" }}>
-            <div className="h-1 rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+            style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", boxShadow: "0 20px 50px rgba(46,163,224,0.12)" }}>
+            <div className="h-1 rounded-t-md mb-3" style={{ background: "linear-gradient(90deg, #2EA3E0, #2EA3E0)" }} />
             <DialogHeader>
-              <DialogTitle className="font-display text-xl" style={{ color: "#015185" }}>Record Funding</DialogTitle>
+              <DialogTitle className="font-display text-xl" style={{ color: "#2EA3E0" }}>Record Funding</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-2">
               {[
@@ -112,7 +112,7 @@ export default function Funding() {
                 </Select>
               </div>
               <Button type="submit" disabled={isPending} className="w-full h-10 rounded-lg font-semibold text-white"
-                style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
+                style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}>
                 {isPending ? <Loader2 className="animate-spin" /> : "Save Record"}
               </Button>
             </form>
@@ -146,7 +146,7 @@ export default function Funding() {
                   </span>
 
                   {/* Amount */}
-                  <div className="text-2xl font-display font-bold mb-1" style={{ color: "#015185" }}>
+                  <div className="text-2xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>
                     ₹{record.amount.toLocaleString()}
                   </div>
 

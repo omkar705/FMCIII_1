@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -80,7 +80,7 @@ export default function MentorProfile() {
       <div className="space-y-6 max-w-2xl">
         {/* Header */}
         <div className="stagger-1">
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>
             Mentor Profile
           </h1>
           <p className="text-muted-foreground">View and manage your mentor profile.</p>
@@ -91,17 +91,17 @@ export default function MentorProfile() {
             <div className="flex items-center gap-4">
               <div
                 className="h-16 w-16 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shrink-0"
-                style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
               >
                 {user?.name?.[0]?.toUpperCase() || "M"}
               </div>
               <div>
-                <h2 className="text-xl font-bold" style={{ color: "#015185" }}>
+                <h2 className="text-xl font-bold" style={{ color: "#2EA3E0" }}>
                   {user?.name}
                 </h2>
                 <span
                   className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold mt-1"
-                  style={{ background: "rgba(1,81,133,0.08)", color: "#015185" }}
+                  style={{ background: "rgba(46,163,224,0.08)", color: "#2EA3E0" }}
                 >
                   <Shield className="h-3 w-3" />
                   {roleName}
@@ -174,7 +174,7 @@ export default function MentorProfile() {
                     onClick={handleSave}
                     disabled={isSaving}
                     className="h-9 px-4 rounded-lg font-semibold text-white"
-                    style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                    style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
                   >
                     {isSaving ? (
                       <Loader2 className="animate-spin h-4 w-4" />
@@ -191,20 +191,20 @@ export default function MentorProfile() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2 border-t">
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Full Name</p>
-                  <p className="font-medium" style={{ color: "#015185" }}>{user?.name || "—"}</p>
+                  <p className="font-medium" style={{ color: "#2EA3E0" }}>{user?.name || "—"}</p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Email Address</p>
                   <div className="flex items-center gap-1.5">
                     <Mail className="h-3.5 w-3.5 text-muted-foreground" />
-                    <p className="font-medium" style={{ color: "#015185" }}>{user?.email || "—"}</p>
+                    <p className="font-medium" style={{ color: "#2EA3E0" }}>{user?.email || "—"}</p>
                   </div>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Role</p>
                   <span
                     className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold"
-                    style={{ background: "rgba(1,81,133,0.08)", color: "#015185" }}
+                    style={{ background: "rgba(46,163,224,0.08)", color: "#2EA3E0" }}
                   >
                     <Shield className="h-3 w-3" />
                     {roleName}
@@ -213,7 +213,7 @@ export default function MentorProfile() {
                 {user?.phone && (
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">Phone</p>
-                    <p className="font-medium" style={{ color: "#015185" }}>{user.phone}</p>
+                    <p className="font-medium" style={{ color: "#2EA3E0" }}>{user.phone}</p>
                   </div>
                 )}
               </div>
@@ -224,9 +224,9 @@ export default function MentorProfile() {
         {/* Info card */}
         <Card className="p-5 stagger-3 border-border/50 bg-muted/20">
           <div className="flex items-start gap-3">
-            <UserCircle className="h-5 w-5 mt-0.5 shrink-0" style={{ color: "#015185" }} />
+            <UserCircle className="h-5 w-5 mt-0.5 shrink-0" style={{ color: "#2EA3E0" }} />
             <div>
-              <p className="text-sm font-semibold" style={{ color: "#015185" }}>Mentor Access</p>
+              <p className="text-sm font-semibold" style={{ color: "#2EA3E0" }}>Mentor Access</p>
               <p className="text-sm text-muted-foreground mt-1">
                 As a mentor, you have access to the Mentorship module, Scorecards, and Knowledge Base.
                 Use the sidebar to navigate between sections.

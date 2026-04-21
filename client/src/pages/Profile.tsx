@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -82,8 +82,8 @@ function FounderProfile({ userId }: { userId: number }) {
       <div className="py-10 text-center stagger-1">
         <div className="inline-flex flex-col items-center gap-4 p-10 rounded-2xl border-2 border-dashed border-border max-w-md mx-auto">
           <div className="h-14 w-14 rounded-2xl flex items-center justify-center"
-            style={{ background: "rgba(1,81,133,0.07)" }}>
-            <Building2 className="h-7 w-7" style={{ color: "#015185" }} />
+            style={{ background: "rgba(46,163,224,0.07)" }}>
+            <Building2 className="h-7 w-7" style={{ color: "#2EA3E0" }} />
           </div>
           <div>
             <h3 className="text-base font-semibold text-foreground">Set up your startup profile</h3>
@@ -94,7 +94,7 @@ function FounderProfile({ userId }: { userId: number }) {
           <Button
             onClick={startEditing}
             className="h-9 px-4 rounded-lg font-semibold text-white text-sm"
-            style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+            style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
           >
             <Pencil className="mr-1.5 h-4 w-4" />
             Edit Profile
@@ -108,7 +108,7 @@ function FounderProfile({ userId }: { userId: number }) {
     return (
       <div className="max-w-2xl stagger-2">
         <div className="glass-card p-6">
-          <h2 className="text-xl font-bold mb-5" style={{ color: "#015185" }}>Edit Startup Profile</h2>
+          <h2 className="text-xl font-bold mb-5" style={{ color: "#2EA3E0" }}>Edit Startup Profile</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               { label: "Startup Name", field: "name", placeholder: "e.g. Lenskart" },
@@ -147,7 +147,7 @@ function FounderProfile({ userId }: { userId: number }) {
               onClick={handleSave}
               disabled={isCreating || isUpdating}
               className="h-9 px-4 rounded-lg font-semibold text-white"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
             >
               {isCreating || isUpdating ? (
                 <Loader2 className="animate-spin h-4 w-4" />
@@ -172,19 +172,19 @@ function FounderProfile({ userId }: { userId: number }) {
         <div className="flex items-center gap-5">
           <div
             className="h-20 w-20 rounded-3xl flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+            style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
           >
             <Building2 className="h-10 w-10 text-white" />
           </div>
           <div>
-            <h1 className="text-4xl font-bold" style={{ color: "#015185" }}>{startup?.name}</h1>
+            <h1 className="text-4xl font-bold" style={{ color: "#2EA3E0" }}>{startup?.name}</h1>
             <p className="text-muted-foreground mt-1">
               {startup?.domain}
               {startup?.stage ? ` • ${startup.stage} Stage` : ""}
             </p>
             <div className="flex flex-wrap gap-2 mt-2">
               {startup?.location && (
-                <span className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10" style={{ color: "#015185" }}>
+                <span className="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10" style={{ color: "#2EA3E0" }}>
                   <MapPin className="inline h-3 w-3 mr-1" />{startup.location}
                 </span>
               )}
@@ -209,7 +209,7 @@ function FounderProfile({ userId }: { userId: number }) {
       {/* Details cards */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Card className="p-6 lg:col-span-2">
-          <h2 className="text-xl font-bold mb-4" style={{ color: "#015185" }}>About</h2>
+          <h2 className="text-xl font-bold mb-4" style={{ color: "#2EA3E0" }}>About</h2>
           <p className="text-muted-foreground leading-relaxed text-sm">
             {startup?.description || "No description provided yet."}
           </p>
@@ -221,14 +221,14 @@ function FounderProfile({ userId }: { userId: number }) {
             ].map(({ label, value }) => (
               <div key={label}>
                 <p className="text-xs text-muted-foreground">{label}</p>
-                <p className="font-medium" style={{ color: "#015185" }}>{value || "—"}</p>
+                <p className="font-medium" style={{ color: "#2EA3E0" }}>{value || "—"}</p>
               </div>
             ))}
           </div>
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-xl font-bold mb-5" style={{ color: "#015185" }}>Contact</h2>
+          <h2 className="text-xl font-bold mb-5" style={{ color: "#2EA3E0" }}>Contact</h2>
           <div className="space-y-4 text-sm">
             {startup?.website && (
               <div className="flex gap-3 items-center">
@@ -243,7 +243,7 @@ function FounderProfile({ userId }: { userId: number }) {
             {startup?.location && (
               <div className="flex gap-3 items-center">
                 <MapPin className="h-4 w-4 text-muted-foreground shrink-0" />
-                <span style={{ color: "#015185" }}>{startup.location}</span>
+                <span style={{ color: "#2EA3E0" }}>{startup.location}</span>
               </div>
             )}
           </div>
@@ -259,8 +259,8 @@ function NonFounderProfileView() {
     <div className="py-16 text-center stagger-1">
       <div className="inline-flex flex-col items-center gap-4 p-10 rounded-2xl border-2 border-dashed border-border max-w-md mx-auto">
         <div className="h-14 w-14 rounded-2xl flex items-center justify-center"
-          style={{ background: "rgba(1,81,133,0.07)" }}>
-          <Building2 className="h-7 w-7" style={{ color: "#015185" }} />
+          style={{ background: "rgba(46,163,224,0.07)" }}>
+          <Building2 className="h-7 w-7" style={{ color: "#2EA3E0" }} />
         </div>
         <div>
           <h3 className="text-base font-semibold text-foreground">Profile</h3>

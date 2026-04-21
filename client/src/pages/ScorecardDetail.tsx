@@ -1,4 +1,4 @@
-import { useParams, useLocation } from "wouter";
+﻿import { useParams, useLocation } from "wouter";
 import { Shell } from "@/components/layout/Shell";
 import { useScorecard, useScorecardParameters, useUpsertScorecardParameter } from "@/hooks/use-scorecards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -191,7 +191,7 @@ export default function ScorecardDetail() {
             <ClipboardCheck className="h-8 w-8 text-primary" />
           </div>
           <div>
-            <h1 className="text-3xl md:text-4xl font-display font-bold text-[#015185] leading-tight">
+            <h1 className="text-3xl md:text-4xl font-display font-bold text-[#2EA3E0] leading-tight">
               {displayStartupName}
             </h1>
             <p className="text-muted-foreground mt-1 flex items-center gap-2">
@@ -202,10 +202,10 @@ export default function ScorecardDetail() {
         </div>
         <div className="flex items-center gap-3">
           <StatusBadge status={scorecard.status} />
-          <span className="text-2xl font-display font-bold text-[#015185]">
+          <span className="text-2xl font-display font-bold text-[#2EA3E0]">
             {filledCount > 0 ? (
               <>
-                <span className="text-[#015185]">{finalScore}</span>
+                <span className="text-[#2EA3E0]">{finalScore}</span>
                 <span className="text-muted-foreground text-lg"> / {MAX_TOTAL}</span>
               </>
             ) : (
@@ -220,7 +220,7 @@ export default function ScorecardDetail() {
         {/* Evaluation Summary */}
         <Card className="border-white/5 bg-card/60 backdrop-blur-xl">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold text-[#015185] flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-[#2EA3E0] flex items-center gap-2">
               <BarChart3 className="h-5 w-5 text-primary" />
               Evaluation Summary
             </CardTitle>
@@ -228,17 +228,17 @@ export default function ScorecardDetail() {
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Final Score</span>
-              <span className="text-[#015185] font-bold">
+              <span className="text-[#2EA3E0] font-bold">
                 {filledCount > 0 ? `${finalScore} / ${MAX_TOTAL}` : "—"}
               </span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Judge</span>
-              <span className="text-[#015185] font-medium">{displayJudgeName}</span>
+              <span className="text-[#2EA3E0] font-medium">{displayJudgeName}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Startup</span>
-              <span className="text-[#015185] font-medium">{displayStartupName}</span>
+              <span className="text-[#2EA3E0] font-medium">{displayStartupName}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/5">
               <span className="text-muted-foreground text-sm">Status</span>
@@ -249,7 +249,7 @@ export default function ScorecardDetail() {
                 <span className="text-muted-foreground text-sm flex items-center gap-1">
                   <CalendarDays className="h-3.5 w-3.5" /> Date
                 </span>
-                <span className="text-[#015185] font-medium">{scorecard.evaluationDate}</span>
+                <span className="text-[#2EA3E0] font-medium">{scorecard.evaluationDate}</span>
               </div>
             )}
           </CardContent>
@@ -258,7 +258,7 @@ export default function ScorecardDetail() {
         {/* Parameter Evaluation */}
         <Card className="border-white/5 bg-card/60 backdrop-blur-xl">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold text-[#015185] flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-[#2EA3E0] flex items-center gap-2">
               <Building2 className="h-5 w-5 text-primary" />
               Parameter Evaluation
             </CardTitle>
@@ -276,7 +276,7 @@ export default function ScorecardDetail() {
                   const isSavingThis = savingParam === param.name;
                   return (
                     <div key={param.name} className="flex items-center gap-3">
-                      <span className="flex-1 text-sm text-[#015185] min-w-0 truncate">{param.name}</span>
+                      <span className="flex-1 text-sm text-[#2EA3E0] min-w-0 truncate">{param.name}</span>
                       <div className="flex items-center gap-1.5 shrink-0">
                         <Input
                           type="number"
@@ -308,8 +308,8 @@ export default function ScorecardDetail() {
                   );
                 })}
                 <div className="pt-3 mt-3 border-t border-white/10 flex justify-between items-center">
-                  <span className="text-sm font-semibold text-[#015185]">Final Score</span>
-                  <span className="text-lg font-display font-bold text-[#015185]">
+                  <span className="text-sm font-semibold text-[#2EA3E0]">Final Score</span>
+                  <span className="text-lg font-display font-bold text-[#2EA3E0]">
                     {filledCount > 0 ? `${finalScore} / ${MAX_TOTAL}` : "—"}
                   </span>
                 </div>

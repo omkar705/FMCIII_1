@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Shell } from "@/components/layout/Shell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -80,7 +80,7 @@ export default function InvestorProfile() {
       <div className="space-y-6 max-w-2xl">
         {/* Header */}
         <div className="stagger-1">
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>
             Investor Profile
           </h1>
           <p className="text-muted-foreground">View and manage your investor profile.</p>
@@ -96,7 +96,7 @@ export default function InvestorProfile() {
                 {user?.name?.[0]?.toUpperCase() || "I"}
               </div>
               <div>
-                <h2 className="text-xl font-bold" style={{ color: "#015185" }}>
+                <h2 className="text-xl font-bold" style={{ color: "#2EA3E0" }}>
                   {user?.name}
                 </h2>
                 <span
@@ -174,7 +174,7 @@ export default function InvestorProfile() {
                     onClick={handleSave}
                     disabled={isSaving}
                     className="h-9 px-4 rounded-lg font-semibold text-white"
-                    style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                    style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
                   >
                     {isSaving ? (
                       <Loader2 className="animate-spin h-4 w-4" />
@@ -191,13 +191,13 @@ export default function InvestorProfile() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2 border-t">
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Full Name</p>
-                  <p className="font-medium" style={{ color: "#015185" }}>{user?.name || "—"}</p>
+                  <p className="font-medium" style={{ color: "#2EA3E0" }}>{user?.name || "—"}</p>
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Email Address</p>
                   <div className="flex items-center gap-1.5">
                     <Mail className="h-3.5 w-3.5 text-muted-foreground" />
-                    <p className="font-medium" style={{ color: "#015185" }}>{user?.email || "—"}</p>
+                    <p className="font-medium" style={{ color: "#2EA3E0" }}>{user?.email || "—"}</p>
                   </div>
                 </div>
                 <div>
@@ -213,7 +213,7 @@ export default function InvestorProfile() {
                 {user?.phone && (
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">Phone</p>
-                    <p className="font-medium" style={{ color: "#015185" }}>{user.phone}</p>
+                    <p className="font-medium" style={{ color: "#2EA3E0" }}>{user.phone}</p>
                   </div>
                 )}
               </div>
@@ -226,7 +226,7 @@ export default function InvestorProfile() {
           <div className="flex items-start gap-3">
             <TrendingUp className="h-5 w-5 mt-0.5 shrink-0" style={{ color: "#148c50" }} />
             <div>
-              <p className="text-sm font-semibold" style={{ color: "#015185" }}>Investor Access</p>
+              <p className="text-sm font-semibold" style={{ color: "#2EA3E0" }}>Investor Access</p>
               <p className="text-sm text-muted-foreground mt-1">
                 As an investor, you have access to the Funding module and Knowledge Base.
                 Use the sidebar to navigate between sections.

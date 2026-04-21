@@ -4,9 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --------------------------------------------------------- */
-/* BASE THEME — Professional Light with Frosted Glass         */
-/* --------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────── */
+/*  FMCIII DESIGN SYSTEM — Sky Blue + Orange Dual-Tone        */
+/* ─────────────────────────────────────────────────────────── */
 
 @layer base {
 
@@ -14,45 +14,69 @@
     --font-sans: 'Manrope', sans-serif;
     --font-display: 'Lexend', sans-serif;
 
-    /* Clean light palette */
-    --background: 210 30% 97%;
-    --foreground: 215 30% 22%;
+    /* ── Neutral surface ── */
+    --background: 210 28% 97%;
+    --foreground: 215 30% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 30% 22%;
+    --card-foreground: 215 30% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 30% 22%;
+    --popover-foreground: 215 30% 20%;
 
-    /* Primary — FMCIII blue */
-    --primary: 207 100% 26%;         /* #015185 */
+    /* ── Primary → Sky Blue #2EA3E0 ── */
+    --primary: 201 74% 53%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 207 80% 94%;    /* light tint for hover/bg */
+    --primary-light: 201 80% 95%;
 
-    --secondary: 210 25% 95%;
-    --secondary-foreground: 215 30% 28%;
+    /* ── Orange accent #F5941E ── */
+    --brand-orange-hsl: 32 91% 53%;
 
-    --muted: 210 20% 95%;
-    --muted-foreground: 215 15% 50%;
+    --secondary: 210 22% 95%;
+    --secondary-foreground: 215 28% 28%;
 
-    --accent: 210 25% 94%;
-    --accent-foreground: 215 30% 22%;
+    --muted: 210 18% 95%;
+    --muted-foreground: 215 14% 50%;
+
+    --accent: 210 22% 94%;
+    --accent-foreground: 215 28% 22%;
 
     --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 18% 87%;
-    --input: 210 18% 95%;
-    --ring: 207 100% 26%;
+    --border: 210 16% 88%;
+    --input: 210 16% 96%;
+    --ring: 201 74% 53%;
 
     --radius: 0.65rem;
 
-    /* Glass tokens */
-    --glass-bg: rgba(255, 255, 255, 0.70);
-    --glass-border: rgba(1, 81, 133, 0.10);
-    --glass-shadow: 0 4px 20px rgba(1, 81, 133, 0.07);
-    --primary-glow: rgba(1, 81, 133, 0.12);
-    --primary-hex: #015185;
+    /* ── FMCIII Brand Palette ── */
+    --brand-sky:      #2EA3E0;   /* Primary   */
+    --brand-sky-dark: #1a7ab8;   /* Hover     */
+    --brand-sky-deep: #0f5c8a;   /* Active    */
+    --brand-sky-mid:  #5dbdea;   /* Mid tint  */
+    --brand-sky-pale: #e8f6fd;   /* Pale bg   */
+
+    --brand-orange:      #F5941E;  /* Primary orange */
+    --brand-orange-dark: #d4780e;  /* Darker hover   */
+    --brand-orange-mid:  #f8ad55;  /* Mid tint       */
+    --brand-orange-pale: #fff3e0;  /* Pale bg        */
+
+    --brand-gold:     #F7B731;
+    --brand-charcoal: #4D4D4F;
+
+    /* ── Glass tokens (Sky Blue base) ── */
+    --glass-bg:     rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(46, 163, 224, 0.12);
+    --glass-shadow: 0 4px 24px rgba(46, 163, 224, 0.08);
+    --primary-glow: rgba(46, 163, 224, 0.14);
+
+    /* ── Glass tokens (Orange accent) ── */
+    --glass-orange-border: rgba(245, 148, 30, 0.18);
+    --glass-orange-shadow: 0 4px 24px rgba(245, 148, 30, 0.10);
+    --orange-glow:         rgba(245, 148, 30, 0.16);
+
+    --primary-hex: #2EA3E0;
   }
 
   * {
@@ -64,9 +88,11 @@
     color: hsl(var(--foreground));
     font-family: var(--font-sans);
     @apply antialiased;
+    /* Dual-tone page background — Sky top-left, Gold/Orange bottom-right */
     background-image:
-      radial-gradient(ellipse 70% 50% at 5% 0%, rgba(1,81,133,0.05) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 95% 100%, rgba(1,81,133,0.04) 0%, transparent 55%);
+      radial-gradient(ellipse 70% 50% at 5% 0%,   rgba(46,163,224,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 95% 100%, rgba(245,148,30,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 35% 30% at 50% 50%,  rgba(247,183,49,0.02) 0%, transparent 70%);
     background-attachment: fixed;
   }
 
@@ -79,9 +105,9 @@
 }
 
 
-/* --------------------------------------------------------- */
-/* KEYFRAME ANIMATIONS                                        */
-/* --------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────── */
+/*  KEYFRAME ANIMATIONS                                        */
+/* ─────────────────────────────────────────────────────────── */
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(14px); }
@@ -128,69 +154,116 @@
   to   { transform: rotate(360deg); }
 }
 
+@keyframes orangePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,148,30,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(245,148,30,0.15); }
+}
 
-/* --------------------------------------------------------- */
-/* COMPONENT CLASSES                                          */
-/* --------------------------------------------------------- */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* ─────────────────────────────────────────────────────────── */
+/*  COMPONENT CLASSES                                          */
+/* ─────────────────────────────────────────────────────────── */
 
 @layer components {
 
-  /* ---- Glass card — the main card style ---- */
+  /* ── Glass card — Sky Blue toned ──────────────────────── */
   .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--glass-border);
     border-radius: calc(var(--radius) * 1.6);
-    box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.9);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.92);
     transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   }
 
   .glass-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(1,81,133,0.11), 0 2px 8px rgba(1,81,133,0.06), inset 0 1px 0 rgba(255,255,255,0.95);
-    border-color: rgba(1,81,133,0.18);
+    box-shadow: 0 14px 36px rgba(46,163,224,0.13), 0 2px 8px rgba(46,163,224,0.07), inset 0 1px 0 rgba(255,255,255,0.96);
+    border-color: rgba(46,163,224,0.22);
   }
 
-  /* ---- Frosted panel — for forms, sections ---- */
+  /* ── Glass card — Orange accented ────────────────────── */
+  .glass-card-orange {
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(245,148,30,0.14);
+    border-radius: calc(var(--radius) * 1.6);
+    box-shadow: 0 4px 24px rgba(245,148,30,0.09), inset 0 1px 0 rgba(255,255,255,0.92);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+
+  .glass-card-orange:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(245,148,30,0.15), 0 2px 8px rgba(245,148,30,0.08), inset 0 1px 0 rgba(255,255,255,0.96);
+    border-color: rgba(245,148,30,0.28);
+  }
+
+  /* ── Frosted panel ────────────────────────────────────── */
   .frost-panel {
-    background: rgba(255,255,255,0.80);
+    background: rgba(255,255,255,0.82);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(1,81,133,0.09);
+    border: 1px solid rgba(46,163,224,0.09);
     border-radius: calc(var(--radius) * 1.5);
-    box-shadow: 0 2px 12px rgba(1,81,133,0.06), inset 0 1px 0 rgba(255,255,255,1);
+    box-shadow: 0 2px 14px rgba(46,163,224,0.06), inset 0 1px 0 rgba(255,255,255,1);
   }
 
-  /* ---- Stat card ---- */
+  /* ── Stat card (Sky Blue default, orange variant) ─────── */
   .stat-card {
-    background: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.76);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(1,81,133,0.08);
+    border: 1px solid rgba(46,163,224,0.09);
     border-radius: calc(var(--radius) * 1.6);
-    box-shadow: 0 4px 16px rgba(1,81,133,0.07), inset 0 1px 0 rgba(255,255,255,0.95);
+    box-shadow: 0 4px 18px rgba(46,163,224,0.07), inset 0 1px 0 rgba(255,255,255,0.95);
     padding: 1.5rem;
     transition: all 0.22s ease;
+    border-top: 2px solid transparent;
   }
 
   .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(1,81,133,0.12);
-    border-color: rgba(1,81,133,0.15);
+    box-shadow: 0 10px 30px rgba(46,163,224,0.13);
+    border-top-color: #2EA3E0;
   }
 
-  /* ---- Glass dialog / popover ---- */
+  .stat-card.orange-accent {
+    border: 1px solid rgba(245,148,30,0.12);
+    box-shadow: 0 4px 18px rgba(245,148,30,0.07), inset 0 1px 0 rgba(255,255,255,0.95);
+  }
+  .stat-card.orange-accent:hover {
+    box-shadow: 0 10px 30px rgba(245,148,30,0.14);
+    border-top-color: #F5941E;
+  }
+
+  .stat-card.gold-accent {
+    border: 1px solid rgba(247,183,49,0.12);
+    box-shadow: 0 4px 18px rgba(247,183,49,0.07), inset 0 1px 0 rgba(255,255,255,0.95);
+  }
+  .stat-card.gold-accent:hover {
+    box-shadow: 0 10px 30px rgba(247,183,49,0.14);
+    border-top-color: #F7B731;
+  }
+
+  /* ── Glass dialog / popover ───────────────────────────── */
   .glass-dialog {
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(1,81,133,0.10);
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(46,163,224,0.11);
     border-radius: calc(var(--radius) * 1.6);
-    box-shadow: 0 20px 50px rgba(1,81,133,0.12), 0 4px 16px rgba(0,0,0,0.08);
+    box-shadow: 0 24px 56px rgba(46,163,224,0.13), 0 4px 16px rgba(0,0,0,0.07);
   }
 
-  /* ---- Primary button with shimmer ---- */
+  /* ── Primary button — Sky Blue with orange hover ──────── */
   .btn-primary-pro {
-    background: #015185;
+    background: linear-gradient(135deg, #2EA3E0 0%, #1a7ab8 100%);
     color: #ffffff;
     border-radius: var(--radius);
     font-weight: 600;
@@ -201,20 +274,26 @@
     gap: 0.5rem;
     position: relative;
     overflow: hidden;
-    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-    box-shadow: 0 2px 8px rgba(1,81,133,0.25);
+    transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    box-shadow: 0 2px 10px rgba(46,163,224,0.28);
   }
 
   .btn-primary-pro:hover {
-    background: #013f66;
-    box-shadow: 0 4px 16px rgba(1,81,133,0.30);
+    background: linear-gradient(135deg, #F5941E 0%, #d4780e 100%);
+    box-shadow: 0 6px 20px rgba(245,148,30,0.38);
     transform: translateY(-1px);
+  }
+
+  .btn-primary-pro:active {
+    background: linear-gradient(135deg, #d4780e 0%, #b36509 100%);
+    transform: translateY(0px);
+    box-shadow: 0 2px 8px rgba(245,148,30,0.30);
   }
 
   .btn-primary-pro .shimmer {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
     animation: none;
   }
 
@@ -222,7 +301,66 @@
     animation: shimmerSlide 0.7s ease forwards;
   }
 
-  /* ---- Input field ---- */
+  /* ── Orange primary button ────────────────────────────── */
+  .btn-orange {
+    background: linear-gradient(135deg, #F5941E 0%, #d4780e 100%);
+    color: #ffffff;
+    border-radius: var(--radius);
+    font-weight: 600;
+    padding: 0 1.25rem;
+    height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    box-shadow: 0 2px 10px rgba(245,148,30,0.30);
+  }
+
+  .btn-orange:hover {
+    background: linear-gradient(135deg, #2EA3E0 0%, #1a7ab8 100%);
+    box-shadow: 0 6px 20px rgba(46,163,224,0.35);
+    transform: translateY(-1px);
+  }
+
+  /* ── Icon badge — Sky Blue ────────────────────────────── */
+  .icon-badge-sky {
+    background: rgba(46,163,224,0.10);
+    border: 1px solid rgba(46,163,224,0.18);
+    border-radius: calc(var(--radius) * 1.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .icon-badge-sky:hover { background: rgba(46,163,224,0.18); transform: scale(1.05); }
+
+  /* ── Icon badge — Orange ──────────────────────────────── */
+  .icon-badge-orange {
+    background: rgba(245,148,30,0.10);
+    border: 1px solid rgba(245,148,30,0.18);
+    border-radius: calc(var(--radius) * 1.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .icon-badge-orange:hover { background: rgba(245,148,30,0.18); transform: scale(1.05); }
+
+  /* ── Icon badge — Gold ────────────────────────────────── */
+  .icon-badge-gold {
+    background: rgba(247,183,49,0.10);
+    border: 1px solid rgba(247,183,49,0.18);
+    border-radius: calc(var(--radius) * 1.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .icon-badge-gold:hover { background: rgba(247,183,49,0.18); transform: scale(1.05); }
+
+  /* ── Input field ──────────────────────────────────────── */
   .pro-input {
     background: rgba(255,255,255,0.85);
     border: 1px solid hsl(var(--border));
@@ -233,36 +371,61 @@
 
   .pro-input:focus {
     outline: none;
-    border-color: #015185;
-    box-shadow: 0 0 0 3px rgba(1,81,133,0.10);
+    border-color: #2EA3E0;
+    box-shadow: 0 0 0 3px rgba(46,163,224,0.12);
     background: #ffffff;
   }
 
-  /* ---- File drop zone ---- */
+  /* ── File drop zone ───────────────────────────────────── */
   .file-drop-zone {
-    border: 2px dashed rgba(1,81,133,0.20);
+    border: 2px dashed rgba(46,163,224,0.22);
     border-radius: var(--radius);
-    background: rgba(1,81,133,0.025);
+    background: rgba(46,163,224,0.025);
     transition: all 0.2s ease;
     cursor: pointer;
   }
 
   .file-drop-zone:hover {
-    border-color: rgba(1,81,133,0.40);
-    background: rgba(1,81,133,0.05);
+    border-color: rgba(245,148,30,0.45);
+    background: rgba(245,148,30,0.04);
+    box-shadow: inset 0 0 0 1px rgba(245,148,30,0.08);
   }
 
-  /* ---- Section left-accent (form sections) ---- */
-  .section-accent-blue   { border-left: 3px solid #015185;  padding-left: 0.875rem; }
-  .section-accent-teal   { border-left: 3px solid #0a8fa0;  padding-left: 0.875rem; }
-  .section-accent-purple { border-left: 3px solid #6d52b8;  padding-left: 0.875rem; }
-  .section-accent-slate  { border-left: 3px solid #4a6080;  padding-left: 0.875rem; }
+  /* ── Section left-accents — FMCIII brand ─────────────── */
+  .section-accent-blue    { border-left: 3px solid #2EA3E0;  padding-left: 0.875rem; }
+  .section-accent-orange  { border-left: 3px solid #F5941E;  padding-left: 0.875rem; }
+  .section-accent-gold    { border-left: 3px solid #F7B731;  padding-left: 0.875rem; }
+  .section-accent-charcoal{ border-left: 3px solid #4D4D4F;  padding-left: 0.875rem; }
 
-  /* ---- Entrance animation helpers ---- */
-  .animate-fade-in-up   { animation: fadeInUp   0.40s ease both; }
+  /* ── Dual-tone gradient dividers ─────────────────────── */
+  .brand-divider {
+    height: 2px;
+    background: linear-gradient(90deg, #2EA3E0 0%, #F5941E 50%, #F7B731 100%);
+    border-radius: 2px;
+    opacity: 0.7;
+  }
+
+  .brand-divider-top {
+    height: 3px;
+    background: linear-gradient(90deg, #2EA3E0, #5dbdea, #F7B731, #F5941E, #d4780e);
+    background-size: 200% 200%;
+    animation: gradientShift 5s ease infinite;
+  }
+
+  /* ── Sidebar active item — orange indicator ───────────── */
+  .sidebar-active-sky {
+    background: rgba(46,163,224,0.08) !important;
+    color: #2EA3E0 !important;
+    border-left: 2.5px solid #F5941E !important;  /* orange indicator */
+    padding-left: calc(0.75rem - 2.5px) !important;
+    box-shadow: inset 0 0 0 1px rgba(46,163,224,0.06);
+  }
+
+  /* ── Entrance animation helpers ───────────────────────── */
+  .animate-fade-in-up    { animation: fadeInUp    0.40s ease both; }
   .animate-fade-in-scale { animation: fadeInScale 0.35s ease both; }
-  .animate-scale-in     { animation: scaleIn     0.36s cubic-bezier(.34,1.56,.64,1) both; }
-  .animate-float        { animation: float       3.5s ease-in-out infinite; }
+  .animate-scale-in      { animation: scaleIn     0.36s cubic-bezier(.34,1.56,.64,1) both; }
+  .animate-float         { animation: float       3.5s ease-in-out infinite; }
 
   .stagger-1 { animation: staggerFadeIn 0.40s ease both; animation-delay: 0.05s; }
   .stagger-2 { animation: staggerFadeIn 0.40s ease both; animation-delay: 0.10s; }
@@ -275,20 +438,20 @@
 
   .animate-slide-in-left { animation: slideInLeft 0.30s ease both; }
 
-  /* ---- Scrollbar ---- */
+  /* ── Scrollbar — Sky Blue track, orange on hover ──────── */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: hsl(var(--muted)); }
-  ::-webkit-scrollbar-thumb { background: rgba(1,81,133,0.25); border-radius: 6px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(1,81,133,0.45); }
+  ::-webkit-scrollbar-thumb { background: rgba(46,163,224,0.30); border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(245,148,30,0.60); }
 
-  /* ---- Legacy compat classes ---- */
-  .glass-panel      { @apply frost-panel; }
-  .modern-input     { @apply pro-input; padding: 10px 14px; }
-  .btn-primary      { @apply btn-primary-pro; }
-  .btn-glow         { @apply btn-primary-pro; }
-  .hover-float      { transition: all 0.22s ease; }
-  .hover-float:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(1,81,133,0.1); }
-  .text-gradient    { color: #015185; }
+  /* ── Legacy compat ────────────────────────────────────── */
+  .glass-panel     { @apply frost-panel; }
+  .modern-input    { @apply pro-input; padding: 10px 14px; }
+  .btn-primary     { @apply btn-primary-pro; }
+  .btn-glow        { @apply btn-primary-pro; }
+  .hover-float     { transition: all 0.22s ease; }
+  .hover-float:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(46,163,224,0.10); }
+  .text-gradient   { color: #2EA3E0; }
 
   .dashboard-card {
     @apply glass-card;
@@ -298,16 +461,61 @@
 }
 
 
-/* --------------------------------------------------------- */
-/* UTILITIES                                                  */
-/* --------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────── */
+/*  UTILITIES                                                  */
+/* ─────────────────────────────────────────────────────────── */
 
 @layer utilities {
 
+  /* ── Page background – dual tone ────────────────────── */
   .page-bg {
     background:
-      radial-gradient(ellipse 60% 40% at 10% 0%, rgba(1,81,133,0.06), transparent 60%),
-      radial-gradient(ellipse 40% 30% at 90% 100%, rgba(1,81,133,0.04), transparent 55%);
+      radial-gradient(ellipse 60% 40% at 10% 0%,  rgba(46,163,224,0.07), transparent 60%),
+      radial-gradient(ellipse 40% 30% at 90% 100%, rgba(245,148,30,0.05), transparent 55%);
+  }
+
+  /* ── FMCIII brand text colors ─────────────────────── */
+  .text-brand-sky      { color: var(--brand-sky); }
+  .text-brand-orange   { color: var(--brand-orange); }
+  .text-brand-gold     { color: var(--brand-gold); }
+  .text-brand-charcoal { color: var(--brand-charcoal); }
+
+  /* ── FMCIII brand backgrounds ─────────────────────── */
+  .bg-brand-sky        { background-color: var(--brand-sky); }
+  .bg-brand-orange     { background-color: var(--brand-orange); }
+  .bg-brand-gold       { background-color: var(--brand-gold); }
+  .bg-brand-charcoal   { background-color: var(--brand-charcoal); }
+
+  /* ── Brand pale backgrounds ───────────────────────── */
+  .bg-sky-pale    { background-color: var(--brand-sky-pale); }
+  .bg-orange-pale { background-color: var(--brand-orange-pale); }
+
+  /* ── Brand borders ────────────────────────────────── */
+  .border-brand-sky      { border-color: var(--brand-sky); }
+  .border-brand-orange   { border-color: var(--brand-orange); }
+  .border-brand-gold     { border-color: var(--brand-gold); }
+  .border-brand-charcoal { border-color: var(--brand-charcoal); }
+
+  /* ── Dual-tone gradient text ──────────────────────── */
+  .text-dual-gradient {
+    background: linear-gradient(135deg, #2EA3E0, #F5941E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-sky-gradient {
+    background: linear-gradient(135deg, #2EA3E0, #5dbdea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-orange-gradient {
+    background: linear-gradient(135deg, #F5941E, #F7B731);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
 }

@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/Shell";
+﻿import { Shell } from "@/components/layout/Shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,10 +53,10 @@ function FormSection({ icon, title, accentClass = "section-accent-blue", childre
   return (
     <div className="frost-panel p-5 space-y-4">
       <div className={`flex items-center gap-2.5 ${accentClass}`}>
-        <div className="h-7 w-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(1,81,133,0.07)" }}>
+        <div className="h-7 w-7 rounded-lg flex items-center justify-center" style={{ background: "rgba(46,163,224,0.07)" }}>
           <span className="text-primary">{icon}</span>
         </div>
-        <h2 className="text-base font-display font-semibold" style={{ color: "#015185" }}>{title}</h2>
+        <h2 className="text-base font-display font-semibold" style={{ color: "#2EA3E0" }}>{title}</h2>
       </div>
       {children}
     </div>
@@ -102,7 +102,7 @@ export default function ApplicationForm() {
               </div>
             </div>
             <div>
-              <h2 className="text-2xl font-display font-bold mb-2" style={{ color: "#015185" }}>Application Submitted!</h2>
+              <h2 className="text-2xl font-display font-bold mb-2" style={{ color: "#2EA3E0" }}>Application Submitted!</h2>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 Your application has been successfully submitted. Our team will review it and get back to you shortly.
               </p>
@@ -138,7 +138,7 @@ export default function ApplicationForm() {
     <Shell>
       <div className="max-w-3xl mx-auto">
         <div className="mb-7 stagger-1">
-          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#015185" }}>New Application</h1>
+          <h1 className="text-3xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>New Application</h1>
           <p className="text-muted-foreground">Fill out the form below to submit your startup application.</p>
         </div>
 
@@ -177,7 +177,7 @@ export default function ApplicationForm() {
                     <SelectTrigger className="h-10 rounded-lg border-border/70 bg-white/90 focus:border-primary focus:ring-2 focus:ring-primary/10">
                       <SelectValue placeholder="Select a category..." />
                     </SelectTrigger>
-                    <SelectContent style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(1,81,133,0.12)" }}>
+                    <SelectContent style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(8px)", border: "1px solid rgba(46,163,224,0.12)" }}>
                       {STARTUP_CATEGORIES.map(cat => (
                         <SelectItem key={cat} value={cat} className="focus:bg-primary/5">{cat}</SelectItem>
                       ))}
@@ -285,7 +285,7 @@ export default function ApplicationForm() {
               type="submit"
               disabled={isPending}
               className="w-full h-11 rounded-xl font-semibold text-white relative overflow-hidden group"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 3px 14px rgba(1,81,133,0.28)" }}
+              style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)", boxShadow: "0 3px 14px rgba(46,163,224,0.28)" }}
             >
               <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-600" />
               {isPending ? (

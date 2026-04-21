@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/Shell";
+﻿import { Shell } from "@/components/layout/Shell";
 import { useKnowledgeBase, useCreateArticle } from "@/hooks/use-knowledge-base";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -15,7 +15,7 @@ import { api } from "@shared/routes";
 const STAGGER = ["stagger-1","stagger-2","stagger-3","stagger-4","stagger-5","stagger-6"];
 
 const ICON_ACCENTS = [
-  { bg: "rgba(1,81,133,0.08)",   color: "#015185" },
+  { bg: "rgba(46,163,224,0.08)",   color: "#2EA3E0" },
   { bg: "rgba(90,63,168,0.08)",  color: "#5a3fa8" },
   { bg: "rgba(0,144,122,0.08)",  color: "#00907a" },
   { bg: "rgba(200,120,0,0.08)",  color: "#c87800" },
@@ -128,13 +128,13 @@ function ArticleReader({
       }}
     >
       {/* ── Reading Progress Bar ── */}
-      <div className="fixed top-0 left-0 right-0 z-[60] h-[3px]" style={{ background: "rgba(1,81,133,0.08)" }}>
+      <div className="fixed top-0 left-0 right-0 z-[60] h-[3px]" style={{ background: "rgba(46,163,224,0.08)" }}>
         <div
           className="h-full transition-all duration-150"
           style={{
             width: `${scrollProgress}%`,
-            background: "linear-gradient(90deg, #015185, #0270b8, #039be5)",
-            boxShadow: "0 0 12px rgba(1,81,133,0.4)",
+            background: "linear-gradient(90deg, #2EA3E0, #2EA3E0, #039be5)",
+            boxShadow: "0 0 12px rgba(46,163,224,0.4)",
           }}
         />
       </div>
@@ -145,14 +145,14 @@ function ArticleReader({
         style={{
           background: "rgba(255,255,255,0.92)",
           backdropFilter: "blur(20px) saturate(180%)",
-          borderColor: "rgba(1,81,133,0.08)",
+          borderColor: "rgba(46,163,224,0.08)",
         }}
       >
         <div className="max-w-[900px] mx-auto px-6 md:px-8 flex items-center justify-between h-14">
           <button
             onClick={handleBack}
             className="flex items-center gap-2 text-sm font-medium transition-all duration-200 group"
-            style={{ color: "#015185" }}
+            style={{ color: "#2EA3E0" }}
           >
             <ArrowLeft
               className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1"
@@ -165,7 +165,7 @@ function ArticleReader({
             <button
               className="h-8 w-8 rounded-lg flex items-center justify-center transition-colors duration-200"
               style={{ color: "#64748b" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(1,81,133,0.06)"; e.currentTarget.style.color = "#015185"; }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(46,163,224,0.06)"; e.currentTarget.style.color = "#2EA3E0"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#64748b"; }}
               title="Bookmark"
             >
@@ -174,7 +174,7 @@ function ArticleReader({
             <button
               className="h-8 w-8 rounded-lg flex items-center justify-center transition-colors duration-200"
               style={{ color: "#64748b" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(1,81,133,0.06)"; e.currentTarget.style.color = "#015185"; }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(46,163,224,0.06)"; e.currentTarget.style.color = "#2EA3E0"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#64748b"; }}
               title="Share"
             >
@@ -202,7 +202,7 @@ function ArticleReader({
               transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s",
             }}
           >
-            <span style={{ color: "#015185" }}>Knowledge Base</span>
+            <span style={{ color: "#2EA3E0" }}>Knowledge Base</span>
             <ChevronRight className="h-3 w-3" />
             <span className="truncate max-w-[200px]">{article.title}</span>
           </div>
@@ -226,7 +226,7 @@ function ArticleReader({
           <div
             className="flex flex-wrap items-center gap-4 mb-8 pb-8"
             style={{
-              borderBottom: "1px solid rgba(1,81,133,0.08)",
+              borderBottom: "1px solid rgba(46,163,224,0.08)",
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? "translateY(0)" : "translateY(8px)",
               transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s",
@@ -236,7 +236,7 @@ function ArticleReader({
             <div className="flex items-center gap-2.5">
               <div
                 className="h-9 w-9 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
               >
                 {initials}
               </div>
@@ -297,7 +297,7 @@ function ArticleReader({
           <div
             className="mt-12 pt-8"
             style={{
-              borderTop: "1px solid rgba(1,81,133,0.08)",
+              borderTop: "1px solid rgba(46,163,224,0.08)",
               opacity: isVisible ? 1 : 0,
               transition: "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s",
             }}
@@ -306,7 +306,7 @@ function ArticleReader({
               <button
                 onClick={handleBack}
                 className="flex items-center gap-2 text-sm font-medium transition-all duration-200 group"
-                style={{ color: "#015185" }}
+                style={{ color: "#2EA3E0" }}
               >
                 <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
                 Back to all articles
@@ -397,10 +397,10 @@ export default function KnowledgeBase() {
           <div className="mb-10 stagger-1">
             <h1
               className="text-4xl md:text-5xl font-display font-bold leading-tight mb-4"
-              style={{ color: "#015185" }}
+              style={{ color: "#2EA3E0" }}
             >
               We Have Resources,<br />
-              <span style={{ color: "#0270b8" }}>You Have Questions.</span>
+              <span style={{ color: "#2EA3E0" }}>You Have Questions.</span>
             </h1>
             <p className="text-muted-foreground text-base max-w-lg leading-relaxed">
               Explore our curated library of startup guides, frameworks, and resources—crafted to help every team at every stage of growth.
@@ -408,7 +408,7 @@ export default function KnowledgeBase() {
             {/* Decorative rule */}
             <div
               className="mt-6 h-1 w-20 rounded-full"
-              style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }}
+              style={{ background: "linear-gradient(90deg, #2EA3E0, #2EA3E0)" }}
             />
           </div>
 
@@ -439,7 +439,7 @@ export default function KnowledgeBase() {
                     }
                     onMouseEnter={e => {
                       (e.currentTarget as HTMLDivElement).style.transform = "translateY(-3px)";
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 32px rgba(1,81,133,0.12)";
+                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 32px rgba(46,163,224,0.12)";
                     }}
                     onMouseLeave={e => {
                       (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
@@ -517,12 +517,12 @@ export default function KnowledgeBase() {
                   style={{
                     background: "rgba(255,255,255,0.97)",
                     backdropFilter: "blur(16px)",
-                    boxShadow: "0 20px 50px rgba(1,81,133,0.12)",
+                    boxShadow: "0 20px 50px rgba(46,163,224,0.12)",
                   }}
                 >
-                  <div className="h-1.5" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+                  <div className="h-1.5" style={{ background: "linear-gradient(90deg, #2EA3E0, #2EA3E0)" }} />
                   <div className="p-6">
-                    <h2 className="text-xl font-display font-bold mb-1" style={{ color: "#015185" }}>
+                    <h2 className="text-xl font-display font-bold mb-1" style={{ color: "#2EA3E0" }}>
                       Publish a Resource
                     </h2>
                     <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
@@ -572,22 +572,22 @@ export default function KnowledgeBase() {
                                 onClick={() => setForm(f => ({ ...f, category: f.category === cat ? "" : cat }))}
                                 className="px-3 py-1 rounded-full text-xs font-medium border transition-all duration-150"
                                 style={{
-                                  borderColor: isSelected ? "#015185" : "rgba(1,81,133,0.25)",
-                                  color: isSelected ? "#ffffff" : "#015185",
+                                  borderColor: isSelected ? "#2EA3E0" : "rgba(46,163,224,0.25)",
+                                  color: isSelected ? "#ffffff" : "#2EA3E0",
                                   background: isSelected
-                                    ? "linear-gradient(135deg, #015185, #0270b8)"
-                                    : "rgba(1,81,133,0.06)",
-                                  boxShadow: isSelected ? "0 2px 8px rgba(1,81,133,0.25)" : "none",
+                                    ? "linear-gradient(135deg, #2EA3E0, #2EA3E0)"
+                                    : "rgba(46,163,224,0.06)",
+                                  boxShadow: isSelected ? "0 2px 8px rgba(46,163,224,0.25)" : "none",
                                   transform: isSelected ? "scale(1.05)" : "scale(1)",
                                 }}
                                 onMouseEnter={e => {
                                   if (!isSelected) {
-                                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(1,81,133,0.15)";
+                                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(46,163,224,0.15)";
                                   }
                                 }}
                                 onMouseLeave={e => {
                                   if (!isSelected) {
-                                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(1,81,133,0.06)";
+                                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(46,163,224,0.06)";
                                   }
                                 }}
                               >
@@ -605,7 +605,7 @@ export default function KnowledgeBase() {
                         type="submit"
                         disabled={isPending}
                         className="w-full h-10 rounded-lg font-semibold text-white relative overflow-hidden group mt-2"
-                        style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 2px 10px rgba(1,81,133,0.25)" }}
+                        style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)", boxShadow: "0 2px 10px rgba(46,163,224,0.25)" }}
                       >
                         <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-500" />
                         {isPending ? (
@@ -623,13 +623,13 @@ export default function KnowledgeBase() {
 
                 {/* Stats strip */}
                 <div className="mt-6 grid grid-cols-2 gap-4">
-                  <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(1,81,133,0.04)" }}>
-                    <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#015185" }}>Total Articles</p>
-                    <p className="text-2xl font-bold" style={{ color: "#015185" }}>{kLoading ? "—" : articles?.length ?? 0}</p>
+                  <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(46,163,224,0.04)" }}>
+                    <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#2EA3E0" }}>Total Articles</p>
+                    <p className="text-2xl font-bold" style={{ color: "#2EA3E0" }}>{kLoading ? "—" : articles?.length ?? 0}</p>
                   </div>
-                  <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(1,81,133,0.04)" }}>
-                    <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#015185" }}>Contributors</p>
-                    <p className="text-2xl font-bold" style={{ color: "#015185" }}>
+                  <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(46,163,224,0.04)" }}>
+                    <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#2EA3E0" }}>Contributors</p>
+                    <p className="text-2xl font-bold" style={{ color: "#2EA3E0" }}>
                       {kLoading ? "—" : (new Set(articles?.map(a => a.createdBy))).size}
                     </p>
                   </div>
@@ -642,20 +642,20 @@ export default function KnowledgeBase() {
                 style={{
                   background: "rgba(255,255,255,0.97)",
                   backdropFilter: "blur(16px)",
-                  boxShadow: "0 20px 50px rgba(1,81,133,0.08)",
+                  boxShadow: "0 20px 50px rgba(46,163,224,0.08)",
                 }}
               >
-                <div className="h-1.5" style={{ background: "linear-gradient(90deg, #015185, #0270b8)" }} />
+                <div className="h-1.5" style={{ background: "linear-gradient(90deg, #2EA3E0, #2EA3E0)" }} />
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div
                       className="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: "rgba(1,81,133,0.08)" }}
+                      style={{ background: "rgba(46,163,224,0.08)" }}
                     >
-                      <Lock className="h-5 w-5" style={{ color: "#015185" }} />
+                      <Lock className="h-5 w-5" style={{ color: "#2EA3E0" }} />
                     </div>
                     <div>
-                      <h2 className="text-base font-display font-bold" style={{ color: "#015185" }}>Knowledge Base</h2>
+                      <h2 className="text-base font-display font-bold" style={{ color: "#2EA3E0" }}>Knowledge Base</h2>
                       <p className="text-xs text-muted-foreground">Read-only access</p>
                     </div>
                   </div>
@@ -665,13 +665,13 @@ export default function KnowledgeBase() {
                   </p>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(1,81,133,0.04)" }}>
-                      <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#015185" }}>Total Articles</p>
-                      <p className="text-2xl font-bold" style={{ color: "#015185" }}>{kLoading ? "—" : articles?.length ?? 0}</p>
+                    <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(46,163,224,0.04)" }}>
+                      <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#2EA3E0" }}>Total Articles</p>
+                      <p className="text-2xl font-bold" style={{ color: "#2EA3E0" }}>{kLoading ? "—" : articles?.length ?? 0}</p>
                     </div>
-                    <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(1,81,133,0.04)" }}>
-                      <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#015185" }}>Contributors</p>
-                      <p className="text-2xl font-bold" style={{ color: "#015185" }}>
+                    <div className="rounded-xl p-4 border border-border/50" style={{ background: "rgba(46,163,224,0.04)" }}>
+                      <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: "#2EA3E0" }}>Contributors</p>
+                      <p className="text-2xl font-bold" style={{ color: "#2EA3E0" }}>
                         {kLoading ? "—" : (new Set(articles?.map(a => a.createdBy))).size}
                       </p>
                     </div>

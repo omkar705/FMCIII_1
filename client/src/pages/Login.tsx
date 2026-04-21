@@ -4,80 +4,81 @@ import { useLocation } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Building2, Loader2, Lock, Mail } from "lucide-react";
+import { Loader2, Lock, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ROLE_IDS } from "@/lib/roles";
 
-
-
-
-
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoggingIn } = useAuth();
-  const [, setLocation] = useLocation();
-  const { toast } = useToast();
+  const { login, isLoggingIn }  = useAuth();
+  const [, setLocation]         = useLocation();
+  const { toast }               = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const result = await login({ email, password });
       toast({ title: "Welcome back!" });
-      // Redirect based on role
-      if (result?.user?.roleId === ROLE_IDS.STARTUP_FOUNDER) {
-        setLocation("/profile");
-      } else if (result?.user?.roleId === ROLE_IDS.MENTOR) {
-        setLocation("/mentor-profile");
-      } else if (result?.user?.roleId === ROLE_IDS.INVESTOR) {
-        setLocation("/investor-profile");
-      } else {
-        setLocation("/");
-      }
+      if (result?.user?.roleId === ROLE_IDS.STARTUP_FOUNDER) setLocation("/profile");
+      else if (result?.user?.roleId === ROLE_IDS.MENTOR)     setLocation("/mentor-profile");
+      else if (result?.user?.roleId === ROLE_IDS.INVESTOR)   setLocation("/investor-profile");
+      else                                                    setLocation("/");
     } catch (err: any) {
       toast({ title: "Login failed", description: err.message || "Invalid credentials", variant: "destructive" });
     }
   };
 
   return (
-    
     <div
-    
       className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{
-        background: "linear-gradient(160deg, #f0f6fc 0%, #e8f2fb 40%, #ddeeff 100%)"
-      }}
+      style={{ background: "linear-gradient(160deg, #f0f6fc 0%, #e8f2fb 40%, #ddeeff 100%)" }}
     >
-      {/* Subtle decorative circles */}
-      <div className="absolute top-[-80px] left-[-80px] w-[350px] h-[350px] rounded-full opacity-20 pointer-events-none"
-        style={{ background: "radial-gradient(circle, #015185, transparent 70%)" }} />
-      <div className="absolute bottom-[-60px] right-[-60px] w-[280px] h-[280px] rounded-full opacity-15 pointer-events-none"
-        style={{ background: "radial-gradient(circle, #0270b8, transparent 70%)" }} />
+      {/* Background glows — Sky top-left, Orange bottom-right */}
+      <div
+        className="absolute top-[-80px] left-[-80px] w-[350px] h-[350px] rounded-full opacity-[0.08] pointer-events-none"
+        style={{ background: "radial-gradient(circle, #2EA3E0, transparent 70%)" }}
+      />
+      <div
+        className="absolute bottom-[-60px] right-[-60px] w-[300px] h-[300px] rounded-full opacity-[0.08] pointer-events-none"
+        style={{ background: "radial-gradient(circle, #F5941E, transparent 70%)" }}
+      />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-[0.03] pointer-events-none"
+        style={{ background: "radial-gradient(circle, #F7B731, transparent 70%)" }}
+      />
 
       {/* Login card */}
       <div
         className="w-full max-w-md mx-4 relative z-10 rounded-2xl overflow-hidden animate-fade-in-scale"
         style={{
-          background: "rgba(255,255,255,0.88)",
+          background: "rgba(255,255,255,0.90)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid rgba(1,81,133,0.12)",
-          boxShadow: "0 20px 60px rgba(1,81,133,0.13), 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1)"
+          border: "1px solid rgba(46,163,224,0.12)",
+          boxShadow: "0 24px 64px rgba(46,163,224,0.13), 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1)"
         }}
       >
-        {/* Top accent stripe */}
-        <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, #015185, #0270b8, #015185)" }} />
+        {/* Animated dual-tone top accent bar */}
+        <div className="brand-divider-top" />
 
         <div className="p-8 pt-7">
-          {/* Logo */}
-          <div className="flex flex-col items-center mb-8">
-            <div
-              className="h-14 w-14 rounded-xl flex items-center justify-center mb-4 shadow-primary-sm"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+          {/* FMCIII Logo — real image */}
+          <div className="flex flex-col items-center mb-7">
+            <img
+              src="/fmciii-logo.webp"
+              alt="FMCIII"
+              className="h-20 w-20 object-contain mb-3 animate-float"
+            />
+            <h1
+              className="text-2xl font-display font-bold text-center mb-1"
+              style={{
+                background: "linear-gradient(135deg, #2EA3E0, #F5941E)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
             >
-              <Building2 className="h-7 w-7 text-white" />
-            </div>
-            <h1 className="text-2xl font-display font-bold text-center mb-1" style={{ color: "#015185" }}>
               FMCIII Portal
             </h1>
             <p className="text-muted-foreground text-sm text-center">Sign in to your account</p>
@@ -119,8 +120,8 @@ export default function Login() {
               disabled={isLoggingIn}
               className="w-full h-11 rounded-xl font-semibold text-white relative overflow-hidden group mt-2"
               style={{
-                background: "linear-gradient(135deg, #015185, #0270b8)",
-                boxShadow: "0 3px 12px rgba(1,81,133,0.3)"
+                background: "linear-gradient(135deg, #F5941E 0%, #d4780e 100%)",
+                boxShadow: "0 3px 12px rgba(245,148,30,0.32)"
               }}
             >
               <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-600" />
@@ -136,7 +137,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-      
     </div>
   );
 }

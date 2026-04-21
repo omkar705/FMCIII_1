@@ -1,4 +1,4 @@
-import { Shell } from "@/components/layout/Shell";
+﻿import { Shell } from "@/components/layout/Shell";
 import { useScorecards, useCreateScorecard, useDeleteScorecard } from "@/hooks/use-scorecards";
 import { useStartups } from "@/hooks/use-startups";
 import { useJudges } from "@/hooks/use-judges";
@@ -145,7 +145,7 @@ export default function Scorecards() {
     <Shell>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-display font-bold text-[#015185] mb-2">Evaluations</h1>
+          <h1 className="text-4xl font-display font-bold text-[#2EA3E0] mb-2">Evaluations</h1>
           <p className="text-muted-foreground text-lg">Judge scoring and feedback.</p>
         </div>
 
@@ -162,7 +162,7 @@ export default function Scorecards() {
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               {/* Startup dropdown */}
               <div className="space-y-2">
-                <Label className="text-[#015185]">Startup</Label>
+                <Label className="text-[#2EA3E0]">Startup</Label>
                 {startupsLoading ? (
                   <div className="flex items-center gap-2 h-9 px-3 rounded-md border border-black/30 bg-white/50 text-sm text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" /> Loading startups…
@@ -177,10 +177,10 @@ export default function Scorecards() {
                     }}
                     required
                   >
-                    <SelectTrigger className="bg-white/50 border-black/80 text-[#015185]">
+                    <SelectTrigger className="bg-white/50 border-black/80 text-[#2EA3E0]">
                       <SelectValue placeholder="Select a startup" />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-white/10 text-[#015185]">
+                    <SelectContent className="bg-card border-white/10 text-[#2EA3E0]">
                       {startups?.map((startup) => (
                         <SelectItem key={startup.id} value={String(startup.id)}>
                           {startup.name}
@@ -211,10 +211,10 @@ export default function Scorecards() {
                     }}
                     required
                   >
-                    <SelectTrigger className="bg-white/50 border-black/80 text-[#015185]">
+                    <SelectTrigger className="bg-white/50 border-black/80 text-[#2EA3E0]">
                       <SelectValue placeholder="Select a judge" />
                     </SelectTrigger>
-                    <SelectContent className="bg-card border-white/10 text-[#015185]">
+                    <SelectContent className="bg-card border-white/10 text-[#2EA3E0]">
                       {judges?.map((judge) => (
                         <SelectItem key={judge.id} value={String(judge.id)}>
                           {judge.name}
@@ -268,16 +268,16 @@ export default function Scorecards() {
                       <ClipboardCheck className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-[#015185]">{displayName}</h4>
+                      <h4 className="font-semibold text-[#2EA3E0]">{displayName}</h4>
                       <p className="text-xs text-muted-foreground">{displayJudge}</p>
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     {displayScore !== null && displayScore !== undefined ? (
-                      <span className="text font-display  text-[#015185] flex items-center gap-1">
+                      <span className="text font-display  text-[#2EA3E0] flex items-center gap-1">
                         <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                         {displayScore}
-                        <span className="text  text-[#015185] font-normal">/ 100</span>
+                        <span className="text  text-[#2EA3E0] font-normal">/ 100</span>
                       </span>
                     ) : (
                       <span className="text-sm text-muted-foreground italic">Not scored</span>

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ROLE_IDS } from "@/lib/roles";
 import {
-  Building2, Loader2, Lock, Mail, User, Phone,
+  Loader2, Lock, Mail, User, Phone,
   Rocket, Users, IndianRupee
 , Lightbulb, BookOpen,
   ArrowRight, ChevronDown, Shield, Target, Zap,
@@ -134,21 +134,21 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen overflow-x-hidden" style={{ background: "linear-gradient(160deg, #f0f6fc 0%, #e8f2fb 40%, #ddeeff 100%)" }}>
-      {/* ── Animated background spheres ── */}
+      {/* ── Animated background spheres — Sky Blue top-left, Orange bottom-right ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div
-          className="absolute w-[500px] h-[500px] rounded-full opacity-[0.07]"
+          className="absolute w-[500px] h-[500px] rounded-full opacity-[0.08]"
           style={{
-            background: "radial-gradient(circle, #015185, transparent 70%)",
+            background: "radial-gradient(circle, #2EA3E0, transparent 70%)",
             top: `${-100 + mousePos.y * 30}px`,
             left: `${-100 + mousePos.x * 30}px`,
             transition: "top 0.8s ease-out, left 0.8s ease-out",
           }}
         />
         <div
-          className="absolute w-[400px] h-[400px] rounded-full opacity-[0.05]"
+          className="absolute w-[440px] h-[440px] rounded-full opacity-[0.07]"
           style={{
-            background: "radial-gradient(circle, #0270b8, transparent 70%)",
+            background: "radial-gradient(circle, #F5941E, transparent 70%)",
             bottom: `${-80 + (1 - mousePos.y) * 25}px`,
             right: `${-80 + (1 - mousePos.x) * 25}px`,
             transition: "bottom 0.8s ease-out, right 0.8s ease-out",
@@ -157,7 +157,7 @@ export default function LandingPage() {
         <div
           className="absolute w-[300px] h-[300px] rounded-full opacity-[0.04]"
           style={{
-            background: "radial-gradient(circle, #5a3fa8, transparent 70%)",
+            background: "radial-gradient(circle, #F7B731, transparent 70%)",
             top: "40%",
             left: `${50 + mousePos.x * 10}%`,
             transition: "left 1s ease-out",
@@ -172,18 +172,22 @@ export default function LandingPage() {
           background: "rgba(255,255,255,0.72)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          borderColor: "rgba(1,81,133,0.10)",
+          borderColor: "rgba(46,163,224,0.10)",
         }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
           <div className="flex items-center gap-3">
-            <div
-              className="h-10 w-10 rounded-xl flex items-center justify-center shadow-sm"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
-            >
-              <Building2 className="h-5 w-5 text-white" />
-            </div>
-            <span className="font-display font-bold text-lg" style={{ color: "#015185" }}>
+            <img
+              src="/fmciii-logo.webp"
+              alt="FMCIII"
+              className="h-11 w-11 object-contain"
+            />
+            <span className="font-display font-bold text-lg" style={{
+              background: "linear-gradient(135deg, #2EA3E0, #F5941E)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}>
               FMCIII
             </span>
           </div>
@@ -195,7 +199,7 @@ export default function LandingPage() {
                 href={`#${item.toLowerCase()}`}
                 className="text-sm font-medium transition-colors duration-200"
                 style={{ color: "hsl(215 15% 50%)" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "#015185")}
+                onMouseEnter={e => (e.currentTarget.style.color = "#2EA3E0")}
                 onMouseLeave={e => (e.currentTarget.style.color = "hsl(215,15%,50%)")}
               >
                 {item}
@@ -207,8 +211,8 @@ export default function LandingPage() {
             <a
               href="#auth"
               className="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200"
-              style={{ color: "#015185" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(1,81,133,0.08)"; }}
+              style={{ color: "#2EA3E0" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(46,163,224,0.08)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
               onClick={() => setTab("login")}
             >
@@ -218,11 +222,11 @@ export default function LandingPage() {
               href="#auth"
               className="px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all duration-200"
               style={{
-                background: "linear-gradient(135deg, #015185, #0270b8)",
-                boxShadow: "0 2px 10px rgba(1,81,133,0.25)",
+                background: "linear-gradient(135deg, #F5941E, #d4780e)",
+                boxShadow: "0 2px 10px rgba(245,148,30,0.28)",
               }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 4px 18px rgba(1,81,133,0.35)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 2px 10px rgba(1,81,133,0.25)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 4px 18px rgba(245,148,30,0.40)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 2px 10px rgba(245,148,30,0.28)"; e.currentTarget.style.transform = "translateY(0)"; }}
               onClick={() => setTab("signup")}
             >
               Sign Up
@@ -239,9 +243,9 @@ export default function LandingPage() {
             <div
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6"
               style={{
-                background: "rgba(1,81,133,0.08)",
-                color: "#015185",
-                border: "1px solid rgba(1,81,133,0.15)",
+                background: "rgba(46,163,224,0.08)",
+                color: "#2EA3E0",
+                border: "1px solid rgba(46,163,224,0.15)",
               }}
             >
               <Sparkles className="h-3.5 w-3.5" />
@@ -249,11 +253,11 @@ export default function LandingPage() {
             </div>
 
             <h1 className="font-display font-bold leading-[1.1] mb-6" style={{ fontSize: "clamp(2.4rem, 5vw, 3.8rem)" }}>
-              <span style={{ color: "#015185" }}>Empowering Startups</span>
+              <span style={{ color: "#2EA3E0" }}>Empowering Startups</span>
               <br />
               <span
                 className="bg-clip-text text-transparent"
-                style={{ backgroundImage: "linear-gradient(135deg, #015185, #0270b8, #5a3fa8)" }}
+                style={{ backgroundImage: "linear-gradient(135deg, #F5941E 0%, #F7B731 60%, #2EA3E0 100%)" }}
               >
                 from Idea to Scale.
               </span>
@@ -270,11 +274,11 @@ export default function LandingPage() {
                 href="#auth"
                 className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-xl text-white font-semibold text-sm relative overflow-hidden transition-all duration-300"
                 style={{
-                  background: "linear-gradient(135deg, #015185, #0270b8)",
-                  boxShadow: "0 4px 20px rgba(1,81,133,0.3)",
+                  background: "linear-gradient(135deg, #F5941E 0%, #d4780e 100%)",
+                  boxShadow: "0 4px 20px rgba(245,148,30,0.35)",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 8px 30px rgba(1,81,133,0.4)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 20px rgba(1,81,133,0.3)"; e.currentTarget.style.transform = "translateY(0)"; }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 8px 32px rgba(245,148,30,0.48)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 20px rgba(245,148,30,0.35)"; e.currentTarget.style.transform = "translateY(0)"; }}
                 onClick={() => setTab("signup")}
               >
                 <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-600" />
@@ -286,13 +290,13 @@ export default function LandingPage() {
                 href="#about"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200"
                 style={{
-                  color: "#015185",
-                  border: "1px solid rgba(1,81,133,0.25)",
+                  color: "#2EA3E0",
+                  border: "1px solid rgba(46,163,224,0.25)",
                   background: "rgba(255,255,255,0.6)",
                   backdropFilter: "blur(8px)",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(1,81,133,0.06)"; e.currentTarget.style.borderColor = "rgba(1,81,133,0.40)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.6)"; e.currentTarget.style.borderColor = "rgba(1,81,133,0.25)"; }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(46,163,224,0.06)"; e.currentTarget.style.borderColor = "rgba(46,163,224,0.40)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.6)"; e.currentTarget.style.borderColor = "rgba(46,163,224,0.25)"; }}
               >
                 Learn More
                 <ChevronDown className="h-4 w-4" />
@@ -306,16 +310,16 @@ export default function LandingPage() {
             style={{ animation: "fadeInScale 0.9s ease 0.3s both" }}
           >
             <div
-              className="absolute -inset-4 rounded-3xl opacity-30 blur-2xl"
-              style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+              className="absolute -inset-4 rounded-3xl opacity-25 blur-2xl"
+              style={{ background: "linear-gradient(135deg, #2EA3E0, #F5941E)" }}
             />
             <div
               className="relative rounded-2xl p-8 border overflow-hidden"
               style={{
                 background: "rgba(255,255,255,0.75)",
                 backdropFilter: "blur(20px)",
-                border: "1px solid rgba(1,81,133,0.12)",
-                boxShadow: "0 20px 60px rgba(1,81,133,0.15), inset 0 1px 0 rgba(255,255,255,0.9)",
+                border: "1px solid rgba(46,163,224,0.12)",
+                boxShadow: "0 20px 60px rgba(46,163,224,0.15), inset 0 1px 0 rgba(255,255,255,0.9)",
               }}
             >
               <div className="grid grid-cols-2 gap-4">
@@ -329,16 +333,16 @@ export default function LandingPage() {
                     key={item.label}
                     className="rounded-xl p-4 border transition-all duration-300"
                     style={{
-                      background: "rgba(1,81,133,0.03)",
-                      borderColor: "rgba(1,81,133,0.08)",
+                      background: "rgba(46,163,224,0.03)",
+                      borderColor: "rgba(46,163,224,0.08)",
                       animation: `staggerFadeIn 0.5s ease both`,
                       animationDelay: `${0.5 + i * 0.1}s`,
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(1,81,133,0.07)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(1,81,133,0.03)"; e.currentTarget.style.transform = "translateY(0)"; }}
+                    onMouseEnter={e => { e.currentTarget.style.background = "rgba(46,163,224,0.07)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(46,163,224,0.03)"; e.currentTarget.style.transform = "translateY(0)"; }}
                   >
-                    <item.icon className="h-6 w-6 mb-2" style={{ color: "#015185" }} />
-                    <p className="text-sm font-bold" style={{ color: "#015185" }}>{item.label}</p>
+                    <item.icon className="h-6 w-6 mb-2" style={{ color: "#2EA3E0" }} />
+                    <p className="text-sm font-bold" style={{ color: "#2EA3E0" }}>{item.label}</p>
                     <p className="text-xs mt-0.5" style={{ color: "hsl(215,15%,50%)" }}>{item.desc}</p>
                   </div>
                 ))}
@@ -355,7 +359,7 @@ export default function LandingPage() {
         style={{
           background: "rgba(255,255,255,0.5)",
           backdropFilter: "blur(12px)",
-          borderColor: "rgba(1,81,133,0.08)",
+          borderColor: "rgba(46,163,224,0.08)",
           opacity: statsReveal.visible ? 1 : 0,
           transform: statsReveal.visible ? "translateY(0)" : "translateY(30px)",
           transition: "opacity 0.7s ease, transform 0.7s ease",
@@ -363,10 +367,10 @@ export default function LandingPage() {
       >
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { counter: s1, suffix: "+", label: "Startups Incubated", icon: Rocket },
-            { counter: s2, suffix: "+", label: "Industry Mentors", icon: GraduationCap },
-            { counter: s3, suffix: "Cr+", prefix: "₹", label: "Funding Facilitated", icon: TrendingUp },
-            { counter: s4, suffix: "+", label: "Events & Workshops", icon: Award },
+            { counter: s1, suffix: "+",    label: "Startups Incubated",  icon: Rocket,       color: "#2EA3E0", bg: "rgba(46,163,224,0.09)" },
+            { counter: s2, suffix: "+",    label: "Industry Mentors",    icon: GraduationCap, color: "#F5941E", bg: "rgba(245,148,30,0.09)" },
+            { counter: s3, suffix: "Cr+",  prefix: "₹", label: "Funding Facilitated", icon: TrendingUp, color: "#F7B731", bg: "rgba(247,183,49,0.09)" },
+            { counter: s4, suffix: "+",    label: "Events & Workshops",  icon: Award,        color: "#2EA3E0", bg: "rgba(46,163,224,0.09)" },
           ].map((stat, i) => (
             <div
               key={stat.label}
@@ -376,11 +380,11 @@ export default function LandingPage() {
             >
               <div
                 className="inline-flex items-center justify-center h-12 w-12 rounded-xl mb-3 transition-transform duration-300 group-hover:scale-110"
-                style={{ background: "rgba(1,81,133,0.08)" }}
+                style={{ background: stat.bg, border: `1px solid ${stat.color}20` }}
               >
-                <stat.icon className="h-5 w-5" style={{ color: "#015185" }} />
+                <stat.icon className="h-5 w-5" style={{ color: stat.color }} />
               </div>
-              <p className="text-3xl md:text-4xl font-display font-bold" style={{ color: "#015185" }}>
+              <p className="text-3xl md:text-4xl font-display font-bold" style={{ color: stat.color }}>
                 {stat.prefix || ""}{stat.counter.count}{stat.suffix}
               </p>
               <p className="text-sm mt-1" style={{ color: "hsl(215,15%,50%)" }}>{stat.label}</p>
@@ -402,10 +406,10 @@ export default function LandingPage() {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#0270b8" }}>
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#2EA3E0" }}>
               What We Offer
             </p>
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4" style={{ color: "#015185" }}>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4" style={{ color: "#2EA3E0" }}>
               Everything Your Startup Needs
             </h2>
             <p className="text-base max-w-2xl mx-auto" style={{ color: "hsl(215,15%,50%)" }}>
@@ -420,48 +424,51 @@ export default function LandingPage() {
                 icon: Lightbulb,
                 title: "Mentorship Program",
                 desc: "One-on-one guidance from 45+ seasoned industry mentors, serial entrepreneurs, and domain experts.",
-                accent: "#015185",
+                accent: "#2EA3E0",
+                glow: "rgba(46,163,224,",
               },
               {
-                icon: IndianRupee
-,
+                icon: IndianRupee,
                 title: "Funding Access",
                 desc: "Connect with angel investors, VCs, and government grants. ₹20Cr+ in funding facilitated for our startups.",
-                accent: "#0270b8",
+                accent: "#F5941E",
+                glow: "rgba(245,148,30,",
               },
               {
                 icon: Shield,
                 title: "Co-Working Space",
                 desc: "State-of-the-art labs, meeting rooms, hot desks, and high-speed internet in a vibrant innovation hub.",
-                accent: "#00907a",
+                accent: "#F7B731",
+                glow: "rgba(247,183,49,",
               },
               {
                 icon: BookOpen,
                 title: "Knowledge Resources",
                 desc: "Curated library of guides, legal templates, pitch frameworks, and growth playbooks for every stage.",
-                accent: "#5a3fa8",
+                accent: "#4D4D4F",
+                glow: "rgba(77,77,79,",
               },
             ].map((card, i) => (
               <div
                 key={card.title}
                 className="group rounded-2xl p-6 border cursor-pointer"
                 style={{
-                  background: "rgba(255,255,255,0.70)",
-                  backdropFilter: "blur(12px)",
-                  border: "1px solid rgba(1,81,133,0.10)",
-                  boxShadow: "0 4px 20px rgba(1,81,133,0.06), inset 0 1px 0 rgba(255,255,255,0.9)",
+                  background: "rgba(255,255,255,0.72)",
+                  backdropFilter: "blur(14px)",
+                  border: `1px solid ${card.accent}18`,
+                  boxShadow: `0 4px 20px ${card.glow}0.06), inset 0 1px 0 rgba(255,255,255,0.92)`,
                   transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
                   animationDelay: `${i * 0.12}s`,
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = "translateY(-6px)";
-                  e.currentTarget.style.boxShadow = `0 16px 40px rgba(1,81,133,0.14), inset 0 1px 0 rgba(255,255,255,0.95)`;
-                  e.currentTarget.style.borderColor = `${card.accent}30`;
+                  e.currentTarget.style.boxShadow = `0 18px 42px ${card.glow}0.16), inset 0 1px 0 rgba(255,255,255,0.96)`;
+                  e.currentTarget.style.borderColor = `${card.accent}35`;
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(1,81,133,0.06), inset 0 1px 0 rgba(255,255,255,0.9)";
-                  e.currentTarget.style.borderColor = "rgba(1,81,133,0.10)";
+                  e.currentTarget.style.boxShadow = `0 4px 20px ${card.glow}0.06), inset 0 1px 0 rgba(255,255,255,0.92)`;
+                  e.currentTarget.style.borderColor = `${card.accent}18`;
                 }}
               >
                 <div
@@ -470,7 +477,7 @@ export default function LandingPage() {
                 >
                   <card.icon className="h-6 w-6" style={{ color: card.accent }} />
                 </div>
-                <h3 className="text-lg font-display font-bold mb-2" style={{ color: "#015185" }}>{card.title}</h3>
+                <h3 className="text-lg font-display font-bold mb-2" style={{ color: "#2EA3E0" }}>{card.title}</h3>
                 <p className="text-sm leading-relaxed" style={{ color: "hsl(215,15%,50%)" }}>{card.desc}</p>
                 <div
                   className="mt-4 h-[2px] w-0 group-hover:w-full rounded-full transition-all duration-500"
@@ -488,7 +495,7 @@ export default function LandingPage() {
         ref={howReveal.ref}
         className="relative z-10 py-20 md:py-28"
         style={{
-          background: "rgba(1,81,133,0.025)",
+          background: "rgba(46,163,224,0.025)",
           opacity: howReveal.visible ? 1 : 0,
           transform: howReveal.visible ? "translateY(0)" : "translateY(40px)",
           transition: "opacity 0.8s ease, transform 0.8s ease",
@@ -496,10 +503,10 @@ export default function LandingPage() {
       >
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#0270b8" }}>
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#2EA3E0" }}>
               Our Process
             </p>
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4" style={{ color: "#015185" }}>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4" style={{ color: "#2EA3E0" }}>
               Your Journey with FMCIII
             </h2>
             <p className="text-base max-w-xl mx-auto" style={{ color: "hsl(215,15%,50%)" }}>
@@ -511,14 +518,14 @@ export default function LandingPage() {
             {/* Connecting line */}
             <div
               className="hidden md:block absolute top-14 left-[12.5%] right-[12.5%] h-[2px]"
-              style={{ background: "linear-gradient(90deg, transparent, #015185, #0270b8, #015185, transparent)", opacity: 0.2 }}
+              style={{ background: "linear-gradient(90deg, transparent, #2EA3E0, #2EA3E0, #2EA3E0, transparent)", opacity: 0.2 }}
             />
 
             {[
-              { step: "01", icon: Target, title: "Apply", desc: "Fill your startup profile and submit application with idea details." },
-              { step: "02", icon: BarChart3, title: "Evaluate", desc: "Expert panels score and review your application through multiple criteria." },
-              { step: "03", icon: Zap, title: "Incubate", desc: "Get accepted into the program — access mentors, funding, and infrastructure." },
-              { step: "04", icon: TrendingUp, title: "Scale", desc: "Graduate with traction, investment, and a network to take on the market." },
+              { step: "01", icon: Target,    title: "Apply",    desc: "Fill your startup profile and submit application with idea details.",       badge: "linear-gradient(135deg, #2EA3E0, #1a7ab8)" },
+              { step: "02", icon: BarChart3, title: "Evaluate", desc: "Expert panels score and review your application through multiple criteria.",  badge: "linear-gradient(135deg, #F5941E, #d4780e)" },
+              { step: "03", icon: Zap,       title: "Incubate", desc: "Get accepted into the program — access mentors, funding, and infrastructure.",badge: "linear-gradient(135deg, #2EA3E0, #5dbdea)" },
+              { step: "04", icon: TrendingUp,title: "Scale",    desc: "Graduate with traction, investment, and a network to take on the market.",   badge: "linear-gradient(135deg, #F5941E, #F7B731)" },
             ].map((item, i) => (
               <div
                 key={item.step}
@@ -528,21 +535,24 @@ export default function LandingPage() {
                 <div
                   className="relative h-16 w-16 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1"
                   style={{
-                    background: "rgba(255,255,255,0.85)",
+                    background: "rgba(255,255,255,0.88)",
                     backdropFilter: "blur(8px)",
-                    border: "1px solid rgba(1,81,133,0.15)",
-                    boxShadow: "0 8px 24px rgba(1,81,133,0.10)",
+                    border: i % 2 === 0 ? "1px solid rgba(46,163,224,0.18)" : "1px solid rgba(245,148,30,0.18)",
+                    boxShadow: i % 2 === 0 ? "0 8px 24px rgba(46,163,224,0.12)" : "0 8px 24px rgba(245,148,30,0.12)",
                   }}
                 >
-                  <item.icon className="h-7 w-7" style={{ color: "#015185" }} />
+                  <item.icon
+                    className="h-7 w-7"
+                    style={{ color: i % 2 === 0 ? "#2EA3E0" : "#F5941E" }}
+                  />
                   <span
                     className="absolute -top-2 -right-2 h-6 w-6 rounded-full text-[10px] font-bold flex items-center justify-center text-white"
-                    style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                    style={{ background: item.badge }}
                   >
                     {item.step}
                   </span>
                 </div>
-                <h3 className="text-lg font-display font-bold mb-1.5" style={{ color: "#015185" }}>{item.title}</h3>
+                <h3 className="text-lg font-display font-bold mb-1.5" style={{ color: i % 2 === 0 ? "#2EA3E0" : "#F5941E" }}>{item.title}</h3>
                 <p className="text-sm leading-relaxed max-w-[200px]" style={{ color: "hsl(215,15%,50%)" }}>{item.desc}</p>
               </div>
             ))}
@@ -564,9 +574,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
           {/* Left CTA text */}
           <div className="flex-1 text-center lg:text-left">
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4" style={{ color: "#015185" }}>
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4" style={{ color: "#2EA3E0" }}>
               Ready to Build the<br />
-              <span style={{ color: "#0270b8" }}>Next Big Thing?</span>
+              <span style={{ color: "#2EA3E0" }}>Next Big Thing?</span>
             </h2>
             <p className="text-base leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0" style={{ color: "hsl(215,15%,50%)" }}>
               Join 70+ startups already thriving in the FMCIII ecosystem.
@@ -580,7 +590,7 @@ export default function LandingPage() {
                 "Structured evaluation & growth tracking",
               ].map(item => (
                 <div key={item} className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 mt-0.5 shrink-0" style={{ color: "#015185" }} />
+                  <CheckCircle2 className="h-5 w-5 mt-0.5 shrink-0" style={{ color: "#2EA3E0" }} />
                   <p className="text-sm" style={{ color: "hsl(215,20%,35%)" }}>{item}</p>
                 </div>
               ))}
@@ -592,7 +602,7 @@ export default function LandingPage() {
             <div className="relative">
               <div
                 className="absolute -inset-3 rounded-3xl opacity-20 blur-2xl"
-                style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
+                style={{ background: "linear-gradient(135deg, #2EA3E0, #2EA3E0)" }}
               />
               <div
                 className="relative rounded-2xl overflow-hidden border"
@@ -600,37 +610,41 @@ export default function LandingPage() {
                   background: "rgba(255,255,255,0.88)",
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(1,81,133,0.12)",
-                  boxShadow: "0 20px 60px rgba(1,81,133,0.13), 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1)",
+                  border: "1px solid rgba(46,163,224,0.12)",
+                  boxShadow: "0 20px 60px rgba(46,163,224,0.13), 0 4px 16px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1)",
                 }}
               >
-                {/* Top gradient */}
-                <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, #015185, #0270b8, #015185)" }} />
+                {/* Top gradient bar — dual tone */}
+                <div className="brand-divider-top" />
 
                 <div className="p-8 pt-6">
-                  {/* Logo */}
+                  {/* Logo — real FMCIII image */}
                   <div className="flex flex-col items-center mb-6">
-                    <div
-                      className="h-12 w-12 rounded-xl flex items-center justify-center mb-3 shadow-sm"
-                      style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}
-                    >
-                      <Building2 className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-xl font-display font-bold" style={{ color: "#015185" }}>
+                    <img
+                      src="/fmciii-logo.webp"
+                      alt="FMCIII"
+                      className="h-16 w-16 object-contain mb-2"
+                    />
+                    <h3 className="text-xl font-display font-bold" style={{
+                      background: "linear-gradient(135deg, #2EA3E0, #F5941E)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}>
                       FMCIII Portal
                     </h3>
                   </div>
 
                   {/* Tabs */}
-                  <div className="flex rounded-lg overflow-hidden mb-6 border" style={{ borderColor: "rgba(1,81,133,0.15)" }}>
+                  <div className="flex rounded-lg overflow-hidden mb-6 border" style={{ borderColor: "rgba(46,163,224,0.15)" }}>
                     {(["login", "signup"] as const).map(t => (
                       <button
                         key={t}
                         onClick={() => setTab(t)}
                         className="flex-1 py-2.5 text-sm font-semibold transition-all duration-200"
                         style={{
-                          background: tab === t ? "linear-gradient(135deg, #015185, #0270b8)" : "rgba(255,255,255,0.6)",
-                          color: tab === t ? "#fff" : "#015185",
+                          background: tab === t ? "linear-gradient(135deg, #2EA3E0, #2EA3E0)" : "rgba(255,255,255,0.6)",
+                          color: tab === t ? "#fff" : "#2EA3E0",
                         }}
                       >
                         {t === "login" ? "Log In" : "Sign Up"}
@@ -670,7 +684,7 @@ export default function LandingPage() {
                       <Button
                         type="submit" disabled={isLoggingIn}
                         className="w-full h-11 rounded-xl font-semibold text-white relative overflow-hidden group mt-1"
-                        style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 3px 12px rgba(1,81,133,0.3)" }}
+                        style={{ background: "linear-gradient(135deg, #F5941E, #d4780e)", boxShadow: "0 3px 12px rgba(245,148,30,0.32)" }}
                       >
                         <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-600" />
                         {isLoggingIn ? <Loader2 className="h-5 w-5 animate-spin" /> : <span className="relative z-10">Sign In</span>}
@@ -735,7 +749,7 @@ export default function LandingPage() {
                       <Button
                         type="submit" disabled={isRegistering}
                         className="w-full h-11 rounded-xl font-semibold text-white relative overflow-hidden group mt-1"
-                        style={{ background: "linear-gradient(135deg, #015185, #0270b8)", boxShadow: "0 3px 12px rgba(1,81,133,0.3)" }}
+                        style={{ background: "linear-gradient(135deg, #F5941E, #d4780e)", boxShadow: "0 3px 12px rgba(245,148,30,0.32)" }}
                       >
                         <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-600" />
                         {isRegistering ? <Loader2 className="h-5 w-5 animate-spin" /> : <span className="relative z-10">Create Account</span>}
@@ -754,8 +768,8 @@ export default function LandingPage() {
         id="contact"
         className="relative z-10 border-t py-14"
         style={{
-          background: "rgba(1,81,133,0.03)",
-          borderColor: "rgba(1,81,133,0.10)",
+          background: "rgba(46,163,224,0.03)",
+          borderColor: "rgba(46,163,224,0.10)",
         }}
       >
         <div className="max-w-7xl mx-auto px-6">
@@ -763,10 +777,17 @@ export default function LandingPage() {
             {/* Brand */}
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #015185, #0270b8)" }}>
-                  <Building2 className="h-5 w-5 text-white" />
-                </div>
-                <span className="font-display font-bold text-lg" style={{ color: "#015185" }}>FMCIII</span>
+                <img
+                  src="/fmciii-logo.webp"
+                  alt="FMCIII"
+                  className="h-12 w-12 object-contain"
+                />
+                <span className="font-display font-bold text-lg" style={{
+                  background: "linear-gradient(135deg, #2EA3E0, #F5941E)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>FMCIII</span>
               </div>
               <p className="text-sm leading-relaxed max-w-sm" style={{ color: "hsl(215,15%,50%)" }}>
                 Foundation for MAKEITHAPPEN Center for Invention, Innovation , Incubation — Empowering founders with mentorship,
@@ -776,12 +797,12 @@ export default function LandingPage() {
 
             {/* Quick links */}
             <div>
-              <h4 className="text-sm font-display font-bold mb-4" style={{ color: "#015185" }}>Quick Links</h4>
+              <h4 className="text-sm font-display font-bold mb-4" style={{ color: "#2EA3E0" }}>Quick Links</h4>
               <ul className="space-y-2">
                 {["About Us", "Programs", "Mentors", "Apply Now"].map(link => (
                   <li key={link}>
                     <a href="#" className="text-sm transition-colors duration-200" style={{ color: "hsl(215,15%,50%)" }}
-                      onMouseEnter={e => (e.currentTarget.style.color = "#015185")}
+                      onMouseEnter={e => (e.currentTarget.style.color = "#2EA3E0")}
                       onMouseLeave={e => (e.currentTarget.style.color = "hsl(215,15%,50%)")}
                     >{link}</a>
                   </li>
@@ -791,7 +812,7 @@ export default function LandingPage() {
 
             {/* Contact */}
             <div>
-              <h4 className="text-sm font-display font-bold mb-4" style={{ color: "#015185" }}>Contact</h4>
+              <h4 className="text-sm font-display font-bold mb-4" style={{ color: "#2EA3E0" }}>Contact</h4>
               <ul className="space-y-2 text-sm" style={{ color: "hsl(215,15%,50%)" }}>
                 <li>1st Floor, Innovation Hub</li>
                 <li>MMCOE Campus, Pune 411052</li>
@@ -802,7 +823,7 @@ export default function LandingPage() {
           </div>
 
           {/* Bottom bar */}
-          <div className="border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderColor: "rgba(1,81,133,0.10)" }}>
+          <div className="border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderColor: "rgba(46,163,224,0.10)" }}>
             <p className="text-xs" style={{ color: "hsl(215,15%,55%)" }}>
               © {new Date().getFullYear()} FMCIII — Foundation for MAKEITHAPPEN Center for Invention, Innovation , Incubation. All rights reserved.
             </p>
@@ -810,7 +831,7 @@ export default function LandingPage() {
               {["Privacy Policy", "Terms of Service"].map(link => (
                 <a key={link} href="#" className="text-xs transition-colors duration-200"
                   style={{ color: "hsl(215,15%,55%)" }}
-                  onMouseEnter={e => (e.currentTarget.style.color = "#015185")}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#2EA3E0")}
                   onMouseLeave={e => (e.currentTarget.style.color = "hsl(215,15%,55%)")}
                 >{link}</a>
               ))}
