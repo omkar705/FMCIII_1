@@ -20,21 +20,24 @@ export default defineConfig({
   },
   root: path.resolve(__dirname, "client"),
   build: {
-    outDir: path.resolve(__dirname, "dist/public"),
+    outDir: path.resolve(__dirname, "dist"),
+    // outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
   },
 
-server: {
-  proxy: {
-    "/api": {
-      target: "http://localhost:3000",
-      changeOrigin: true,
-      secure: false
-    }
-  },
-  fs: {
-    strict: true,
-    deny: ["**/.*"]
-  }
-},
+// Removed to help with vercel deployment
+// server: {
+//   proxy: {
+//     "/api": {
+//       target: "http://localhost:3000",
+//       changeOrigin: true,
+//       secure: false
+//     }
+//   },
+//   fs: {
+//     strict: true,
+//     deny: ["**/.*"]
+//   }
+// },
+
 });
