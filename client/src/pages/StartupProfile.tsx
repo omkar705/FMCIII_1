@@ -71,6 +71,7 @@ function RevenueAndCollections({ startupId }: { startupId: number }) {
   const [consultancyFees, setConsultancyFees] = useState<FeeItem[]>([]);
   const [registrationFees, setRegistrationFees] = useState<FeeItem[]>([]);
   const [monthlyCollections, setMonthlyCollections] = useState<MonthlyCollection[]>([]);
+  const [currentMonthlyCollection, setCurrentMonthlyCollection] = useState<MonthlyCollection>({} as MonthlyCollection);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
@@ -83,6 +84,14 @@ function RevenueAndCollections({ startupId }: { startupId: number }) {
   useEffect(() => {
     fetchAllData();
   }, [startupId]);
+
+  // Load the specific monthly collection when year or month changes
+  useEffect(() => {
+    const matching = monthlyCollections.find(c => 
+      monthlyCollections.length > 0 && "previousBalance" in monthlyCollections[0]
+    );
+    setCurrentMonthlyCollection(matching || {});
+  }, [selectedYear, selectedMonth, monthlyCollections]);
 
   const fetchAllData = async () => {
     try {
@@ -178,13 +187,12 @@ function RevenueAndCollections({ startupId }: { startupId: number }) {
   };
 
   const handleSaveMonthlyCollection = async () => {
-    const currentCollection = monthlyCollections.find(c => c.previousBalance !== undefined);
     try {
       setIsSaving(true);
       const res = await fetch(`/api/startups/${startupId}/monthly-collections/${selectedYear}/${selectedMonth}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentCollection || {}),
+        body: JSON.stringify(currentMonthlyCollection),
       });
 
       if (res.ok) {
@@ -215,8 +223,6 @@ function RevenueAndCollections({ startupId }: { startupId: number }) {
   if (isLoading) {
     return <Skeleton className="h-96 bg-white/10 rounded-xl" />;
   }
-
-  const currentCollection = monthlyCollections.find(c => c.previousBalance !== undefined) || {};
 
   return (
     <div className="space-y-6">
@@ -399,47 +405,47 @@ function RevenueAndCollections({ startupId }: { startupId: number }) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label>Previous Balance</Label>
-                  <Input type="number" value={currentCollection.previousBalance || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, previousBalance: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.previousBalance || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, previousBalance: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>Taxable Amount</Label>
-                  <Input type="number" value={currentCollection.taxableAmount || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, taxableAmount: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.taxableAmount || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, taxableAmount: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>CGST</Label>
-                  <Input type="number" value={currentCollection.cgst || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, cgst: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.cgst || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, cgst: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>SGST</Label>
-                  <Input type="number" value={currentCollection.sgst || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, sgst: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.sgst || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, sgst: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>IGST</Label>
-                  <Input type="number" value={currentCollection.igst || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, igst: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.igst || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, igst: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>Total Amount Receivable</Label>
-                  <Input type="number" value={currentCollection.totalAmountReceivable || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, totalAmountReceivable: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.totalAmountReceivable || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, totalAmountReceivable: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>Amount Received</Label>
-                  <Input type="number" value={currentCollection.amountReceived || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, amountReceived: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.amountReceived || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, amountReceived: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>TDS Receivable</Label>
-                  <Input type="number" value={currentCollection.tdsReceivable || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, tdsReceivable: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.tdsReceivable || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, tdsReceivable: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div>
                   <Label>Amount Receipt Date</Label>
-                  <Input type="date" value={currentCollection.amountReceiptDate || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, amountReceiptDate: e.target.value }])} />
+                  <Input type="date" value={currentMonthlyCollection.amountReceiptDate || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, amountReceiptDate: e.target.value })} />
                 </div>
                 <div>
                   <Label>GST Payment Status</Label>
-                  <Input value={currentCollection.gstPaymentStatus || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, gstPaymentStatus: e.target.value }])} />
+                  <Input value={currentMonthlyCollection.gstPaymentStatus || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, gstPaymentStatus: e.target.value })} />
                 </div>
                 <div>
                   <Label>Actual GST Paid In The Month</Label>
-                  <Input type="number" value={currentCollection.actualGstPaidInMonth || ""} onChange={(e) => setMonthlyCollections([{ ...currentCollection, actualGstPaidInMonth: parseInt(e.target.value) || 0 }])} />
+                  <Input type="number" value={currentMonthlyCollection.actualGstPaidInMonth || ""} onChange={(e) => setCurrentMonthlyCollection({ ...currentMonthlyCollection, actualGstPaidInMonth: parseInt(e.target.value) || 0 })} />
                 </div>
               </div>
 
@@ -447,6 +453,24 @@ function RevenueAndCollections({ startupId }: { startupId: number }) {
                 <Save className="mr-2 h-4 w-4" />
                 {isSaving ? "Saving..." : "Save Monthly Collection"}
               </Button>
+
+              {monthlyCollections.length > 0 && (
+                <div className="mt-6 pt-6 border-t border-white/10">
+                  <h3 className="font-semibold mb-4">Existing Records</h3>
+                  <div className="space-y-2">
+                    {monthlyCollections.map(collection => (
+                      <div key={collection.id} className="flex justify-between items-center p-3 bg-white/5 rounded-lg border border-white/10">
+                        <div>
+                          <p className="font-medium">{collection.financialYear && collection.month ? `${collection.month} ${collection.financialYear}` : 'Untitled'}</p>
+                        </div>
+                        <Button variant="ghost" size="sm" onClick={() => handleDeleteMonthlyCollection(collection.id)}>
+                          <Trash2 className="h-4 w-4 text-red-500" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
