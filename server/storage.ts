@@ -3,12 +3,16 @@ import {
   users, startups, startupProfiles, applications,
   evaluationCriteria, scorecards, scorecardParameters, judges, mentorAssignments,
   fundings, knowledgeBase, roles, physicalAssets, assetBookings,
+  startupRevenueDetails, startupTrainingFees, startupConsultancyFees, 
+  startupRegistrationFees, startupMonthlyCollections,
   type User, type Startup, type StartupProfile, type Application, type Scorecard,
   type ScorecardParameter, type Judge,
   type MentorAssignment, type Funding, type KnowledgeBaseArticle, type Role,
   type EvaluationCriteria, type PhysicalAsset, type AssetBooking,
+  type StartupRevenueDetails, type StartupTrainingFees, type StartupConsultancyFees,
+  type StartupRegistrationFees, type StartupMonthlyCollections,
 } from "@shared/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, and } from "drizzle-orm";
 
 export interface IStorage {
   // Users
@@ -77,6 +81,31 @@ export interface IStorage {
   getAssetBookings(): Promise<AssetBooking[]>;
   createAssetBooking(booking: any): Promise<AssetBooking>;
   cancelAssetBooking(id: number): Promise<AssetBooking | undefined>;
+
+  // Revenue Details (Part A - Incubation Charges)
+  getRevenueDetailsByStartupId(startupId: number): Promise<StartupRevenueDetails | undefined>;
+  upsertRevenueDetails(startupId: number, data: any): Promise<StartupRevenueDetails>;
+
+  // Training Fees (Part B)
+  getTrainingFeesByStartupId(startupId: number): Promise<StartupTrainingFees[]>;
+  createTrainingFee(fee: any): Promise<StartupTrainingFees>;
+  deleteTrainingFee(id: number): Promise<void>;
+
+  // Consultancy Fees (Part C)
+  getConsultancyFeesByStartupId(startupId: number): Promise<StartupConsultancyFees[]>;
+  createConsultancyFee(fee: any): Promise<StartupConsultancyFees>;
+  deleteConsultancyFee(id: number): Promise<void>;
+
+  // Registration Fees (Part D)
+  getRegistrationFeesByStartupId(startupId: number): Promise<StartupRegistrationFees[]>;
+  createRegistrationFee(fee: any): Promise<StartupRegistrationFees>;
+  deleteRegistrationFee(id: number): Promise<void>;
+
+  // Monthly Collections
+  getMonthlyCollectionsByStartup(startupId: number, financialYear?: string, month?: string): Promise<StartupMonthlyCollections[]>;
+  getMonthlyCollection(startupId: number, financialYear: string, month: string): Promise<StartupMonthlyCollections | undefined>;
+  upsertMonthlyCollection(startupId: number, financialYear: string, month: string, data: any): Promise<StartupMonthlyCollections>;
+  deleteMonthlyCollection(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -291,6 +320,121 @@ async getStartupById(id: number) {
   async cancelAssetBooking(id: number): Promise<AssetBooking | undefined> {
     const [updated] = await db.update(assetBookings).set({ status: "cancelled" }).where(eq(assetBookings.id, id)).returning();
     return updated;
+  }
+
+  // Revenue Details (Part A - Incubation Charges)
+  async getRevenueDetailsByStartupId(startupId: number): Promise<StartupRevenueDetails | undefined> {
+    const [details] = await db.select().from(startupRevenueDetails).where(eq(startupRevenueDetails.startupId, startupId));
+    return details;
+  }
+
+  async upsertRevenueDetails(startupId: number, data: any): Promise<StartupRevenueDetails> {
+    const existing = await this.getRevenueDetailsByStartupId(startupId);
+    if (existing) {
+      const [updated] = await db
+        .update(startupRevenueDetails)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(startupRevenueDetails.startupId, startupId))
+        .returning();
+      return updated;
+    }
+    const [created] = await db
+      .insert(startupRevenueDetails)
+      .values({ startupId, ...data })
+      .returning();
+    return created;
+  }
+
+  // Training Fees (Part B)
+  async getTrainingFeesByStartupId(startupId: number): Promise<StartupTrainingFees[]> {
+    return await db.select().from(startupTrainingFees).where(eq(startupTrainingFees.startupId, startupId));
+  }
+
+  async createTrainingFee(fee: any): Promise<StartupTrainingFees> {
+    const [newFee] = await db.insert(startupTrainingFees).values(fee).returning();
+    return newFee;
+  }
+
+  async deleteTrainingFee(id: number): Promise<void> {
+    await db.delete(startupTrainingFees).where(eq(startupTrainingFees.id, id));
+  }
+
+  // Consultancy Fees (Part C)
+  async getConsultancyFeesByStartupId(startupId: number): Promise<StartupConsultancyFees[]> {
+    return await db.select().from(startupConsultancyFees).where(eq(startupConsultancyFees.startupId, startupId));
+  }
+
+  async createConsultancyFee(fee: any): Promise<StartupConsultancyFees> {
+    const [newFee] = await db.insert(startupConsultancyFees).values(fee).returning();
+    return newFee;
+  }
+
+  async deleteConsultancyFee(id: number): Promise<void> {
+    await db.delete(startupConsultancyFees).where(eq(startupConsultancyFees.id, id));
+  }
+
+  // Registration Fees (Part D)
+  async getRegistrationFeesByStartupId(startupId: number): Promise<StartupRegistrationFees[]> {
+    return await db.select().from(startupRegistrationFees).where(eq(startupRegistrationFees.startupId, startupId));
+  }
+
+  async createRegistrationFee(fee: any): Promise<StartupRegistrationFees> {
+    const [newFee] = await db.insert(startupRegistrationFees).values(fee).returning();
+    return newFee;
+  }
+
+  async deleteRegistrationFee(id: number): Promise<void> {
+    await db.delete(startupRegistrationFees).where(eq(startupRegistrationFees.id, id));
+  }
+
+  // Monthly Collections
+  async getMonthlyCollectionsByStartup(startupId: number, financialYear?: string, month?: string): Promise<StartupMonthlyCollections[]> {
+    let query = db.select().from(startupMonthlyCollections).where(eq(startupMonthlyCollections.startupId, startupId));
+    
+    if (financialYear) {
+      query = query.where(eq(startupMonthlyCollections.financialYear, financialYear));
+    }
+    
+    if (month) {
+      query = query.where(eq(startupMonthlyCollections.month, month));
+    }
+    
+    return await query;
+  }
+
+  async getMonthlyCollection(startupId: number, financialYear: string, month: string): Promise<StartupMonthlyCollections | undefined> {
+    const [collection] = await db
+      .select()
+      .from(startupMonthlyCollections)
+      .where(
+        and(
+          eq(startupMonthlyCollections.startupId, startupId),
+          eq(startupMonthlyCollections.financialYear, financialYear),
+          eq(startupMonthlyCollections.month, month)
+        )
+      );
+    return collection;
+  }
+
+  async upsertMonthlyCollection(startupId: number, financialYear: string, month: string, data: any): Promise<StartupMonthlyCollections> {
+    const existing = await this.getMonthlyCollection(startupId, financialYear, month);
+    if (existing) {
+      const [updated] = await db
+        .update(startupMonthlyCollections)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(startupMonthlyCollections.id, existing.id))
+        .returning();
+      return updated;
+    }
+    const [created] = await db
+      .insert(startupMonthlyCollections)
+      .values({ startupId, financialYear, month, ...data })
+      .returning();
+    return created;
+  }
+
+  async deleteMonthlyCollection(id: number): Promise<void> {
+    await db.delete(startupMonthlyCollections).where(eq(startupMonthlyCollections.id, id));
   }
 }
 

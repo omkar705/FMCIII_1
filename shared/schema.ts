@@ -155,6 +155,64 @@ export const assetBookings = pgTable("asset_bookings", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Revenue Management Tables
+export const startupRevenueDetails = pgTable("startup_revenue_details", {
+  id: serial("id").primaryKey(),
+  startupId: integer("startup_id").references(() => startups.id).notNull(),
+  gstin: text("gstin"),
+  currentAgreementPeriod: text("current_agreement_period"),
+  incrementProposedDate: text("increment_proposed_date"),
+  withoutGst: integer("without_gst"),
+  rentIncreaseFivePercent: integer("rent_increase_five_percent"),
+  monthlyIcCurrent: integer("monthly_ic_current"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const startupTrainingFees = pgTable("startup_training_fees", {
+  id: serial("id").primaryKey(),
+  startupId: integer("startup_id").references(() => startups.id).notNull(),
+  description: text("description"),
+  amount: integer("amount").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const startupConsultancyFees = pgTable("startup_consultancy_fees", {
+  id: serial("id").primaryKey(),
+  startupId: integer("startup_id").references(() => startups.id).notNull(),
+  description: text("description"),
+  amount: integer("amount").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const startupRegistrationFees = pgTable("startup_registration_fees", {
+  id: serial("id").primaryKey(),
+  startupId: integer("startup_id").references(() => startups.id).notNull(),
+  description: text("description"),
+  amount: integer("amount").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const startupMonthlyCollections = pgTable("startup_monthly_collections", {
+  id: serial("id").primaryKey(),
+  startupId: integer("startup_id").references(() => startups.id).notNull(),
+  financialYear: text("financial_year").notNull(),
+  month: text("month").notNull(),
+  previousBalance: integer("previous_balance"),
+  taxableAmount: integer("taxable_amount"),
+  cgst: integer("cgst"),
+  sgst: integer("sgst"),
+  igst: integer("igst"),
+  totalAmountReceivable: integer("total_amount_receivable"),
+  amountReceived: integer("amount_received"),
+  tdsReceivable: integer("tds_receivable"),
+  amountReceiptDate: text("amount_receipt_date"),
+  gstPaymentStatus: text("gst_payment_status"),
+  actualGstPaidInMonth: integer("actual_gst_paid_in_month"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({ id: true });
 export const insertStartupSchema = createInsertSchema(startups).omit({ id: true });
 export const insertStartupProfileSchema = createInsertSchema(startupProfiles).omit({ id: true });
@@ -169,6 +227,11 @@ export const insertRoleSchema = createInsertSchema(roles).omit({ id: true });
 export const insertEvaluationCriteriaSchema = createInsertSchema(evaluationCriteria).omit({ id: true });
 export const insertPhysicalAssetSchema = createInsertSchema(physicalAssets).omit({ id: true });
 export const insertAssetBookingSchema = createInsertSchema(assetBookings).omit({ id: true, createdAt: true });
+export const insertStartupRevenueDetailsSchema = createInsertSchema(startupRevenueDetails).omit({ id: true });
+export const insertStartupTrainingFeesSchema = createInsertSchema(startupTrainingFees).omit({ id: true });
+export const insertStartupConsultancyFeesSchema = createInsertSchema(startupConsultancyFees).omit({ id: true });
+export const insertStartupRegistrationFeesSchema = createInsertSchema(startupRegistrationFees).omit({ id: true });
+export const insertStartupMonthlyCollectionsSchema = createInsertSchema(startupMonthlyCollections).omit({ id: true });
 
 export type User = typeof users.$inferSelect;
 export type Startup = typeof startups.$inferSelect;
@@ -184,3 +247,8 @@ export type Role = typeof roles.$inferSelect;
 export type EvaluationCriteria = typeof evaluationCriteria.$inferSelect;
 export type PhysicalAsset = typeof physicalAssets.$inferSelect;
 export type AssetBooking = typeof assetBookings.$inferSelect;
+export type StartupRevenueDetails = typeof startupRevenueDetails.$inferSelect;
+export type StartupTrainingFees = typeof startupTrainingFees.$inferSelect;
+export type StartupConsultancyFees = typeof startupConsultancyFees.$inferSelect;
+export type StartupRegistrationFees = typeof startupRegistrationFees.$inferSelect;
+export type StartupMonthlyCollections = typeof startupMonthlyCollections.$inferSelect;
