@@ -12,6 +12,11 @@ import {
   roles, evaluationCriteria,
   insertPhysicalAssetSchema, physicalAssets,
   insertAssetBookingSchema, assetBookings,
+  insertStartupRevenueDetailsSchema, startupRevenueDetails,
+  insertStartupTrainingFeesSchema, startupTrainingFees,
+  insertStartupConsultancyFeesSchema, startupConsultancyFees,
+  insertStartupRegistrationFeesSchema, startupRegistrationFees,
+  insertStartupMonthlyCollectionsSchema, startupMonthlyCollections,
 } from './schema';
 
 export const errorSchemas = {
@@ -341,6 +346,137 @@ export const api = {
     delete: {
       method: 'DELETE' as const,
       path: '/api/bookings/:id' as const,
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        404: errorSchemas.notFound,
+      }
+    }
+  },
+  revenueDetails: {
+    get: {
+      method: 'GET' as const,
+      path: '/api/startups/:startupId/revenue-details' as const,
+      responses: {
+        200: z.custom<typeof startupRevenueDetails.$inferSelect>().nullable(),
+        404: errorSchemas.notFound,
+      }
+    },
+    upsert: {
+      method: 'PUT' as const,
+      path: '/api/startups/:startupId/revenue-details' as const,
+      input: insertStartupRevenueDetailsSchema,
+      responses: {
+        200: z.custom<typeof startupRevenueDetails.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    }
+  },
+  trainingFees: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/startups/:startupId/training-fees' as const,
+      responses: {
+        200: z.array(z.custom<typeof startupTrainingFees.$inferSelect>()),
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/startups/:startupId/training-fees' as const,
+      input: insertStartupTrainingFeesSchema,
+      responses: {
+        201: z.custom<typeof startupTrainingFees.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    },
+    delete: {
+      method: 'DELETE' as const,
+      path: '/api/training-fees/:id' as const,
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        404: errorSchemas.notFound,
+      }
+    }
+  },
+  consultancyFees: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/startups/:startupId/consultancy-fees' as const,
+      responses: {
+        200: z.array(z.custom<typeof startupConsultancyFees.$inferSelect>()),
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/startups/:startupId/consultancy-fees' as const,
+      input: insertStartupConsultancyFeesSchema,
+      responses: {
+        201: z.custom<typeof startupConsultancyFees.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    },
+    delete: {
+      method: 'DELETE' as const,
+      path: '/api/consultancy-fees/:id' as const,
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        404: errorSchemas.notFound,
+      }
+    }
+  },
+  registrationFees: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/startups/:startupId/registration-fees' as const,
+      responses: {
+        200: z.array(z.custom<typeof startupRegistrationFees.$inferSelect>()),
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/startups/:startupId/registration-fees' as const,
+      input: insertStartupRegistrationFeesSchema,
+      responses: {
+        201: z.custom<typeof startupRegistrationFees.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    },
+    delete: {
+      method: 'DELETE' as const,
+      path: '/api/registration-fees/:id' as const,
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        404: errorSchemas.notFound,
+      }
+    }
+  },
+  monthlyCollections: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/startups/:startupId/monthly-collections' as const,
+      responses: {
+        200: z.array(z.custom<typeof startupMonthlyCollections.$inferSelect>()),
+      }
+    },
+    get: {
+      method: 'GET' as const,
+      path: '/api/startups/:startupId/monthly-collections/:financialYear/:month' as const,
+      responses: {
+        200: z.custom<typeof startupMonthlyCollections.$inferSelect>().nullable(),
+        404: errorSchemas.notFound,
+      }
+    },
+    upsert: {
+      method: 'PUT' as const,
+      path: '/api/startups/:startupId/monthly-collections/:financialYear/:month' as const,
+      input: insertStartupMonthlyCollectionsSchema,
+      responses: {
+        200: z.custom<typeof startupMonthlyCollections.$inferSelect>(),
+        400: errorSchemas.validation,
+      }
+    },
+    delete: {
+      method: 'DELETE' as const,
+      path: '/api/monthly-collections/:id' as const,
       responses: {
         200: z.object({ success: z.boolean() }),
         404: errorSchemas.notFound,

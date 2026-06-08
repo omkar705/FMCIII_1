@@ -740,6 +740,289 @@ app.patch("/api/users/:id/profile", async (req, res) => {
     }
   });
 
+  /* ================= REVENUE DETAILS (Part A) ================= */
+
+  app.get("/api/startups/:startupId/revenue-details", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      const details = await storage.getRevenueDetailsByStartupId(startupId);
+      res.json(details || null);
+    } catch (err) {
+      console.error("Get revenue details error:", err);
+      res.status(500).json({ message: "Failed to fetch revenue details" });
+    }
+  });
+
+  app.put("/api/startups/:startupId/revenue-details", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      const details = await storage.upsertRevenueDetails(startupId, req.body);
+      res.json(details);
+    } catch (err) {
+      console.error("Upsert revenue details error:", err);
+      res.status(500).json({ message: "Failed to save revenue details" });
+    }
+  });
+
+  /* ================= TRAINING FEES (Part B) ================= */
+
+  app.get("/api/startups/:startupId/training-fees", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      const fees = await storage.getTrainingFeesByStartupId(startupId);
+      res.json(fees);
+    } catch (err) {
+      console.error("Get training fees error:", err);
+      res.status(500).json({ message: "Failed to fetch training fees" });
+    }
+  });
+
+  app.post("/api/startups/:startupId/training-fees", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      const fee = await storage.createTrainingFee({ startupId, ...req.body });
+      res.status(201).json(fee);
+    } catch (err) {
+      console.error("Create training fee error:", err);
+      res.status(500).json({ message: "Failed to create training fee" });
+    }
+  });
+
+  app.delete("/api/training-fees/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid fee id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      await storage.deleteTrainingFee(id);
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Delete training fee error:", err);
+      res.status(500).json({ message: "Failed to delete training fee" });
+    }
+  });
+
+  /* ================= CONSULTANCY FEES (Part C) ================= */
+
+  app.get("/api/startups/:startupId/consultancy-fees", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      const fees = await storage.getConsultancyFeesByStartupId(startupId);
+      res.json(fees);
+    } catch (err) {
+      console.error("Get consultancy fees error:", err);
+      res.status(500).json({ message: "Failed to fetch consultancy fees" });
+    }
+  });
+
+  app.post("/api/startups/:startupId/consultancy-fees", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      const fee = await storage.createConsultancyFee({ startupId, ...req.body });
+      res.status(201).json(fee);
+    } catch (err) {
+      console.error("Create consultancy fee error:", err);
+      res.status(500).json({ message: "Failed to create consultancy fee" });
+    }
+  });
+
+  app.delete("/api/consultancy-fees/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid fee id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      await storage.deleteConsultancyFee(id);
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Delete consultancy fee error:", err);
+      res.status(500).json({ message: "Failed to delete consultancy fee" });
+    }
+  });
+
+  /* ================= REGISTRATION FEES (Part D) ================= */
+
+  app.get("/api/startups/:startupId/registration-fees", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      const fees = await storage.getRegistrationFeesByStartupId(startupId);
+      res.json(fees);
+    } catch (err) {
+      console.error("Get registration fees error:", err);
+      res.status(500).json({ message: "Failed to fetch registration fees" });
+    }
+  });
+
+  app.post("/api/startups/:startupId/registration-fees", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      const fee = await storage.createRegistrationFee({ startupId, ...req.body });
+      res.status(201).json(fee);
+    } catch (err) {
+      console.error("Create registration fee error:", err);
+      res.status(500).json({ message: "Failed to create registration fee" });
+    }
+  });
+
+  app.delete("/api/registration-fees/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid fee id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      await storage.deleteRegistrationFee(id);
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Delete registration fee error:", err);
+      res.status(500).json({ message: "Failed to delete registration fee" });
+    }
+  });
+
+  /* ================= MONTHLY COLLECTIONS ================= */
+
+  app.get("/api/startups/:startupId/monthly-collections", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      const { financialYear, month } = req.query;
+      const collections = await storage.getMonthlyCollectionsByStartup(
+        startupId,
+        financialYear ? String(financialYear) : undefined,
+        month ? String(month) : undefined
+      );
+      res.json(collections);
+    } catch (err) {
+      console.error("Get monthly collections error:", err);
+      res.status(500).json({ message: "Failed to fetch monthly collections" });
+    }
+  });
+
+  app.get("/api/startups/:startupId/monthly-collections/:financialYear/:month", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      const { financialYear, month } = req.params;
+      const collection = await storage.getMonthlyCollection(startupId, financialYear, month);
+      res.json(collection || null);
+    } catch (err) {
+      console.error("Get monthly collection error:", err);
+      res.status(500).json({ message: "Failed to fetch monthly collection" });
+    }
+  });
+
+  app.put("/api/startups/:startupId/monthly-collections/:financialYear/:month", async (req, res) => {
+    try {
+      const startupId = parseInt(req.params.startupId, 10);
+      if (isNaN(startupId)) return res.status(400).json({ message: "Invalid startup id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      const { financialYear, month } = req.params;
+      const collection = await storage.upsertMonthlyCollection(startupId, financialYear, month, req.body);
+      res.json(collection);
+    } catch (err) {
+      console.error("Upsert monthly collection error:", err);
+      res.status(500).json({ message: "Failed to save monthly collection" });
+    }
+  });
+
+  app.delete("/api/monthly-collections/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) return res.status(400).json({ message: "Invalid collection id" });
+      
+      // Check admin authorization
+      const requesterId = req.session.userId;
+      if (!requesterId) return res.status(401).json({ message: "Not authenticated" });
+      const requester = await storage.getUser(requesterId);
+      if (!requester || requester.roleId !== 1) {
+        return res.status(403).json({ message: "Forbidden: admin access required" });
+      }
+
+      await storage.deleteMonthlyCollection(id);
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Delete monthly collection error:", err);
+      res.status(500).json({ message: "Failed to delete monthly collection" });
+    }
+  });
 
   return httpServer;
 }
